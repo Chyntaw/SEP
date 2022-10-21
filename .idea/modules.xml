@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/gruppe-f.iml" filepath="$PROJECT_DIR$/.idea/gruppe-f.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sep/sep.iml" filepath="$PROJECT_DIR$/sep/sep.iml" />
     </modules>
   </component>
 </project>
