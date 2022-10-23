@@ -7,6 +7,13 @@ import java.util.Date;
 @Entity(name = "User")
 public class User {
 
+    public enum Role {
+        ADMIN,
+        BASIC
+    }
+    private final String MASTER_PASSWORD = "mirdochwayne";
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userID")
@@ -23,17 +30,11 @@ public class User {
     private String password;
     @Column(name = "profilePicture")
     private File profilePicture;
+    @Column(name = "role")
+    private Role role;
 
     protected User() {}
 
-    public User(String firstName, String lastName, Date birthDate, String eMail, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-        this.eMail = eMail;
-        this.password = password;
-    }
-    //Create new User with Profile Picture (optional)
     public User(String firstName, String lastName, Date birthDate, String eMail, String password, File profilePicture) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,7 +42,13 @@ public class User {
         this.eMail = eMail;
         this.password = password;
         this.profilePicture = profilePicture;
+        if(password.equals(MASTER_PASSWORD)) {
+            this.role = Role.ADMIN;
+        } else {this.role = Role.BASIC;}
     }
+
+    //Create new User with Profile Picture (optional)
+
 
     @Override
     public String toString() {
