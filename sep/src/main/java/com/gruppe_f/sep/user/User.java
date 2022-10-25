@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.io.File;
 import java.util.Date;
 
-@Entity(name = "User")
+@Entity
+@Table(name = "users")
 public class User {
 
     public enum Role {
@@ -12,7 +13,6 @@ public class User {
         BASIC
     }
     private final String MASTER_PASSWORD = "mirdochwayne";
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,7 +23,7 @@ public class User {
     @Column(name = "lastName")
     private String lastName;
     @Column(name = "yearOfBirth")
-    private Date birthDate;
+    private String birthDate;
     @Column(name = "eMail")
     private String eMail;
     @Column(name = "password")
@@ -35,7 +35,19 @@ public class User {
 
     protected User() {}
 
-    public User(String firstName, String lastName, Date birthDate, String eMail, String password, File profilePicture) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthDate = birthDate;
+        this.eMail = eMail;
+        this.password = password;
+        if(password.equals(MASTER_PASSWORD)) {
+            this.role = Role.ADMIN;
+        } else {this.role = Role.BASIC;}
+    }
+
+    //Create new User with Profile Picture (optional)
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, File profilePicture) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -46,9 +58,6 @@ public class User {
             this.role = Role.ADMIN;
         } else {this.role = Role.BASIC;}
     }
-
-    //Create new User with Profile Picture (optional)
-
 
     @Override
     public String toString() {
@@ -78,11 +87,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
