@@ -1,4 +1,4 @@
-package com.gruppe_f.sep.Spielplan;
+package com.gruppe_f.sep.entities.Spielplan;
 
 import org.springframework.stereotype.Service;
 

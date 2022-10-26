@@ -1,6 +1,6 @@
-package com.gruppe_f.sep.liga;
+package com.gruppe_f.sep.entities.liga;
 
-import com.gruppe_f.sep.Spielplan.Spielplan;
+import com.gruppe_f.sep.entities.Spielplan.Spielplan;
 
 import javax.persistence.*;
 import java.io.File;

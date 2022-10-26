@@ -1,4 +1,4 @@
-package com.gruppe_f.sep.liga;
+package com.gruppe_f.sep.entities.liga;
 
 import java.util.List;
 

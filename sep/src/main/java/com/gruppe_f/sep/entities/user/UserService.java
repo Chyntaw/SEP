@@ -1,4 +1,4 @@
-package com.gruppe_f.sep.user;
+package com.gruppe_f.sep.entities.user;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
