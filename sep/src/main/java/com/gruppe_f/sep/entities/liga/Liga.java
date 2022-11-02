@@ -1,6 +1,6 @@
 package com.gruppe_f.sep.entities.liga;
 
-import com.gruppe_f.sep.entities.Spielplan.Spielplan;
+
 
 import javax.persistence.*;
 import java.io.File;
@@ -23,7 +23,7 @@ public class Liga {
 
     }
 
-    public Liga(long id, String name, Spielplan spielplan){
+    public Liga(long id, String name){
         this.id = id;
         this.name = name;
     }

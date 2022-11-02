@@ -22,7 +22,7 @@ public class LigaService {
         return ligaRepo.save(restaurants);
     }
 
-    public void deleteLiga(int ligaId){
+    public void deleteLiga(Long ligaId){
         ligaRepo.deleteById(ligaId);
     }
 
