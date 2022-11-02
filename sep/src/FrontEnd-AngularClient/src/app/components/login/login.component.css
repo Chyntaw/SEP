@@ -1,0 +1,61 @@
+.login-container{
+  margin-left: 15%;
+
+  margin-right: 35%;
+  padding-bottom: 20%;
+}
+
+.login-form{
+  padding-top: 20%;
+  background:#282726;
+  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+  padding-bottom: 30%;
+  text-align: center;
+}
+.login-form h3{
+  text-align: -moz-center;
+  color:#fff;
+  font-size: 50px;
+
+}
+
+.btnSubmit{
+
+  margin-top: 20px;
+  margin-bottom: 40px;
+  font-weight: 600;
+  width: 25%;
+  color: #282726;
+  background-color: #fff;
+  border: none;
+  border-radius: 1.5rem;
+  padding:0.5%;
+  font-size: 30px;
+
+}
+.btnSubmit:focus{
+  outline: none;
+
+
+}
+
+
+
+
+.btnKonto{
+  color: #fff;
+  font-weight: 600;
+
+  margin-top:20px;
+
+}
+
+
+
+.form-control{
+  font-size: 40px;
+}
+.text-danger{
+  font-size: 20px;
+
+}

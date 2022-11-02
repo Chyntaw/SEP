@@ -1,0 +1,32 @@
+
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-6 login-form">
+      <h3>Login: </h3>
+  <form (ngSubmit)="userLogin()" [formGroup]="loginForm">
+      <div class="form-group">
+        <input [(ngModel)]="user.email" id="email" name="email" formControlName="email" type="text" class="form-control" placeholder="E-Mail"/>
+      </div>
+    <small *ngIf="loginForm.controls['email'].dirty && loginForm.hasError('required', 'email')" class="text-danger">
+      *E-Mail wird benötigt</small>
+      <p></p>
+      <div class="form-group">
+        <input id="password" name="password" [(ngModel)]="user.password" formControlName="password" type="text" class="form-control" placeholder="Passwort" value="" />
+      </div>
+    <small *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required', 'password')" class="text-danger">
+      *Passwort wird benötigt</small>
+      <div class="form-group">
+        <button routerLink="" class="btnSubmit">Login</button>
+      </div>
+  </form>
+
+      <div class="form-group">
+        <a routerLink="/registration" class="btnKonto" >Konto erstellen!</a>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
