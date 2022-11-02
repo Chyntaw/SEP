@@ -2,16 +2,18 @@ package com.gruppe_f.sep.entities.user;
 
 import javax.persistence.*;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     public enum Role {
         ADMIN,
         BASIC
     }
+    @Transient
     private final String MASTER_PASSWORD = "mirdochwayne";
 
     @Id
@@ -31,6 +33,7 @@ public class User {
     @Column(name = "profilePicture")
     private File profilePicture;
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     protected User() {}

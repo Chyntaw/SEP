@@ -20,6 +20,8 @@ public class UserService {
 
     public List<User> findAllUsers() {return repo.findAll();}
 
+    public User findUserByeMail(String eMail) {return repo.findUserByeMail(eMail);}
+
 
 
 
