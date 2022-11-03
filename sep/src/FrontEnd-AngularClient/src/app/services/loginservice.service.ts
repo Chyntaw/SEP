@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 })
 export class LoginserviceService {
 
-  private databaseURL="http://localhost:8080"
+  private databaseURL="http://localhost:8080/user/login"
 
   constructor(private httpClient: HttpClient) { }
 

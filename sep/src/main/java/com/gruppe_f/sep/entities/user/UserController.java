@@ -30,4 +30,12 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
+    @PostMapping("/user/login")
+    public ResponseEntity<?> loginUser(@RequestBody User userData) {
+        User user = service.findUserByeMail(userData.geteMail());
+        if(user.getPassword().equals(userData.getPassword()))
+            return ResponseEntity.ok(user);
+        return (ResponseEntity<?>) ResponseEntity.internalServerError();
+    }
+
 }
