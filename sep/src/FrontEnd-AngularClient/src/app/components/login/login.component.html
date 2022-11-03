@@ -5,7 +5,7 @@
       <h3>Login: </h3>
   <form (ngSubmit)="userLogin()" [formGroup]="loginForm">
       <div class="form-group">
-        <input [(ngModel)]="user.email" id="email" name="email" formControlName="email" type="text" class="form-control" placeholder="E-Mail"/>
+        <input [(ngModel)]="user.eMail" id="email" name="email" formControlName="email" type="text" class="form-control" placeholder="E-Mail"/>
       </div>
     <small *ngIf="loginForm.controls['email'].dirty && loginForm.hasError('required', 'email')" class="text-danger">
       *E-Mail wird benötigt</small>

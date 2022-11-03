@@ -9,19 +9,19 @@
       <!-- ngModel um die Daten aus dem InputFeld an die Daten aus unserem Model zu binden-->
       <form (ngSubmit)="userRegistration();">
             <div class="form-group">
-              <input type="text" class="form-control" value="" placeholder="Nachname" id="nachname" name="nachname" [(ngModel)]="user.nachname"/>
+              <input type="text" class="form-control" value="" placeholder="Nachname" id="nachname" name="nachname" [(ngModel)]="user.lastName"/>
             </div>
             <p></p>
             <div class="form-group">
-              <input type="text" class="form-control" value="" placeholder="Vorname" id="vorname" name="vorname"  [(ngModel)]="user.vorname" />
+              <input type="text" class="form-control" value="" placeholder="Vorname" id="vorname" name="vorname"  [(ngModel)]="user.firstName" />
             </div>
             <p></p>
             <div class="form-group">
-              <input type="email" class="form-control" value="" placeholder="E-Mail" id="email" name="email"  [(ngModel)]="user.email"/>
+              <input type="email" class="form-control" value="" placeholder="E-Mail" id="email" name="email"  [(ngModel)]="user.eMail"/>
             </div>
             <p></p>
             <div class="form-group">
-              <input type="text" class="form-control" value="" placeholder="Geburtsdatum" id="geburtsdatum" name="geburtsdatum"  [(ngModel)]="user.geburtsdatum"/>
+              <input type="text" class="form-control" value="" placeholder="Geburtsdatum" id="geburtsdatum" name="geburtsdatum"  [(ngModel)]="user.birthDate"/>
             </div>
             <p></p>
             <div class="form-group">

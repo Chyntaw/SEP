@@ -1,10 +1,10 @@
 export class User {
 
-  email!:string;
+  eMail!:string;
   password!:string;
-  nachname!:string;
-  vorname!:string;
-  geburtsdatum!:string;
+ lastName!:string;
+  firstName!:string;
+  birthDate!:string;
 
 
 
