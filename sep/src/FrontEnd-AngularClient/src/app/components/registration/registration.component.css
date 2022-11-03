@@ -1,12 +1,12 @@
 .headline{
   margin-top:-150px;
-  margin-bottom: 50px;
+  margin-bottom: 70px;
 
 }
 
 
 .login-container{
-  margin-left: 15%;
+  margin-left: 23%;
 
   margin-right: 35%;
   padding-bottom: 20%;
@@ -28,15 +28,15 @@
 
 .btnSubmit{
 
-  margin-top: 20px;
+  margin-top: 50px;
   margin-bottom: 40px;
   font-weight: 600;
-  width: 35%;
+  width: 50%;
   color: #282726;
   background-color: #fff;
   border: none;
   border-radius: 1.5rem;
-  padding:1%;
+  padding:4%;
   font-size: 30px;
 
 }
@@ -48,7 +48,11 @@
 .btnKonto{
   color: #fff;
   font-weight: 600;
-
+  font-size: 20px;
   margin-top:20px;
+
+}
+.form-control{
+  font-size: 30px;
 
 }

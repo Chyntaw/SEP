@@ -12,6 +12,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ZweiFAComponent } from './components/zwei-fa/zwei-fa.component';
 import {RouterOutlet} from "@angular/router";
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 
 
@@ -21,7 +22,8 @@ import {RouterOutlet} from "@angular/router";
     TippworldheaderComponent,
     LoginComponent,
     RegistrationComponent,
-    ZweiFAComponent
+    ZweiFAComponent,
+    DashboardComponent
   ],
     imports: [
         BrowserModule,

@@ -1,14 +1,13 @@
 .headline{
-
-  margin-top:-150px;
+  margin-top: -150px;
   margin-bottom: 70px;
 
 
 }
 
-
 .login-container{
   margin-left: 23%;
+
   margin-right: 35%;
   padding-bottom: 20%;
 }
@@ -30,9 +29,9 @@
 .btnSubmit{
 
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   font-weight: 600;
-  width: 50%;
+  width: 80%;
   color: #282726;
   background-color: #fff;
   border: none;
