@@ -34,8 +34,8 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody User userData) {
         User user = service.findUserByeMail(userData.geteMail());
         if(user.getPassword().equals(userData.getPassword()))
-            return ResponseEntity.ok(user);
-        return (ResponseEntity<?>) ResponseEntity.internalServerError();
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
 }
