@@ -17,7 +17,7 @@ public class User implements Serializable {
     private final String MASTER_PASSWORD = "mirdochwayne";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userID")
     private Long id;
     @Column(name = "firstName")
