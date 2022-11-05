@@ -1,0 +1,36 @@
+
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-6 login-form">
+      <h3 class="headline">Erstelle eine Liga</h3>
+      <!-- -->
+      <form> <!-- (ngSubmit)="create_league()"> --> <!-- probably sth missing here and in inputs -->
+        <div class="form-group">
+          <input type="text" class="form-control" value="" placeholder="Liganame" id="name" name="name">
+        </div>
+        <p></p>
+        <div class="form-group">
+          <label>CSV-Spielplan:</label>
+          <pre></pre>
+          <input type="file" accept=".csv" value="">
+        </div>
+        <p></p>
+        <div>
+          <label>Ligabild:</label>
+          <pre></pre>
+          <input type="file">
+        </div>
+        <p></p>
+        <div class="form-group">
+          <button  class="btnSubmit"><!-- [disabled]="!addUserForm.form.valid" -->Konto erstellen</button>
+        </div>
+      </form>
+      <!-- -->
+
+
+    </div>
+  </div>
+</div>
+
+
+
