@@ -30,8 +30,9 @@ public class User implements Serializable {
     private String eMail;
     @Column(name = "password")
     private String password;
+    @Lob
     @Column(name = "profilePicture")
-    private File profilePicture;
+    private byte[] profilePicture;
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -50,7 +51,7 @@ public class User implements Serializable {
     }
 
     //Create new User with Profile Picture (optional)
-    public User(String firstName, String lastName, String birthDate, String eMail, String password, File profilePicture) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, byte[] profilePicture) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -114,11 +115,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public File getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(File profilePicture) {
+    public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 }

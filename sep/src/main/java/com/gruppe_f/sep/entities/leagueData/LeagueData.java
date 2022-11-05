@@ -18,10 +18,9 @@ public class LeagueData {
     private String player1;
     private String player2;
     private String result;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "liga_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
+    @JoinColumn(name = "LigaID")
     private Liga liga;
 
     protected LeagueData() {};
