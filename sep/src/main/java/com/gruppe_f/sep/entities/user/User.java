@@ -1,9 +1,7 @@
 package com.gruppe_f.sep.entities.user;
 
 import javax.persistence.*;
-import java.io.File;
 import java.io.Serializable;
-import java.util.Date;
 
 
 @Entity
@@ -37,6 +35,10 @@ public class User implements Serializable {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
+
+
+    private String secret;         //Generierte OTP
+    private String code;           //Eingegebene OTP
 
     protected User() {}
 
@@ -122,5 +124,22 @@ public class User implements Serializable {
 
     public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }
