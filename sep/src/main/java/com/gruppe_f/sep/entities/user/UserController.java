@@ -25,8 +25,14 @@ public class UserController {
     }
 
     @PostMapping("/user/add")
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User newUser = service.addUser(user);
+    public ResponseEntity<User> addUser(@RequestBody User userData) {
+
+        for(User user: service.findAllUsers()) {
+            if (user.geteMail().equals(userData.geteMail())) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
+        User newUser = service.addUser(userData);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 

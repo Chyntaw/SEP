@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
+
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
