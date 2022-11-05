@@ -12,7 +12,6 @@ import dev.samstevens.totp.time.TimeProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class UserController {
 
     private final UserService service;
 
-
+    @Autowired
     MailSenderService mailSenderService;
 
 
@@ -40,9 +39,8 @@ public class UserController {
 
     @PostMapping("/user/add")
     public ResponseEntity<User> addUser(@RequestBody User userData) {
-
         for(User user: service.findAllUsers()) {
-            if (user.geteMail().equals(userData.geteMail())) {
+            if (user.geteMail().equals(userData.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         }
@@ -52,10 +50,19 @@ public class UserController {
 
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(@RequestBody User userData) {
+
+        SecretGenerator secretGenerator = new DefaultSecretGenerator(8);                //Generierter Code 6 Zeichen lang
+        userData.setSecret(secretGenerator.generate());                                             //generiere Code
+
+
         User user = service.findUserByeMail(userData.geteMail());
-        if(user.getPassword().equals(userData.getPassword()))
+        if(user.getPassword().equals(userData.getPassword())) {
+            mailSenderService.sendEmail(userData.geteMail(),
+                    "Verifikationscode",
+                    "Ihr Verifikationsvode lautet: " + userData.getSecret());      //schick Email hoffentlich
 
             return new ResponseEntity<>(user, HttpStatus.OK);
+        }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
@@ -65,13 +72,6 @@ public class UserController {
         TimeProvider timeProvider = new SystemTimeProvider();
         CodeGenerator codeGenerator = new DefaultCodeGenerator();
         CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);               //Generierter Code 30 Sekunden(Standard)
-
-        SecretGenerator secretGenerator = new DefaultSecretGenerator(6);                //Generierter Code 6 Zeichen lang
-        userData.setSecret(secretGenerator.generate());                                             //generiere Code
-
-        mailSenderService.sendEmail(userData.geteMail(),
-                "Verifikationscode",
-                "Ihr Verifikationsvode lautet:" + userData.getSecret());      //schick Email hoffentlich
 
         User user = service.findUserByeMail(userData.geteMail());
         if(verifier.isValidCode(user.getSecret(), userData.getCode())){             //vergleich generierten code(secret) und eingegebenen code(code)
