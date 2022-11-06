@@ -23,7 +23,7 @@ export class AdminRegistrationComponent implements OnInit {
     console.log(this.admin);
     this.registrationservice.addUser(this.admin).subscribe(data=>{
 
-      this.dashboardRoute.navigate(['/dashboard'])
+      this.dashboardRoute.navigate(['/admin-dashboard'])
       alert("Registrierung erfolgreich")
 
     },error=>alert("Registrierung war nicht erfolgreich"));

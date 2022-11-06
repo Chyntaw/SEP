@@ -10,19 +10,22 @@
         </div>
         <p></p>
         <div class="form-group">
-          <label>CSV-Spielplan:</label>
+          <label class="labels">CSV-Spielplan:</label>
           <pre></pre>
-          <input type="file" accept=".csv" value="">
+          <input  class="labels" type="file" accept=".csv" value="">
         </div>
         <p></p>
         <div>
-          <label>Ligabild:</label>
+          <label class="labels">Ligabild:</label>
           <pre></pre>
-          <input type="file">
+          <input  class="labels" type="file">
         </div>
         <p></p>
         <div class="form-group">
-          <button  class="btnSubmit"><!-- [disabled]="!addUserForm.form.valid" -->Konto erstellen</button>
+          <button  class="btnSubmit"><!-- [disabled]="!addUserForm.form.valid" -->Liga erstellen</button>
+        </div>
+        <div class="form-group">
+          <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>
         </div>
       </form>
       <!-- -->
@@ -31,6 +34,3 @@
     </div>
   </div>
 </div>
-
-
-

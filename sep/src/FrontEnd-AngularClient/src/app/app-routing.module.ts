@@ -6,6 +6,9 @@ import {RegistrationComponent} from "./components/registration/registration.comp
 import {ZweiFaComponent} from "./components/zwei-fa/zwei-fa.component";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {AdminRegistrationComponent} from "./components/admin-registration/admin-registration.component";
+import {AdminDashboardComponent} from "./components/admin-dashboard/admin-dashboard.component";
+import {CreateLeagueComponent} from "./components/create-league/create-league.component";
+import {SystemdatumComponent} from "./components/systemdatum/systemdatum.component";
 
 
 const MeineRouten : Routes = [
@@ -14,6 +17,9 @@ const MeineRouten : Routes = [
   {path: 'zwei-fa', component: ZweiFaComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'admin-registration', component: AdminRegistrationComponent},
+  {path: 'admin-dashboard', component: AdminDashboardComponent},
+  {path: 'create_league', component: CreateLeagueComponent},
+  {path: 'systemdatum', component: SystemdatumComponent},
   {path: '',   redirectTo: '/login', pathMatch: 'full'}
 ];
 
