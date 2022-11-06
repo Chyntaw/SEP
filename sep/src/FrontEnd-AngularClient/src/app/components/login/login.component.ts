@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../models/user";
 import {LoginserviceService} from "../../services/loginservice.service";
+import {Router} from "@angular/router";
 import {provideRoutes} from "@angular/router";
 
 @Component({
@@ -14,7 +15,8 @@ export class LoginComponent implements OnInit {
   user:User = new User();
 
 
-  constructor(private fb: FormBuilder, private loginserviceService: LoginserviceService) { }
+  constructor(private fb: FormBuilder, private loginserviceService: LoginserviceService,
+              private zwei_faRouter: Router) { }
 
   loginForm!:FormGroup;
 
@@ -30,6 +32,7 @@ export class LoginComponent implements OnInit {
 userLogin() {
   console.log(this.user)
   this.loginserviceService.loginUser(this.user).subscribe(data=>{
+    this.zwei_faRouter.navigate(['/zwei-fa'])
    alert("Login ist korrekt")
 
 
