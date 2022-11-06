@@ -1,0 +1,42 @@
+
+
+<router-outlet></router-outlet>
+
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-6 login-form">
+      <h3 class="headline">Registrierung </h3>
+      <form  (ngSubmit)="userRegistration()" #addAdminForm="ngForm" >
+
+        <!-- ngModel um die Daten aus dem InputFeld an die Daten aus unserem Model zu binden-->
+
+        <div class="form-group">
+          <input type="text" class="form-control" value="" placeholder="Nachname" id="nachname" name="nachname" [(ngModel)]="admin.lastName" required #nachname="ngModel"/>
+        </div>
+        <p></p>
+        <div class="form-group">
+          <input type="text" class="form-control" value="" placeholder="Vorname" id="vorname" name="vorname"  [(ngModel)]="admin.firstName" required #vorname="ngModel"/>
+        </div>
+        <p></p>
+        <div class="form-group">
+          <input type="email" class="form-control" value="" placeholder="E-Mail" id="email" name="email"  [(ngModel)]="admin.eMail" required #email="ngModel"/>
+        </div>
+        <p></p>
+        <div class="form-group" >
+          <input type="password" class="form-control" value="" placeholder="Passwort" id="password" name="password" [(ngModel)]="admin.password" required #password="ngModel"/>
+        </div>
+        <div class="form-group" >
+          <button  class="btnSubmit"  [disabled]="!addAdminForm.valid" >Konto erstellen</button>
+        </div>
+        <div class="form-group">
+          <a routerLink="/login" class="btnKonto" >Zurück zum Login!</a>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+

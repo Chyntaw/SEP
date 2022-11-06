@@ -8,7 +8,10 @@ import java.io.Serializable;
 @Table(name = "users")
 public class User implements Serializable {
 
-
+    public enum Role {
+        ADMIN,
+        BASIC
+    }
     @Transient
     private final String MASTER_PASSWORD = "mirdochwayne";
 
@@ -28,13 +31,13 @@ public class User implements Serializable {
     private String password;
     @Lob
     @Column(name = "profilePicture")
-    private String profilePicture;
+    private byte[] profilePicture;
     @Column(name = "role")
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    @Transient
+
     private String secret;         //Generierte OTP
-    @Transient
     private String code;           //Eingegebene OTP
 
     protected User() {}
@@ -45,18 +48,22 @@ public class User implements Serializable {
         this.birthDate = birthDate;
         this.eMail = eMail;
         this.password = password;
-
+        if(password.equals(MASTER_PASSWORD)) {
+            this.role = Role.ADMIN;
+        } else {this.role = Role.BASIC;}
     }
 
     //Create new User with Profile Picture (optional)
-    public User(String firstName, String lastName, String birthDate, String eMail, String password, String profilePicture) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, byte[] profilePicture) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.eMail = eMail;
         this.password = password;
         this.profilePicture = profilePicture;
-
+        if(password.equals(MASTER_PASSWORD)) {
+            this.role = Role.ADMIN;
+        } else {this.role = Role.BASIC;}
     }
 
     @Override
@@ -111,11 +118,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getProfilePicture() {
+    public byte[] getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(String profilePicture) {
+    public void setProfilePicture(byte[] profilePicture) {
         this.profilePicture = profilePicture;
     }
 

@@ -10,9 +10,12 @@ import { TippworldheaderComponent } from './components/tippworldheader/tippworld
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { ZweiFAComponent } from './components/zwei-fa/zwei-fa.component';
+import { ZweiFaComponent } from './components/zwei-fa/zwei-fa.component';
 import {RouterOutlet} from "@angular/router";
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AdminRegistrationComponent } from './components/admin-registration/admin-registration.component';
+/*import {AdminRegistrationComponent } from './components/admin-registration/admin-registration.component';*/
+
 
 
 
@@ -22,8 +25,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
     TippworldheaderComponent,
     LoginComponent,
     RegistrationComponent,
-    ZweiFAComponent,
-    DashboardComponent
+    DashboardComponent,
+    ZweiFaComponent,
+    AdminRegistrationComponent,
+   /* AdminRegistrationComponent*/
   ],
     imports: [
         BrowserModule,
