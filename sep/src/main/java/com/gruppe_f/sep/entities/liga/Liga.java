@@ -8,7 +8,9 @@ import javax.persistence.*;
 import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Liga {
@@ -18,18 +20,14 @@ public class Liga {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "liga",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
+    @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LeagueData> leagueData = new ArrayList<>();
 
 //    private Spielplan spielplan;
 
     private File ligaPicture;
 
-    public Liga(){
-
-    }
+    protected Liga() {}
 
     public Liga(String name, List leagueData){
         this.name = name;

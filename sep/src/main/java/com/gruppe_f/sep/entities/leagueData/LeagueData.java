@@ -19,8 +19,7 @@ public class LeagueData {
     private String player2;
     private String result;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "LigaID")
+    @ManyToOne
     private Liga liga;
 
     protected LeagueData() {};

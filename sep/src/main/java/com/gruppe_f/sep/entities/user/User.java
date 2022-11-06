@@ -33,8 +33,7 @@ public class User implements Serializable {
     @Column(name = "profilePicture")
     private byte[] profilePicture;
     @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    private String role;
 
 
     private String secret;         //Generierte OTP
@@ -42,28 +41,24 @@ public class User implements Serializable {
 
     protected User() {}
 
-    public User(String firstName, String lastName, String birthDate, String eMail, String password) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.eMail = eMail;
         this.password = password;
-        if(password.equals(MASTER_PASSWORD)) {
-            this.role = Role.ADMIN;
-        } else {this.role = Role.BASIC;}
+        this.role = role;
     }
 
     //Create new User with Profile Picture (optional)
-    public User(String firstName, String lastName, String birthDate, String eMail, String password, byte[] profilePicture) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, byte[] profilePicture, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.eMail = eMail;
         this.password = password;
         this.profilePicture = profilePicture;
-        if(password.equals(MASTER_PASSWORD)) {
-            this.role = Role.ADMIN;
-        } else {this.role = Role.BASIC;}
+        this.role = role;
     }
 
     @Override
@@ -75,7 +70,8 @@ public class User implements Serializable {
                 ", birthDate=" + birthDate +
                 ", eMail='" + eMail + '\'' +
                 ", password='" + password + '\'' +
-                '}';
+                ", role='"+ role+
+                "'}";
     }
 
     public String getFirstName() {

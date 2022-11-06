@@ -17,10 +17,10 @@ public class SepGruppeFApplication {
 	@Bean
 	CommandLineRunner init(UserRepository repository) {
 		return args -> {
-			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@yahoo.de", "passWORT!"));
-			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.de", "passsssWORT!"));
-			repository.save(new User("Peter","Parker","02.02.2002", "rofl@yahoo.de", "mirdochwayne"));
-			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!"));
+			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@gmx.ru", "passWORT!", "ADMIN"));
+			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
+			repository.save(new User("Peter","Parker","02.02.2002", "rofl@yahoo.de", "mirdochwayne", "ADMIN"));
+			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
 		};
 	}
 
