@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './zwei-fa.component.html',
   styleUrls: ['./zwei-fa.component.css']
 })
-export class ZweiFAComponent implements OnInit {
+export class ZweiFaComponent implements OnInit {
 
   constructor() { }
 

@@ -6,8 +6,10 @@
   <div class="row">
     <div class="col-md-6 login-form">
       <h3 class="headline">Registrierung </h3>
+      <form  (ngSubmit)="userRegistration()" #addUserForm="ngForm" >
+
       <!-- ngModel um die Daten aus dem InputFeld an die Daten aus unserem Model zu binden-->
-      <form (ngSubmit)="userRegistration();"  #addUserForm="ngForm">
+
             <div class="form-group">
               <input type="text" class="form-control" value="" placeholder="Nachname" id="nachname" name="nachname" [(ngModel)]="user.lastName" required #nachname="ngModel"/>
             </div>
@@ -24,10 +26,10 @@
               <input type="text" class="form-control" value="" placeholder="Geburtsdatum" id="geburtsdatum" name="geburtsdatum"  [(ngModel)]="user.birthDate" required #geburtsdatum="ngModel"/>
             </div>
             <p></p>
-            <div class="form-group">
+            <div class="form-group" >
               <input type="password" class="form-control" value="" placeholder="Passwort" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel"/>
             </div>
-            <div class="form-group">
+            <div class="form-group" >
               <button  class="btnSubmit"  [disabled]="!addUserForm.form.valid" >Konto erstellen</button>
             </div>
             <div class="form-group">
