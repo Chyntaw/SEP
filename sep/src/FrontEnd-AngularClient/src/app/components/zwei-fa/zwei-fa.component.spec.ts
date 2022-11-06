@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ZweiFAComponent } from './zwei-fa.component';
+import { ZweiFaComponent } from './zwei-fa.component';
 
-describe('ZweiFAComponent', () => {
-  let component: ZweiFAComponent;
-  let fixture: ComponentFixture<ZweiFAComponent>;
+describe('ZweiFaComponent', () => {
+  let component: ZweiFaComponent;
+  let fixture: ComponentFixture<ZweiFaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ZweiFAComponent ]
+      declarations: [ ZweiFaComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ZweiFAComponent);
+    fixture = TestBed.createComponent(ZweiFaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
