@@ -8,10 +8,6 @@ import java.io.Serializable;
 @Table(name = "users")
 public class User implements Serializable {
 
-    public enum Role {
-        ADMIN,
-        BASIC
-    }
     @Transient
     private final String MASTER_PASSWORD = "mirdochwayne";
 
@@ -27,16 +23,19 @@ public class User implements Serializable {
     private String birthDate;
     @Column(name = "eMail")
     private String eMail;
+    @Column(name = "role")
+    private String role;
+
     @Column(name = "password")
     private String password;
     @Lob
     @Column(name = "profilePicture")
     private byte[] profilePicture;
-    @Column(name = "role")
-    private String role;
 
-
-    private String secret;         //Generierte OTP
+    @Transient
+    private String secret;
+                                    //Generierte OTP
+    @Transient
     private String code;           //Eingegebene OTP
 
     protected User() {}
@@ -72,6 +71,14 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", role='"+ role+
                 "'}";
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getFirstName() {
