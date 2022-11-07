@@ -8,6 +8,12 @@ export class Admin {
   role: string = 'ADMIN';
 
 
+  public getRole(): string {
+    return this.role;
+  }
 
+  public setRole(value: string) {
+    this.role = value;
+  }
 
 }

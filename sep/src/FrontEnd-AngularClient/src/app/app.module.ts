@@ -34,7 +34,6 @@ import { SystemdatumComponent } from './components/systemdatum/systemdatum.compo
     AdminDashboardComponent,
     CreateLeagueComponent,
     SystemdatumComponent,
-   /* AdminRegistrationComponent*/
   ],
     imports: [
         BrowserModule,
