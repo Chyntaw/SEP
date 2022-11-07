@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../models/roles/user/user";
 import {RegistrationserviceService} from "../../services/registrationservice.service";
 import {Router} from "@angular/router";
+import {Admin} from "../../models/roles/admin/admin";
 //import {Role} from "../../models/role/role";
 
 @Component({
@@ -27,12 +28,18 @@ export class RegistrationComponent implements OnInit {
   userRegistration(){
     console.log(this.user);
     this.registrationservice.addUser(this.user).subscribe(data=>{
+      if(this.user) {
+        this.dashboardRoute.navigate(['/dashboard'])
+      }
+      else{ this.dashboardRoute.navigate(['/admin-dashboard'])}
 
-      this.dashboardRoute.navigate(['/dashboard'])
       alert("Registrierung erfolgreich")
 
     },error=>alert("Registrierung war nicht erfolgreich"));
 
+
+
+    }
 
 
   }
@@ -41,4 +48,4 @@ export class RegistrationComponent implements OnInit {
 
 
 
-}
+
