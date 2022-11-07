@@ -1,16 +1,29 @@
 package com.gruppe_f.sep.entities.liga;
 
+import com.gruppe_f.sep.businesslogic.CSV_Reader;
+import com.gruppe_f.sep.entities.leagueData.LeagueData;
+import com.univocity.parsers.common.record.Record;
+import com.univocity.parsers.csv.CsvParser;
+import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+
+import static com.gruppe_f.sep.businesslogic.CSV_Reader.csv_read;
+
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/Liga")
 public class LigaService {
 
@@ -38,5 +51,37 @@ public class LigaService {
         ligaRepo.deleteById(ligaId);
     }
 
+    private File convertMultiPartToFile(MultipartFile file ) throws IOException {
+        File convFile = new File( file.getOriginalFilename() );
+        FileOutputStream fos = new FileOutputStream( convFile );
+        fos.write( file.getBytes() );
+        fos.close();
+        return convFile;
+    }
 
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadLiga(@RequestParam("file") MultipartFile file) {
+
+            try {
+                File newfile = convertMultiPartToFile(file);
+                ArrayList<String[]> list = csv_read(newfile);
+                list.remove(0);
+                List<LeagueData> data = new ArrayList<>();
+
+                for(String[] stringarr: list) {
+                    LeagueData league = new LeagueData();
+                    league.setMatchDay(Integer.parseInt(stringarr[0]));
+                    league.setPlayer1(stringarr[2]);
+                    league.setPlayer2(stringarr[4]);
+                    league.setResult(stringarr[3]);
+                    league.setDate(stringarr[1]);
+                    data.add(league);
+                }
+                Liga liga = new Liga(file.getName(), data);
+                ligaRepo.save(liga);
+
+            } catch (IOException e) {e.printStackTrace();}
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

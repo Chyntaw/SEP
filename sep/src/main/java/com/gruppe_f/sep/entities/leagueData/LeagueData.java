@@ -18,11 +18,13 @@ public class LeagueData {
     private String player1;
     private String player2;
     private String result;
+    private String date;
+
 
     @ManyToOne
     private Liga liga;
 
-    protected LeagueData() {};
+    public  LeagueData() {};
 
 
     //Optional: League without leaguePicture
@@ -64,6 +66,13 @@ public class LeagueData {
 
     public void setResult(String result) {
         this.result = result;
+    }
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
 

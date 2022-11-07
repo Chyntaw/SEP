@@ -1,9 +1,8 @@
 package com.gruppe_f.sep.businesslogic;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.*;
 import java.util.ArrayList;
 
 public class CSV_Reader {
@@ -19,7 +18,7 @@ public class CSV_Reader {
     //            }
     //        }
     // ----
-    public static ArrayList<String[]> csv_read(String path) {
+    public static ArrayList<String[]> csv_read(File file) {
         // next line to read
         String line = "";
 
@@ -27,7 +26,7 @@ public class CSV_Reader {
 
         try {
             // Object that reads the csv File
-            BufferedReader br = new BufferedReader(new FileReader(path));
+            BufferedReader br = new BufferedReader(new FileReader(file));
 
             // continue as long as there's a line with content
             while((line = br.readLine()) != null)   {

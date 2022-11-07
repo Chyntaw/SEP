@@ -9,6 +9,7 @@ import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
 import dev.samstevens.totp.time.SystemTimeProvider;
 import dev.samstevens.totp.time.TimeProvider;
+import org.hibernate.engine.jdbc.spi.ConnectionObserverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.Observable;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -51,7 +53,7 @@ public class UserController {
     }
 
     //Import ProfilePicture into Database WORK IN PROGRESS
-/*
+
     @PostMapping("/user/addPB")
     public ResponseEntity<User> addUser(@RequestBody User userData, @RequestParam("file") MultipartFile file) {
         for(User user: service.findAllUsers()) {
@@ -70,7 +72,7 @@ public class UserController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
-*/
+
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(@RequestBody User userData) {
 
@@ -84,7 +86,7 @@ public class UserController {
                     "Verifikationscode",
                     "Ihr Verifikationsvode lautet: " + userData.getSecret());      //schick Email hoffentlich
 
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            return new ResponseEntity<>(user.getRole(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
@@ -97,7 +99,8 @@ public class UserController {
         CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);           //Generierter Code 30 Sekunden(Standard)
 
         User user = service.findUserByeMail(userData.geteMail());
-        if(user.getCode().equals("Port8080")) {                                                 //SuperSicherheits Code um 2FA zu umgehen
+        //SuperSicherheits Code um 2FA zu umgehen
+        if(user.getCode().equals("SecureLogin")) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         if(verifier.isValidCode(user.getSecret(), userData.getCode())){                          //vergleich generierten code(secret) und eingegebenen code(code)

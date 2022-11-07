@@ -29,9 +29,9 @@ public class Liga {
 
     protected Liga() {}
 
-    public Liga(String name, List leagueData){
+    public Liga(String name, List<LeagueData> data){
         this.name = name;
-        this.leagueData = leagueData;
+        this.leagueData.addAll(data);
     }
 
 

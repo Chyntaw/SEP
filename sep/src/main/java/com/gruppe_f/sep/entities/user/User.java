@@ -1,6 +1,7 @@
 package com.gruppe_f.sep.entities.user;
 
 import javax.persistence.*;
+import java.io.File;
 import java.io.Serializable;
 
 
@@ -28,9 +29,8 @@ public class User implements Serializable {
 
     @Column(name = "password")
     private String password;
-    @Lob
     @Column(name = "profilePicture")
-    private byte[] profilePicture;
+    private String profilePicture;
 
     @Transient
     private String secret;
@@ -50,7 +50,7 @@ public class User implements Serializable {
     }
 
     //Create new User with Profile Picture (optional)
-    public User(String firstName, String lastName, String birthDate, String eMail, String password, byte[] profilePicture, String role) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, String profilePicture, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -121,11 +121,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public byte[] getProfilePicture() {
+    public String getProfilePicture() {
         return profilePicture;
     }
 
-    public void setProfilePicture(byte[] profilePicture) {
+    public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
 
