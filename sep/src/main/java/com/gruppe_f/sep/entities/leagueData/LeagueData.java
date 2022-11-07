@@ -35,7 +35,6 @@ public class LeagueData {
         this.result = result;
     }
 
-
     public int getMatchDay() {
         return matchDay;
     }

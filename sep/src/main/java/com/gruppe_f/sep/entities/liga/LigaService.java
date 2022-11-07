@@ -2,9 +2,6 @@ package com.gruppe_f.sep.entities.liga;
 
 import com.gruppe_f.sep.businesslogic.CSV_Reader;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
-import com.univocity.parsers.common.record.Record;
-import com.univocity.parsers.csv.CsvParser;
-import com.univocity.parsers.csv.CsvParserSettings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpStatus;
@@ -24,7 +21,7 @@ import static com.gruppe_f.sep.businesslogic.CSV_Reader.csv_read;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/Liga")
+@RequestMapping("/liga")
 public class LigaService {
 
 
