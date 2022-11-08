@@ -17,6 +17,7 @@ import { AdminRegistrationComponent } from './components/admin-registration/admi
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { CreateLeagueComponent } from './components/create-league/create-league.component';
 import { SystemdatumComponent } from './components/systemdatum/systemdatum.component';
+
 /*import {AdminRegistrationComponent } from './components/admin-registration/admin-registration.component';*/
 
 
@@ -34,6 +35,7 @@ import { SystemdatumComponent } from './components/systemdatum/systemdatum.compo
     AdminDashboardComponent,
     CreateLeagueComponent,
     SystemdatumComponent,
+
   ],
     imports: [
         BrowserModule,
