@@ -65,6 +65,8 @@ public class LigaService {
                 list.remove(0);
                 List<LeagueData> data = new ArrayList<>();
 
+                Liga liga = new Liga(file.getOriginalFilename());
+
                 for(String[] stringarr: list) {
                     LeagueData league = new LeagueData();
                     league.setMatchDay(Integer.parseInt(stringarr[0]));
@@ -72,13 +74,15 @@ public class LigaService {
                     league.setPlayer2(stringarr[4]);
                     league.setResult(stringarr[3]);
                     league.setDate(stringarr[1]);
+                    league.setLiga(liga);
                     data.add(league);
+
                 }
-                Liga liga = new Liga(file.getName(), data);
+                liga.setLeagueData(data);
                 ligaRepo.save(liga);
 
             } catch (IOException e) {e.printStackTrace();}
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Hat geklappt", HttpStatus.OK);
     }
 }

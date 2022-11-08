@@ -29,9 +29,8 @@ public class Liga {
 
     protected Liga() {}
 
-    public Liga(String name, List<LeagueData> data){
+    public Liga(String name){
         this.name = name;
-        this.leagueData.addAll(data);
     }
 
     public Long getId() {
@@ -48,5 +47,13 @@ public class Liga {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<LeagueData> getLeagueData() {
+        return leagueData;
+    }
+
+    public void setLeagueData(List<LeagueData> leagueData) {
+        this.leagueData.addAll(leagueData);
     }
 }

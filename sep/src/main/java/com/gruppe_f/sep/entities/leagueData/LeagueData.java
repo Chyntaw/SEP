@@ -21,7 +21,7 @@ public class LeagueData {
     private String date;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Liga liga;
 
     public  LeagueData() {};
@@ -72,6 +72,14 @@ public class LeagueData {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Liga getLiga() {
+        return liga;
+    }
+
+    public void setLiga(Liga liga) {
+        this.liga = liga;
     }
 }
 
