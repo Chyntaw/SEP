@@ -32,10 +32,10 @@ public class User implements Serializable {
     @Column(name = "profilePicture")
     private String profilePicture;
 
-    @Transient
+
     private String secret;
                                     //Generierte OTP
-    @Transient
+
     private String code;           //Eingegebene OTP
 
     protected User() {}
@@ -145,4 +145,6 @@ public class User implements Serializable {
     public void setCode(String code) {
         this.code = code;
     }
+
+    public Long getId() {return this.id;}
 }

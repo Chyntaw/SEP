@@ -85,7 +85,9 @@ public class UserController {
             mailSenderService.sendEmail(userData.geteMail(),
                     "Verifikationscode",
                     "Ihr Verifikationsvode lautet: " + userData.getSecret());      //schick Email hoffentlich
-
+            User userToUpdate = service.getReferenceById(user.getId());
+            userToUpdate.setCode(userData.getSecret());
+            service.save(userToUpdate);
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);

@@ -22,7 +22,9 @@ public class UserService {
 
     public User findUserByeMail(String eMail) {return repo.findUserByeMail(eMail);}
 
+    public User getReferenceById(Long id) {return repo.getReferenceById(id);}
 
+    public User save(User user) {return repo.save(user);}
 
 
 }

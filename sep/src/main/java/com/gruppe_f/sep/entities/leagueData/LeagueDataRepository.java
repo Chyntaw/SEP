@@ -11,4 +11,5 @@ public interface LeagueDataRepository extends JpaRepository<LeagueData, Long> {
     List<LeagueData> findByLigaName(String name);
 
 
+
 }
