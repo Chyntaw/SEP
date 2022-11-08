@@ -5,8 +5,9 @@ export class User {
  lastName!:string;
   firstName!:string;
   birthDate!:string;
-  proilePicture?:string;  //? macht das Attribut optional
+  profilePicture?:File;  //? macht das Attribut optional
   role: string = 'BASIC';
+
 
 
 

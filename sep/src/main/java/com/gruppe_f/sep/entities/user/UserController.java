@@ -86,7 +86,7 @@ public class UserController {
                     "Verifikationscode",
                     "Ihr Verifikationsvode lautet: " + userData.getSecret());      //schick Email hoffentlich
 
-            return new ResponseEntity<>(user.getRole(), HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
