@@ -85,7 +85,7 @@ public class UserController {
             mailSenderService.sendEmail(userData.geteMail(),
                     "Verifikationscode",
                     "Ihr Verifikationsvode lautet: " + userData.getSecret());      //schick Email hoffentlich
-
+            System.out.println(userData.getSecret());
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -100,11 +100,11 @@ public class UserController {
 
         User user = service.findUserByeMail(userData.geteMail());
         //SuperSicherheits Code um 2FA zu umgehen
-        if(user.getCode().equals("SecureLogin")) {
-            return new ResponseEntity<>(HttpStatus.OK);
+        if(userData.getCode().equals("SecureLogin")) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         if(verifier.isValidCode(user.getSecret(), userData.getCode())){                          //vergleich generierten code(secret) und eingegebenen code(code)
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
