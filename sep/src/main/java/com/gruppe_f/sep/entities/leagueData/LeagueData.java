@@ -7,11 +7,14 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Entity
 public class LeagueData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="LigaData",sequenceName = "ligadata_seq")
+    @GeneratedValue(strategy = SEQUENCE, generator = "LigaData")
     @Column(name = "LeagueDataID")
     private Long id;
     private int matchDay;

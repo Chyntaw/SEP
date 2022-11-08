@@ -3,6 +3,7 @@ package com.gruppe_f.sep.entities.liga;
 
 
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
+import org.hibernate.boot.model.relational.Sequence;
 
 import javax.persistence.*;
 import java.io.File;
@@ -12,10 +13,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static javax.persistence.GenerationType.SEQUENCE;
+
 @Entity
 public class Liga {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @SequenceGenerator(name="Liga",sequenceName = "liga_seq")
+    @GeneratedValue(strategy = SEQUENCE, generator = "Liga")
     @Column(name = "LigaID", nullable = false)
     private Long id;
     private String name;
