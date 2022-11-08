@@ -7,4 +7,5 @@ public interface LigaRepository extends JpaRepository<Liga, Long> {
     Liga findLigaByid(long id);
 
 
+
 }

@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:8080")
-@RequestMapping("/LeagueData")
+@RequestMapping("/leagueData")
 public class LeagueDataController {
 
     private final LeagueDataRepository repo;
@@ -19,5 +21,10 @@ public class LeagueDataController {
     public ResponseEntity<LeagueData> addLeagueData(@RequestBody LeagueData data) {
         LeagueData newData = repo.save(data);
         return new ResponseEntity<>(newData, HttpStatus.OK);
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<LeagueData>> getLeagueData() {
+        return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
     }
 }
