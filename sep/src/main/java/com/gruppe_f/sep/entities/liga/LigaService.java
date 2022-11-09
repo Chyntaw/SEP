@@ -21,7 +21,7 @@ import static com.gruppe_f.sep.businesslogic.CSV_Reader.csv_read;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/liga")
+
 public class LigaService {
 
 
@@ -36,8 +36,8 @@ public class LigaService {
     }
 
 
-    @GetMapping("/findAll")
-    public ResponseEntity<List<Liga>> findAllLiga(){
+    @GetMapping("/liga/findAll")
+    public ResponseEntity<List<Liga>> findAll(){
         List<Liga> leagueList = ligaRepo.findAll();
         for(Liga liga:leagueList) {
             liga.setLeagueData(null);
@@ -45,8 +45,8 @@ public class LigaService {
         return new ResponseEntity<>(leagueList, HttpStatus.OK);
     }
 
-    public Liga updateLiga(Liga restaurants){
-        return ligaRepo.save(restaurants);
+    public Liga updateLiga(Liga liga){
+        return ligaRepo.save(liga);
     }
 
     public void deleteLiga(Long ligaId){
@@ -61,7 +61,7 @@ public class LigaService {
         return convFile;
     }
 
-    @PostMapping("/upload")
+    @PostMapping("/liga/upload")
     public ResponseEntity<?> uploadLiga(@RequestParam("file") MultipartFile file) {
 
             try {

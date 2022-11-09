@@ -21,10 +21,7 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  addRole(){
-    this.user.role='BASIC';
 
-  }
   userRegistration(){
     console.log(this.user);
     this.registrationservice.addUser(this.user).subscribe(data=>{

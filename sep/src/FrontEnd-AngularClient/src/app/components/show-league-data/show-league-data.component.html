@@ -1,0 +1,73 @@
+
+<div class="login-container">
+  <div class="login-form">
+  <div class="form-group">
+    <div class="form-group">
+      <h3>Ligenübersicht</h3>
+
+    </div>
+        </div>
+        <div class="card my-5">
+          <div class="card-body">
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">LigaID</th>
+                <th scope="col">Liga Name</th>
+
+
+
+              </tr>
+
+              </thead>
+              <tbody>
+              <tr *ngFor="let ligens of ligen">
+                <td>{{ ligens.id }}</td>
+                <td>{{ ligens.name }}</td>
+                <div class="form-group">
+                  <button  class="btnLiga" (click)="zeigeLigaDaten(ligens.id)">Zeige die Ligadaten</button>
+                </div>
+
+
+              </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+
+        <div class="login-form">
+        <div class="card my-5">
+          <div class="card-body">
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Datum</th>
+                <th scope="col">Spieltag</th>
+                <th scope="col">Team 1</th>
+                <th scope="col">Team 2</th>
+                <th scope="col">Ergebnis</th>
+
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let leaguedata of data">
+
+                <td>{{ leaguedata.date }}</td>
+                <td>{{ leaguedata.matchDay }}</td>
+                <td>{{ leaguedata.player1 }}</td>
+                <td>{{ leaguedata.player2 }}</td>
+                <td>{{ leaguedata.result }}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+          <div class="form-group">
+            <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>
+          </div>
+        </div>
+
+
+

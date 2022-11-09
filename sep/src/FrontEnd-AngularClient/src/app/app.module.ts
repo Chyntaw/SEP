@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HttpClientModule, HttpHeaders, HttpParams} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from '@angular/material/icon';
 import {RouterModule} from '@angular/router';
@@ -17,8 +17,8 @@ import { AdminRegistrationComponent } from './components/admin-registration/admi
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { CreateLeagueComponent } from './components/create-league/create-league.component';
 import { SystemdatumComponent } from './components/systemdatum/systemdatum.component';
+import { ShowLeagueDataComponent } from './components/show-league-data/show-league-data.component';
 
-/*import {AdminRegistrationComponent } from './components/admin-registration/admin-registration.component';*/
 
 
 
@@ -35,7 +35,7 @@ import { SystemdatumComponent } from './components/systemdatum/systemdatum.compo
     AdminDashboardComponent,
     CreateLeagueComponent,
     SystemdatumComponent,
-
+    ShowLeagueDataComponent,
   ],
     imports: [
         BrowserModule,

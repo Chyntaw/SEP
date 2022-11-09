@@ -9,6 +9,7 @@ import {AdminRegistrationComponent} from "./components/admin-registration/admin-
 import {AdminDashboardComponent} from "./components/admin-dashboard/admin-dashboard.component";
 import {CreateLeagueComponent} from "./components/create-league/create-league.component";
 import {SystemdatumComponent} from "./components/systemdatum/systemdatum.component";
+import {ShowLeagueDataComponent} from "./components/show-league-data/show-league-data.component";
 
 
 const MeineRouten : Routes = [
@@ -20,6 +21,7 @@ const MeineRouten : Routes = [
   {path: 'admin-dashboard', component: AdminDashboardComponent},
   {path: 'create_league', component: CreateLeagueComponent},
   {path: 'systemdatum', component: SystemdatumComponent},
+  {path: 'show_league', component: ShowLeagueDataComponent},
   {path: '',   redirectTo: '/login', pathMatch: 'full'}
 ];
 

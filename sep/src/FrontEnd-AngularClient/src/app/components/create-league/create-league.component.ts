@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FileUploadService} from "../../services/services/file-upload.service";
+import {Liga} from "../../models/liga";
 
 @Component({
   selector: 'app-create-league',
@@ -9,7 +10,7 @@ import {FileUploadService} from "../../services/services/file-upload.service";
 export class CreateLeagueComponent implements OnInit {
   selectedFiles?: FileList;
   currentFile?: File;
-
+  liga:Liga = new Liga();
 
   constructor(private fileUploadService: FileUploadService) { }
 
@@ -25,6 +26,7 @@ export class CreateLeagueComponent implements OnInit {
         this.currentFile = file;
 
         this.fileUploadService.upload(this.currentFile).subscribe()
+        alert("Liga wurde erstellt")
       }}
   }
 
