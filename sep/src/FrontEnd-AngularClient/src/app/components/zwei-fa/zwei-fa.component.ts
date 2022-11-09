@@ -21,13 +21,12 @@ export class ZweiFaComponent implements OnInit {
               private dashboardRouter:Router) { }
 
   ngOnInit(): void {
-    console.log(localStorage.getItem("0"))
   }
 
   checkCode() {
     console.log(this.user);
-    let user_eMail = localStorage.getItem("0")
-    let user_role = localStorage.getItem("1")
+    let user_eMail = localStorage.getItem("1")
+    let user_role = localStorage.getItem("5")
 
     // set email in current user and remove "" in first and last position
     this.user.eMail = JSON.stringify(user_eMail).slice(1, -1)
