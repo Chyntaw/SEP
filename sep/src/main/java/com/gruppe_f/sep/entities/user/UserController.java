@@ -95,17 +95,20 @@ public class UserController {
 
     @PostMapping("/user/2FA")
     public ResponseEntity<?> zweiFaUser(@RequestBody User userData){
+        //System.out.println(userData.toString());
+
+        String user_mail = userData.geteMail();
 
         TimeProvider timeProvider = new SystemTimeProvider();
         CodeGenerator codeGenerator = new DefaultCodeGenerator();
-        CodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);           //Generierter Code 30 Sekunden(Standard)
 
-        User user = service.findUserByeMail(userData.geteMail());
+        User user = service.findUserByeMail(user_mail);
+
         //SuperSicherheits Code um 2FA zu umgehen
-        if(user.getCode().equals("SecureLogin")) {
+        if(userData.getCode().equals("SecureLogin")) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
-        if(verifier.isValidCode(user.getSecret(), userData.getCode())){                          //vergleich generierten code(secret) und eingegebenen code(code)
+        if(user.getCode().equals(userData.getCode())){                          //vergleich generierten code(secret) und eingegebenen code(code)
             return new ResponseEntity<>(HttpStatus.OK);
         }
         else{

@@ -7,6 +7,7 @@ export class User {
   birthDate!:string;
   profilePicture?:File;  //? macht das Attribut optional
   role: string = 'BASIC';
+  code?:string;
 
 
 

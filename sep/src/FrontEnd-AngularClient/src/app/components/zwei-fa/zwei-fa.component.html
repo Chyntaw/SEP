@@ -5,9 +5,12 @@
       <h3 class="headline">Zwei-Faktor-</h3>
       <h3 class="headline2">Authentifizierung</h3>
       <p class="head2">Der Code wird Ihnen an Ihre E-Mail gesendet</p>
-      <form>
+      <form (ngSubmit)="checkCode()">
         <div class="form-group">
-          <input class="zweifa" />
+          <input class="zweifa" [(ngModel)]="user.code" name="code" id="code"/>
+        </div>
+        <div class="form-group" >
+          <button  class="btnSubmit" >Code senden</button>
         </div>
       </form>
 
