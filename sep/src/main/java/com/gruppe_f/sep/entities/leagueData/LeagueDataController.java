@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.leagueData;
 
+import com.gruppe_f.sep.entities.liga.Liga;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,10 @@ public class LeagueDataController {
 
     @GetMapping("/getAll")
     public ResponseEntity<List<LeagueData>> getLeagueData() {
-        return new ResponseEntity<>(repo.findAll(), HttpStatus.OK);
-    }
+        List<LeagueData> list = repo.findAll();
+        for(LeagueData data:list) {
+            data.setLiga(null);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+       }
 }

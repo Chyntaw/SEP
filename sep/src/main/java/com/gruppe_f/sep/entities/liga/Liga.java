@@ -58,6 +58,6 @@ public class Liga {
     }
 
     public void setLeagueData(List<LeagueData> leagueData) {
-        this.leagueData.addAll(leagueData);
+        this.leagueData = leagueData;
     }
 }

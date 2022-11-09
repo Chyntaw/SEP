@@ -35,9 +35,14 @@ public class LigaService {
         return ligaRepo.save(liga);
     }
 
+
     @GetMapping("/findAll")
     public ResponseEntity<List<Liga>> findAllLiga(){
-        return new ResponseEntity<>(ligaRepo.findAll(), HttpStatus.OK);
+        List<Liga> leagueList = ligaRepo.findAll();
+        for(Liga liga:leagueList) {
+            liga.setLeagueData(null);
+        }
+        return new ResponseEntity<>(leagueList, HttpStatus.OK);
     }
 
     public Liga updateLiga(Liga restaurants){
