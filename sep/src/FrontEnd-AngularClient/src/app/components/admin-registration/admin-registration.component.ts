@@ -22,7 +22,15 @@ export class AdminRegistrationComponent implements OnInit {
   userRegistration(){
     console.log(this.admin);
     this.registrationservice.addUser(this.admin).subscribe(data=>{
+      let newUser = (<User>data)
 
+
+      //localStorage.setItem("0", newUser['id']);
+      localStorage.setItem("1", newUser['eMail']);
+      localStorage.setItem("2", newUser['firstName']);
+      localStorage.setItem("3", newUser['lastName']);
+      localStorage.setItem("4", newUser['password']);
+      localStorage.setItem("5", newUser['role'])
       this.dashboardRoute.navigate(['/admin-dashboard'])
       alert("Registrierung erfolgreich")
 

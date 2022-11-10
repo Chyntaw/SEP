@@ -25,6 +25,16 @@ export class RegistrationComponent implements OnInit {
   userRegistration(){
     console.log(this.user);
     this.registrationservice.addUser(this.user).subscribe(data=>{
+      let newUser = (<User>data)
+
+      //localStorage.setItem("0", newUser['id']);
+      localStorage.setItem("1", newUser['eMail']);
+      localStorage.setItem("2", newUser['firstName']);
+      localStorage.setItem("3", newUser['lastName']);
+      localStorage.setItem("4", newUser['password']);
+      localStorage.setItem("5", newUser['role'])
+
+
       if(this.user) {
         this.dashboardRoute.navigate(['/dashboard'])
       }
