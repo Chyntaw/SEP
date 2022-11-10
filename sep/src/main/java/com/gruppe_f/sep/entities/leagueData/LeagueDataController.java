@@ -25,6 +25,12 @@ public class LeagueDataController {
         return new ResponseEntity<>(newData, HttpStatus.OK);
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<?> updateLeagueData(@RequestBody LeagueData data) {
+        return new ResponseEntity<>(repo.save(data), HttpStatus.OK);
+    }
+
+
     @GetMapping(path = "/getAll/{id}")
     public ResponseEntity<List<LeagueData>> getLeagueData(@PathVariable("id") Long id) {
 
