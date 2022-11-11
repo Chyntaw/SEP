@@ -13,6 +13,7 @@ import org.hibernate.engine.jdbc.spi.ConnectionObserverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -42,7 +43,9 @@ public class UserController {
     }
 
     @PostMapping("/user/add")
-    public ResponseEntity<User> addUser(@RequestBody User userData) {
+    public ResponseEntity<User> addUser(@RequestBody User userData) throws IOException {
+
+        System.out.println(userData.getProfilePicture());
         for(User user: service.findAllUsers()) {
             if (user.geteMail().equals(userData.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -51,27 +54,6 @@ public class UserController {
         User newUser = service.addUser(userData);
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
-
-    //Import ProfilePicture into Database WORK IN PROGRESS
-
-    @PostMapping("/user/addPB")
-    public ResponseEntity<User> addUser(@RequestBody User userData, @RequestParam("file") MultipartFile file) {
-        for(User user: service.findAllUsers()) {
-            if (user.geteMail().equals(userData.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-        }
-        if(file != null) {
-            try {
-                userData.setProfilePicture(Base64.getEncoder().encodeToString(file.getBytes()));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        User newUser = service.addUser(userData);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-    }
-
 
     @PostMapping("/user/login")
     public ResponseEntity<?> loginUser(@RequestBody User userData) {

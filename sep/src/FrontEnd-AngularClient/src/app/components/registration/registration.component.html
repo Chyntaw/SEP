@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-md-6 login-form">
       <h3 class="headline">Registrierung </h3>
-      <form  (ngSubmit)="userRegistration()" #addUserForm="ngForm" >
+      <form  (ngSubmit)="userRegistration()" #addUserForm="ngForm" enctype="multipart/form-data">
 
       <!-- ngModel um die Daten aus dem InputFeld an die Daten aus unserem Model zu binden-->
 
@@ -29,6 +29,14 @@
             <div class="form-group" >
               <input type="password" class="form-control" value="" placeholder="Passwort" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel"/>
             </div>
+
+          <div>
+          <label>Photos: </label>
+          <input type="file" name="image" accept="image/png, image/jpeg" [(ngModel)]="user.profilePicture"/>
+          </div>
+
+
+
             <div class="form-group" >
               <button  class="btnSubmit"  [disabled]="!addUserForm.form.valid" >Konto erstellen</button>
             </div>
