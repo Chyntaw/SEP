@@ -37,12 +37,12 @@ userLogin() {
     const data_str = JSON.stringify(data);
     const jsondata = JSON.parse(data_str)
 
-    localStorage.setItem("0", jsondata['id']);
-    localStorage.setItem("1", jsondata['eMail']);
-    localStorage.setItem("2", jsondata['firstName']);
-    localStorage.setItem("3", jsondata['lastName']);
-    localStorage.setItem("4", jsondata['password']);
-    localStorage.setItem("5", jsondata['role'])
+    localStorage.setItem("id", jsondata['id']);
+    localStorage.setItem("eMail", jsondata['eMail']);
+    localStorage.setItem("firstName", jsondata['firstName']);
+    localStorage.setItem("lastName", jsondata['lastName']);
+    localStorage.setItem("password", jsondata['password']);
+    localStorage.setItem("role", jsondata['role'])
     //localStorage.setItem("6", jsondata['profilePicture']) TODO: PB speichern in localStorage
     this.zwei_faRouter.navigate(['/zwei-fa'])
 

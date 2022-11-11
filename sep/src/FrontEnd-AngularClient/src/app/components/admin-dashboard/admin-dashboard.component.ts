@@ -11,7 +11,7 @@ export class AdminDashboardComponent implements OnInit {
   constructor(private router:Router) { }
 
   ngOnInit(): void {
-    if(!localStorage.getItem("1")) {
+    if(!localStorage.getItem("eMail")) {
       this.router.navigate(['login'])
       alert("Bitte melden Sie sich zunächst an.")
     }

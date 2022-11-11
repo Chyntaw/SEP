@@ -26,11 +26,11 @@ export class AdminRegistrationComponent implements OnInit {
 
 
       //localStorage.setItem("0", newUser['id']);
-      localStorage.setItem("1", newUser['eMail']);
-      localStorage.setItem("2", newUser['firstName']);
-      localStorage.setItem("3", newUser['lastName']);
-      localStorage.setItem("4", newUser['password']);
-      localStorage.setItem("5", newUser['role'])
+      localStorage.setItem("eMail", newUser['eMail']);
+      localStorage.setItem("firstName", newUser['firstName']);
+      localStorage.setItem("lastName", newUser['lastName']);
+      localStorage.setItem("password", newUser['password']);
+      localStorage.setItem("role", newUser['role'])
       this.dashboardRoute.navigate(['/admin-dashboard'])
       alert("Registrierung erfolgreich")
 

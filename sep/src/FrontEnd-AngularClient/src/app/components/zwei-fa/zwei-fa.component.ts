@@ -25,8 +25,8 @@ export class ZweiFaComponent implements OnInit {
 
   checkCode() {
     console.log(this.user);
-    let user_eMail = localStorage.getItem("1")
-    let user_role = localStorage.getItem("5")
+    let user_eMail = localStorage.getItem("eMail")
+    let user_role = localStorage.getItem("role")
 
     // set email in current user and remove "" in first and last position
     this.user.eMail = JSON.stringify(user_eMail).slice(1, -1)
