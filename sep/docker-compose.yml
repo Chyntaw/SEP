@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  app:
+    image: 'tippspiel:latest'
+    ports:
+      - "8080:8080"
+    build:
+      context: .
+    container_name: tippspiel
+    depends_on:
+      - db
+    environment:
+      - SPRING.DATASOURCE.URL=jdbc:postgresql://localhost:5432/sepdatabase
+      - SPRING.DATASOURCE.USERNAME=admin
+      - SPRING.DATASOURCE.PASSWORD=password
+      - SPRING.JPA.HIBERNATE.DDL.AUTO=create-drop
+  db:
+    image: 'postgres:14.5-alpine'
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=sepdatabase
+    ports:
+      - '5432:5432'
