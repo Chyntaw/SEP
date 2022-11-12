@@ -1,4 +1,4 @@
-package com.gruppe_f.sep.entities.user;
+package com.gruppe_f.sep.businesslogic;
 
 import org.springframework.web.multipart.MultipartFile;
 

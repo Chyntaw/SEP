@@ -29,12 +29,13 @@ public class Liga {
 
 //    private Spielplan spielplan;
 
-    private File ligaPicture;
+    private String ligaPicture;
 
     protected Liga() {}
 
-    public Liga(String name){
+    public Liga(String name, String profilePicture){
         this.name = name;
+        this.setLigaPicture(profilePicture);
     }
 
     public Long getId() {
@@ -51,6 +52,14 @@ public class Liga {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setLigaPicture(String ligaPicture) {
+        this.ligaPicture = ligaPicture;
+    }
+
+    public String getLigaPicture() {
+        return ligaPicture;
     }
 
     public List<LeagueData> getLeagueData() {

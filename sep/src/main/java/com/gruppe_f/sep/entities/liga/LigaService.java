@@ -1,19 +1,17 @@
 package com.gruppe_f.sep.entities.liga;
 
-import com.gruppe_f.sep.businesslogic.CSV_Reader;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
+import com.gruppe_f.sep.businesslogic.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.IIOException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +60,9 @@ public class LigaService {
     }
 
     @PostMapping("/liga/upload")
-    public ResponseEntity<?> uploadLiga(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<?> uploadLiga( @RequestParam("file") MultipartFile file,
+                                         @RequestParam("name") String name,
+                                         @RequestParam("picture") MultipartFile multiParfile) {     //muss multiParfile bleiben, sonst kommt nen error :(
 
             try {
                 File newfile = convertMultiPartToFile(file);
@@ -70,7 +70,7 @@ public class LigaService {
                 list.remove(0);
                 List<LeagueData> data = new ArrayList<>();
 
-                Liga liga = new Liga(file.getOriginalFilename());
+                Liga liga = new Liga(name, StringUtils.cleanPath(multiParfile.getOriginalFilename()));
 
                 for(String[] stringarr: list) {
                     LeagueData league = new LeagueData();
@@ -86,7 +86,14 @@ public class LigaService {
                 liga.setLeagueData(data);
                 ligaRepo.save(liga);
 
+
+                String uploadDir = "Pictures/liga-photos/" + liga.getId();
+
+                FileUploadUtil.saveFile(uploadDir, StringUtils.cleanPath(multiParfile.getOriginalFilename()), multiParfile);
+
+
             } catch (IOException e) {e.printStackTrace();}
+
 
         return new ResponseEntity<>("Hat geklappt", HttpStatus.OK);
     }

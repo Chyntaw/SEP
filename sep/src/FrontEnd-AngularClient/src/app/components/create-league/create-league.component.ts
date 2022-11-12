@@ -10,6 +10,8 @@ import {Liga} from "../../models/liga";
 export class CreateLeagueComponent implements OnInit {
   selectedFiles?: FileList;
   currentFile?: File;
+  pictureFiles?: FileList;
+  currentPicture?: File;
   liga:Liga = new Liga();
 
   constructor(private fileUploadService: FileUploadService) { }
@@ -17,18 +19,29 @@ export class CreateLeagueComponent implements OnInit {
   selectFile(event: any): void {
     this.selectedFiles = event.target.files;
   }
+  selectProfilePicture(event: any): void {
+    this.pictureFiles = event.target.files;
+  }
 
   upload(): void {
     if (this.selectedFiles) {
       const file: File | null = this.selectedFiles.item(0);
 
-      if (file) {
-        this.currentFile = file;
+      if(this.pictureFiles){
+        const pictureFile: File | null = this.pictureFiles?.item(0);
 
-        this.fileUploadService.upload(this.currentFile).subscribe()
-        alert("Liga wurde erstellt")
-      }}
+        if (file) {
+          this.currentFile = file;
+          if(pictureFile){
+            this.currentPicture = pictureFile;
+            this.fileUploadService.upload(this.currentFile, this.liga.name, this.currentPicture).subscribe()
+            alert("Liga wurde erstellt")
+          }
+        }
+      }
+    }
   }
+// zweite if wenn kein profilbild
 
 
   ngOnInit(): void {
