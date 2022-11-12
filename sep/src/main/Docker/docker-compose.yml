@@ -11,16 +11,19 @@ services:
     depends_on:
       - db
     environment:
-      - SPRING.DATASOURCE.URL=jdbc:postgresql://localhost:5432/sepdatabase
-      - SPRING.DATASOURCE.USERNAME=admin
-      - SPRING.DATASOURCE.PASSWORD=password
-      - SPRING.JPA.HIBERNATE.DDL.AUTO=create-drop
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=password
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+
   db:
     image: 'postgres:14.5-alpine'
-    container_name: postgres
+    container_name: db
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=sepdatabase
-    ports:
-      - '5432:5432'
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/sepdatabase
+
+
