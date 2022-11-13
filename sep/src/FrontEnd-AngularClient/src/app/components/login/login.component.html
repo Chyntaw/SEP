@@ -11,7 +11,7 @@
       *E-Mail wird benötigt</small>
       <p></p>
       <div class="form-group">
-        <input id="password" name="password" [(ngModel)]="user.password" formControlName="password" type="text" class="form-control" placeholder="Passwort" value="" />
+        <input id="password" name="password" [(ngModel)]="user.password" formControlName="password" type="password" class="form-control" placeholder="Passwort" value="" />
       </div>
     <small *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('required', 'password')" class="text-danger">
       *Passwort wird benötigt</small>
