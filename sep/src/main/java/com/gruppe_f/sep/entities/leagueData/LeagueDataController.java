@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -50,7 +51,10 @@ public class LeagueDataController {
                 }
             }
         }
-        return new ResponseEntity<>(returnList, HttpStatus.OK);
+        List<LeagueData> result = returnList.stream().sorted((x, y)-> x.getDate().compareTo(y.getDate())).collect(Collectors.toList());
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 
     @GetMapping("/{id}")
