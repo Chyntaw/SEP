@@ -42,15 +42,18 @@ public class LeagueDataController {
         List<LeagueData> returnList = new ArrayList<>();
         for(LeagueData data:list) {
             if (data.getLiga().getId() == id) {
+                //Getting LeagueData by ID and setting result of Future games "0-0"
                 if(data.getDate().compareTo(sysDate.get(0).getLocalDate()) < 0) {
                     data.getLiga().setLeagueData(null);
                     returnList.add(data);
                 } else {
                     data.setResult("0-0");
+                    data.getLiga().setLeagueData(null);
                     returnList.add(data);
                 }
             }
         }
+        //Sorting Resulting LeagueData List by Date
         List<LeagueData> result = returnList.stream().sorted((x, y)-> x.getDate().compareTo(y.getDate())).collect(Collectors.toList());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -59,11 +62,8 @@ public class LeagueDataController {
 
     @GetMapping("/{id}")
     public ResponseEntity<LeagueData> getData(@PathVariable("id") int id) {
-
         LeagueData data = repo.findByid(id);
         data.getLiga().setLeagueData(null);
-
-
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
     @PutMapping("/update/{id}")
@@ -72,13 +72,8 @@ public class LeagueDataController {
         newData.setResult(data.getResult());
         newData.setDate(data.getDate());
         newData.setPlayer1(data.getPlayer1());
-        /*newData.setLiga(data.getLiga());*/
         newData.setPlayer2(data.getPlayer2());
         newData.setMatchDay(data.getMatchDay());
-
-
-
-        //usw
         return new ResponseEntity<>(repo.save(newData), HttpStatus.OK);
     }
 }
