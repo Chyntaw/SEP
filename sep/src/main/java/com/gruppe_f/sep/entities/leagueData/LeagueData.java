@@ -16,7 +16,7 @@ public class LeagueData {
     @SequenceGenerator(name="LigaData",sequenceName = "ligadata_seq")
     @GeneratedValue(strategy = SEQUENCE, generator = "LigaData")
     @Column(name = "LeagueDataID")
-    private Long id;
+    private int id;
     private int matchDay;
     private String player1;
     private String player2;
@@ -83,6 +83,14 @@ public class LeagueData {
 
     public void setLiga(Liga liga) {
         this.liga = liga;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 

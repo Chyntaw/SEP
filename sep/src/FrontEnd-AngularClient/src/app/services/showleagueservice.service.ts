@@ -11,7 +11,7 @@ import {Liga} from "../models/liga";
 })
 export class ShowleagueserviceService {
 
-  private databaseURL="http://localhost:8080/" //!!!MUSS NOCH ANGEPASSST WERDEN DAMIT BEIDE METHODEN UNTEN FUNKTIONIEREN!!!
+  private databaseURL="http://localhost:8080/"
 
 
   constructor(private http:HttpClient) { }
