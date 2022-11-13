@@ -21,8 +21,6 @@ import { ShowLeagueDataComponent } from './components/show-league-data/show-leag
 
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +34,7 @@ import { ShowLeagueDataComponent } from './components/show-league-data/show-leag
     CreateLeagueComponent,
     SystemdatumComponent,
     ShowLeagueDataComponent,
+
   ],
     imports: [
         BrowserModule,
@@ -46,7 +45,8 @@ import { ShowLeagueDataComponent } from './components/show-league-data/show-leag
         BrowserAnimationsModule,
         MatIconModule,
         RouterOutlet,
-      RouterModule
+      RouterModule,
+
     ],
   providers: [],
   bootstrap: [AppComponent]

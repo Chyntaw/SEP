@@ -42,22 +42,25 @@
             <table class="table table-bordered table-striped">
               <thead class="thead-dark">
               <tr>
+                <th scope="col">ID</th>
                 <th scope="col">Datum</th>
                 <th scope="col">Spieltag</th>
                 <th scope="col">Team 1</th>
                 <th scope="col">Team 2</th>
                 <th scope="col">Ergebnis</th>
+                <th scope="col" [hidden]="zeigeAktion" >Aktion</th>
 
               </tr>
               </thead>
               <tbody>
               <tr *ngFor="let leaguedata of data">
-
+                <td>{{ leaguedata.id }}</td>
                 <td>{{ leaguedata.date }}</td>
                 <td>{{ leaguedata.matchDay }}</td>
                 <td>{{ leaguedata.player1 }}</td>
                 <td>{{ leaguedata.player2 }}</td>
                 <td>{{ leaguedata.result }}</td>
+                <td> <button [hidden]="zeigeAktion" (click)="updateLeagueData(leaguedata.id)" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal">Update</button></td>
               </tr>
               </tbody>
             </table>
@@ -65,9 +68,70 @@
 
         </div>
           <div class="form-group">
-            <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>
+            <button (click)="checkRole()" class="btnSubmit">Zurück</button>
           </div>
         </div>
 
+  </div>
+</div>
 
+
+
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="LeagueDataupdateform" #updlea (ngSubmit)="updateLea(updlea)">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align: center">Update Liga Daten</h4>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body" >
+
+          <div class="hidden">
+            <label for="id">League Data ID</label>
+            <input type="number" class="form-control"  formControlName="id" id="id" name="id" [(ngModel)]="leaguedatalist.id">
+          </div>
+
+          <div>
+            <label for="date">Datum</label>
+            <input type="text" class="form-control"   formControlName="date" id="date" name="date"[(ngModel)]="leaguedatalist.date">
+          </div>
+
+            <div >
+              <label for="matchDay">Spieltag</label>
+              <input type="number" class="form-control"  (keypress)="validateNo($event)" formControlName="matchDay" id="matchDay" name="matchDay"[(ngModel)]="leaguedatalist.matchDay">
+            </div>
+
+            <div  >
+              <label for="player1">Team 1</label>
+              <input type="text" class="form-control" formControlName="player1" id="player1" name="player1"[(ngModel)]="leaguedatalist.player1">
+            </div>
+            <div>
+              <label for="player2">Team 2</label>
+              <input type="text" class="form-control" formControlName="player2" id="player2" name="player2"  [(ngModel)]="leaguedatalist.player2">
+            </div>
+            <div >
+              <label for="result">Ergebnis</label>
+              <input type="text" class="form-control" formControlName="result"  id="result" name="result" [(ngModel)]="leaguedatalist.result">
+            </div>
+          </div>
+          <div>
+            <h4>Ligadaten geupdated!</h4>
+          </div>
+
+
+
+        <!-- Modal footer -->
+        <div class="modal-footer" >
+          <button type="submit" class="btn btn-success" >Update</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+      </form>
+</div>
+
+    </div>
+  </div>
 

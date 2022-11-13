@@ -39,8 +39,33 @@ public class LeagueDataController {
         List<LeagueData> returnList = new ArrayList<>();
         for(LeagueData data:list) {
             if (data.getLiga().getId() == id) returnList.add(data);
-            data.setLiga(null);
+            data.getLiga().setLeagueData(null);
         }
         return new ResponseEntity<>(returnList, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LeagueData> getData(@PathVariable("id") int id) {
+
+        LeagueData data = repo.findByid(id);
+        data.getLiga().setLeagueData(null);
+
+
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateLeagueData(@PathVariable("id") int id, @RequestBody LeagueData data) {
+        LeagueData newData = repo.findByid(id);
+        newData.setResult(data.getResult());
+        newData.setDate(data.getDate());
+        newData.setPlayer1(data.getPlayer1());
+        /*newData.setLiga(data.getLiga());*/
+        newData.setPlayer2(data.getPlayer2());
+        newData.setMatchDay(data.getMatchDay());
+
+
+
+        //usw
+        return new ResponseEntity<>(repo.save(newData), HttpStatus.OK);
     }
 }
