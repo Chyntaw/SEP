@@ -39,6 +39,13 @@ export class CreateLeagueComponent implements OnInit {
           }
         }
       }
+      else{
+        if(file){
+          this.currentFile = file;
+          this.fileUploadService.uploadWithoutPicture(this.currentFile, this.liga.name).subscribe()
+          alert("Liga Ohne Bild wurde erstellt")
+        }
+      }
     }
   }
 // zweite if wenn kein profilbild

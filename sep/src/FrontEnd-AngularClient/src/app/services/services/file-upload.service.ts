@@ -26,6 +26,18 @@ export class FileUploadService {
     return this.http.request(req);
   }
 
+  uploadWithoutPicture(file: File, name: string): Observable<HttpEvent<any>>{
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    formData.append('name', name);
+
+    const req = new HttpRequest('POST', `${this.baseUrl}/liga/upload`, formData,{
+      reportProgress: true,
+      responseType: 'json'
+    });
+
+    return this.http.request(req);
+  }
 
 
   getFiles(): Observable<any> {

@@ -64,7 +64,7 @@ public class LigaService {
     @PostMapping("/liga/upload")
     public ResponseEntity<?> uploadLiga( @RequestParam("file") MultipartFile file,
                                          @RequestParam("name") String name,
-                                         @RequestParam("picture") MultipartFile multiParfile) {     //muss multiParfile bleiben, sonst kommt nen error :(
+                                         @RequestParam(value = "picture", required = false) MultipartFile multiParfile) {     //muss multiParfile bleiben, sonst kommt nen error :(
         Map<String, String> xD = new HashMap<>();
         xD.put("Jan", "01");    //Januar
         xD.put("Feb", "02");    //Februar
@@ -85,7 +85,10 @@ public class LigaService {
                 List<LeagueData> data = new ArrayList<>();
 
                 String[] anpassen;
-                Liga liga = new Liga(name, StringUtils.cleanPath(multiParfile.getOriginalFilename()));
+
+                Liga liga = new Liga(name);
+
+                //Liga liga = new Liga(name, StringUtils.cleanPath(multiParfile.getOriginalFilename()));
 
                 for(String[] stringarr: list) {
                     LeagueData league = new LeagueData();
@@ -100,12 +103,14 @@ public class LigaService {
                     data.add(league);
 
                 }
+                if(multiParfile != null){
+                    liga.setLigaPicture(StringUtils.cleanPath(multiParfile.getOriginalFilename()));
+                    String uploadDir = "Pictures/liga-photos/" + liga.getId();
+                    FileUploadUtil.saveFile(uploadDir, StringUtils.cleanPath(multiParfile.getOriginalFilename()), multiParfile);
+                }
                 liga.setLeagueData(data);
                 ligaRepo.save(liga);
 
-                String uploadDir = "Pictures/liga-photos/" + liga.getId();
-
-                FileUploadUtil.saveFile(uploadDir, StringUtils.cleanPath(multiParfile.getOriginalFilename()), multiParfile);
 
             } catch (Exception e) {e.printStackTrace();}
 

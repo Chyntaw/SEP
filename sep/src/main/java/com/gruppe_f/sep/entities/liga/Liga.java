@@ -37,7 +37,9 @@ public class Liga {
         this.name = name;
         this.setLigaPicture(profilePicture);
     }
-
+    public Liga(String name){
+        this.name = name;
+    }
     public Long getId() {
         return id;
     }
