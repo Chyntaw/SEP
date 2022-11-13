@@ -15,8 +15,18 @@ public class DateService {
         this.repository = repository;
     }
 
-    public Date changeDate(Date date){
-        return repository.save(date);
+    public SystemDate changeDate(SystemDate systemDate){
+/*
+        SystemDate newSystemDate = new SystemDate(); //= repository.findByid(systemDate.getId());
+        newSystemDate.setLocalDate(systemDate.getLocalDate());
+        System.out.println(newSystemDate.toString());
+        System.out.println(systemDate.toString());
+        repository.deleteAll();
+ */
+
+
+        repository.deleteAll();
+        return repository.save(systemDate);
     }
 
 }

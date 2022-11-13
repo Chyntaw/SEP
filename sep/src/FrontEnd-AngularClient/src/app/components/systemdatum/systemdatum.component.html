@@ -2,14 +2,14 @@
   <div class="row">
     <div class="col-md-6 login-form">
       <h3 class="headline">Systemdatum ändern</h3>
-      <form>
-        <label for="start">Start date:</label>
+      <form (ngSubmit)="changeDate()">
+        <label for="start">Start systemDate:</label>
 
-        <input type="date" id="start" name="trip-start"
+        <input type="systemDate" id="start" name="trip-start" placeholder="yyyy-mm-dd"
                value="2018-07-22"
-               min="2018-01-01" max="2018-12-31">
+               min="2018-01-01" max="2018-12-31" [(ngModel)]="SystemDatum.datum">
         <div class="form-group">
-          <button  class="btnSubmit" routerLink="/create_league">Speichern</button>
+          <button  class="btnSubmit" routerLink="/systemdatum">Speichern</button>
         </div>
         <div class="form-group">
           <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>
