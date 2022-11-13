@@ -30,7 +30,7 @@ export class ShowLeagueDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      let user_role = localStorage.getItem("5")
+      let user_role = localStorage.getItem("role")
       if(user_role=='BASIC'){
         this.zeigeAktion=true;}
 
@@ -154,7 +154,7 @@ export class ShowLeagueDataComponent implements OnInit {
     return true
   }
 checkRole(){
-    let user_Role = localStorage.getItem('5')
+    let user_Role = localStorage.getItem('role')
   if(user_Role == "ADMIN") {
   this.dashboardRouter.navigate(['/admin-dashboard'])
 }

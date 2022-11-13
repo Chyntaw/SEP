@@ -12,8 +12,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 import static com.gruppe_f.sep.businesslogic.CSV_Reader.csv_read;
 
@@ -63,13 +65,26 @@ public class LigaService {
     public ResponseEntity<?> uploadLiga( @RequestParam("file") MultipartFile file,
                                          @RequestParam("name") String name,
                                          @RequestParam("picture") MultipartFile multiParfile) {     //muss multiParfile bleiben, sonst kommt nen error :(
-
+        Map<String, String> xD = new HashMap<>();
+        xD.put("Jan", "01");    //Januar
+        xD.put("Feb", "02");    //Februar
+        xD.put("Mar", "03");    //März
+        xD.put("Apr", "04");    //...
+        xD.put("May", "05");
+        xD.put("Jun", "06");
+        xD.put("Jul", "07");
+        xD.put("Aug", "08");
+        xD.put("Sep", "09");
+        xD.put("Oct", "10");    //Oktober
+        xD.put("Nov", "11");    //November
+        xD.put("Dec", "12");    //Dez
             try {
                 File newfile = convertMultiPartToFile(file);
                 ArrayList<String[]> list = csv_read(newfile);
                 list.remove(0);
                 List<LeagueData> data = new ArrayList<>();
 
+                String[] anpassen;
                 Liga liga = new Liga(name, StringUtils.cleanPath(multiParfile.getOriginalFilename()));
 
                 for(String[] stringarr: list) {
@@ -78,7 +93,9 @@ public class LigaService {
                     league.setPlayer1(stringarr[2]);
                     league.setPlayer2(stringarr[4]);
                     league.setResult(stringarr[3]);
-                    league.setDate(stringarr[1]);
+                    anpassen = stringarr[1].split(" ");
+                    if(anpassen[2].length() <2) anpassen[2] = "0"+anpassen[2];
+                    league.setDate(anpassen[3]+"-"+xD.get(anpassen[1])+"-"+anpassen[2]);
                     league.setLiga(liga);
                     data.add(league);
 
@@ -86,14 +103,11 @@ public class LigaService {
                 liga.setLeagueData(data);
                 ligaRepo.save(liga);
 
-
                 String uploadDir = "Pictures/liga-photos/" + liga.getId();
 
                 FileUploadUtil.saveFile(uploadDir, StringUtils.cleanPath(multiParfile.getOriginalFilename()), multiParfile);
 
-
-            } catch (IOException e) {e.printStackTrace();}
-
+            } catch (Exception e) {e.printStackTrace();}
 
         return new ResponseEntity<>("Hat geklappt", HttpStatus.OK);
     }
