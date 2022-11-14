@@ -29,15 +29,15 @@
             <div class="form-group" >
               <input type="password" class="form-control" value="" placeholder="Passwort" id="password" name="password" [(ngModel)]="user.password" required #password="ngModel"/>
             </div>
+           <p></p>
 
-          <div>
-          <label>Photos: </label>
-          <input type="file" name="image" accept="image/png, image/jpeg" [(ngModel)]="user.profilePicture"/>
-          </div>
-
-
-
+            <div class="form-group">
+              <label class="labelbild">Profilbild (optional)</label>
+              <p></p>
+           <input type="file" name="image" accept="image/png, image/jpeg" class="form-control" [(ngModel)]="user.profilePicture"/>
+           </div >
             <div class="form-group" >
+
               <button  class="btnSubmit"  [disabled]="!addUserForm.form.valid" >Konto erstellen</button>
             </div>
             <div class="form-group">

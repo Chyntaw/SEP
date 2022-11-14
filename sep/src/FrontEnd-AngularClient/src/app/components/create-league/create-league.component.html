@@ -18,11 +18,11 @@
         <div>
           <label class="labels">Ligabild:</label>
           <pre></pre>
-          <input  name = "picture" class="labels" type="file" (change)="selectProfilePicture($event)">
+          <input  name="picture" class="labels" type="file" accept="image/png, image/jpeg" (change)="selectProfilePicture($event)">
         </div>
         <p></p>
         <div class="form-group">
-          <button  class="btnSubmit"><!--(click)="upload()"-->Liga erstellen</button>
+          <button  class="btnSubmit">Liga erstellen</button>
         </div>
         <div class="form-group">
           <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>
