@@ -1,8 +1,9 @@
 version: '2'
 
 services:
+
   app:
-    image: 'tippspiel:latest'
+    image: 'tippspiel'
     ports:
       - "8080:8080"
     build:
@@ -16,6 +17,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
 
+
   db:
     image: 'postgres:14.5-alpine'
     restart: always
@@ -26,6 +28,13 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=password
 
-
+  frontend:
+    image: client
+    container_name: client
+    build: ..\..\FrontEnd-AngularClient
+    ports:
+      - "4200:80"
+    depends_on:
+      - app
 
 
