@@ -145,6 +145,7 @@ export class ShowLeagueDataComponent implements OnInit {
     return this.LeagueDataupdateform.get('result');
   }
 
+
   validateNo(e:any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -152,6 +153,8 @@ export class ShowLeagueDataComponent implements OnInit {
     }
     return true
   }
+
+
 checkRole(){
     let user_Role = localStorage.getItem('role')
   if(user_Role == "ADMIN") {

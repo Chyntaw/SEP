@@ -30,7 +30,8 @@ public class DateController {
     @GetMapping("/getDate")
     public ResponseEntity<?> getDate() {
         List<SystemDate> allDates = service.getAll();
-        String date = allDates.get(0).getLocalDate();
+        SystemDate date = allDates.get(0);
+
         return new ResponseEntity<>(date, HttpStatus.OK);
     }
 }

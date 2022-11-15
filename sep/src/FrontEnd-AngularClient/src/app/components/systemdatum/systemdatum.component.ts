@@ -10,7 +10,7 @@ import {SystemDatum} from "../../models/SystemDatum";
 export class SystemdatumComponent implements OnInit {
 
   SystemDatum: SystemDatum = new SystemDatum();
-  aktuellesDatum!: any;
+  aktuellesDatum!: SystemDatum | any
 
   constructor(private changeDateService: ChangeDateServiceService) { }
 
@@ -19,23 +19,13 @@ export class SystemdatumComponent implements OnInit {
     this.changeDateService.changeDate(this.SystemDatum.datum).subscribe(data=> alert('Datum geändert'),error => alert('Systemdatum konnte nicht geändert werden'));
 
   }
-  getDatum(){
-
+  getDatum() : void{
     this.changeDateService.getDate().subscribe(res=>{
-        console.log(res)
       this.aktuellesDatum=res
-      console.log(this.aktuellesDatum)
     })
 
   }
   ngOnInit(): void {
-    this.changeDateService.getDate().subscribe(res=>{
-      console.log(res)
-      this.aktuellesDatum=res
-      console.log(this.aktuellesDatum)
-
-
-
-  })
+    this.getDatum()
 }
 }

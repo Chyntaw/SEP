@@ -1,7 +1,7 @@
 <div class="container login-container">
   <div class="row">
     <div class="col-md-6 login-form">
-      <h3 class="headline">{{this.aktuellesDatum}}</h3>
+      <h3 class="headline">{{this.aktuellesDatum.localDate}}</h3>
 
       <h3 class="headline">Systemdatum ändern</h3>
       <form (ngSubmit)="changeDate()" #addSystemdatumForm="ngForm">
