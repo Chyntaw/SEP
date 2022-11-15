@@ -97,7 +97,7 @@ export class ShowLeagueDataComponent implements OnInit {
 
 
 
-  updateLea(updlea:any) {
+  update(upd:any) {
     this.leaguedata = new Leaguedata();
 
     this.leaguedata.id = this.LeagueDataId?.value;
@@ -116,11 +116,10 @@ export class ShowLeagueDataComponent implements OnInit {
     this.updateleaguedataservice.updateLeagueData(this.leaguedata.id,this.leaguedata).subscribe(
       data => {
 
-      /*  this.updateleaguedataservice.getLeagueDataList().subscribe(data =>{
-          this.leaguedata = data
-        })*/
+       alert('Update erfolgreich')
+
       },
-      error => console.log(error));
+      error =>alert("Update war nicht erfolgreich"));
   }
 
   get LeagueDataId(){

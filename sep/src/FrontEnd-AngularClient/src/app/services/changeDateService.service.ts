@@ -17,7 +17,7 @@ export class ChangeDateServiceService {
     const formData: FormData = new FormData();
     formData.append('date', date);
 
-    const req = new HttpRequest('POST', `${this.databaseURL}/systemdatum`, formData, {
+    const req = new HttpRequest('POST', `${this.databaseURL}/systemdatum/update`, formData, {
       reportProgress: true,
       responseType: 'json'
     });
@@ -25,4 +25,10 @@ export class ChangeDateServiceService {
     return this.httpClient.request(req);
 
   }
+  getDate(){
+
+   return this.httpClient.get(`${this.databaseURL}/systemdatum/getDate`)
+
+  }
+
 }

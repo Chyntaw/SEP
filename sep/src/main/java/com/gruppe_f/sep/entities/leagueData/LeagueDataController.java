@@ -69,6 +69,7 @@ public class LeagueDataController {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateLeagueData(@PathVariable("id") int id, @RequestBody LeagueData data) {
         LeagueData newData = repo.findByid(id);
+        newData.getLiga().setLeagueData(null);
         newData.setResult(data.getResult());
         newData.setDate(data.getDate());
         newData.setPlayer1(data.getPlayer1());

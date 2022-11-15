@@ -81,7 +81,7 @@
 <div class="modal" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form [formGroup]="LeagueDataupdateform" #updlea (ngSubmit)="updateLea(updlea)">
+      <form [formGroup]="LeagueDataupdateform" #upd (ngSubmit)="update(upd)">
         <!-- Modal Header -->
         <div class="modal-header">
           <h4 class="modal-title" style="text-align: center">Update Liga Daten</h4>
@@ -118,11 +118,6 @@
               <input type="text" class="form-control" formControlName="result"  id="result" name="result" [(ngModel)]="leaguedatalist.result">
             </div>
           </div>
-          <div>
-            <h4>Ligadaten geupdated!</h4>
-          </div>
-
-
 
         <!-- Modal footer -->
         <div class="modal-footer" >

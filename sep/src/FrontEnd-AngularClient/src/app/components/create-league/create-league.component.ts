@@ -34,16 +34,18 @@ export class CreateLeagueComponent implements OnInit {
           this.currentFile = file;
           if(pictureFile){
             this.currentPicture = pictureFile;
-            this.fileUploadService.upload(this.currentFile, this.liga.name, this.currentPicture).subscribe()
-            alert("Liga wurde erstellt")
+            this.fileUploadService.upload(this.currentFile, this.liga.name, this.currentPicture).subscribe(data=>
+              alert("Liga wurde erstellt"),error => alert('Liga konnte nicht erstellt werden'))
+
           }
         }
       }
       else{
         if(file){
           this.currentFile = file;
-          this.fileUploadService.uploadWithoutPicture(this.currentFile, this.liga.name).subscribe()
-          alert("Liga Ohne Bild wurde erstellt")
+          this.fileUploadService.uploadWithoutPicture(this.currentFile, this.liga.name).subscribe(data=>
+            alert("Liga Ohne Bild wurde erstellt"),error => alert('Liga ohne Bild konnte nicht erstellt werden'))
+
         }
       }
     }

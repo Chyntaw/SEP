@@ -24,7 +24,7 @@ public class Liga {
     private Long id;
     private String name;
 
-    @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "liga", cascade = CascadeType.ALL)
     private List<LeagueData> leagueData = new ArrayList<>();
 
 //    private Spielplan spielplan;

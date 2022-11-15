@@ -1,12 +1,14 @@
 <div class="container login-container">
   <div class="row">
     <div class="col-md-6 login-form">
+      <h3 class="headline">{{this.aktuellesDatum}}</h3>
+
       <h3 class="headline">Systemdatum ändern</h3>
-      <form (ngSubmit)="changeDate()">
-        <input class="form-control" type="date" id="date" name="date" placeholder="yyyy-mm-dd"[(ngModel)]="SystemDatum.datum">
+      <form (ngSubmit)="changeDate()" #addSystemdatumForm="ngForm">
+        <input class="form-control" type="date" id="date" name="date" placeholder="yyyy-mm-dd"[(ngModel)]="SystemDatum.datum" required #datum="ngModel">
         <p></p>
         <div class="form-group">
-          <button  class="btnSubmit" routerLink="/systemdatum">Speichern</button>
+          <button  class="btnSubmit" routerLink="/systemdatum" [disabled]="!addSystemdatumForm.form.valid">Speichern</button>
         </div>
         <div class="form-group">
           <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>

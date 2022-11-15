@@ -46,16 +46,6 @@ userLogin() {
     //localStorage.setItem("6", jsondata['profilePicture']) TODO: PB speichern in localStorage
     this.zwei_faRouter.navigate(['/zwei-fa'])
 
-
-/*
-
-  this.loginserviceService.loginUser(this.user).subscribe((data)=>{
-     console.log(data);
-    const meinObjekt = JSON.stringify(data);
-    console.log(meinObjekt);
-    if(meinObjekt.includes('ADMIN')){ this.dashboardRoute.navigate(['/admin-dashboard']);}
-      else{this.dashboardRoute.navigate(['/dashboard'])}
-*/
    alert("Login ist korrekt")
 
 

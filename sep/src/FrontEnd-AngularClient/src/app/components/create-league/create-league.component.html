@@ -4,9 +4,9 @@
     <div class="col-md-6 login-form">
       <h3 class="headline">Erstelle eine Liga</h3>
       <!-- -->
-      <form  (ngSubmit)="upload()">
+      <form  (ngSubmit)="upload()" #addLeagueForm="ngForm">
         <div class="form-group">
-          <input type="text" class="form-control" value="name" placeholder="Liganame" id="name" name="name" [(ngModel)]="liga.name">
+          <input type="text" class="form-control" value="name" placeholder="Liganame" id="name" name="name" [(ngModel)]="liga.name" required #name="ngModel">
         </div>
         <p></p>
         <div class="form-group">
@@ -22,7 +22,7 @@
         </div>
         <p></p>
         <div class="form-group">
-          <button  class="btnSubmit">Liga erstellen</button>
+          <button  class="btnSubmit" [disabled]="!addLeagueForm.form.valid">Liga erstellen</button>
         </div>
         <div class="form-group">
           <button routerLink="/admin-dashboard" class="btnSubmit">Zurück</button>
