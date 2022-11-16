@@ -17,7 +17,7 @@ export class SystemdatumComponent implements OnInit {
   changeDate(): void{
 
     this.changeDateService.changeDate(this.SystemDatum.datum).subscribe(data=> alert('Datum geändert'),error => alert('Systemdatum konnte nicht geändert werden'));
-
+    this.getDatum();
   }
   getDatum() : void{
     this.changeDateService.getDate().subscribe(res=>{

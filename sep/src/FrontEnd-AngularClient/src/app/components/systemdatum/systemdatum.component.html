@@ -1,9 +1,9 @@
 <div class="container login-container">
   <div class="row">
     <div class="col-md-6 login-form">
-      <h3 class="headline">{{this.aktuellesDatum.localDate}}</h3>
+      <h3 class="headline">Das aktuelle Datum ist:<p></p> {{this.aktuellesDatum.localDate}}</h3>
 
-      <h3 class="headline">Systemdatum ändern</h3>
+      <h3 class="headline-date">Systemdatum ändern</h3>
       <form (ngSubmit)="changeDate()" #addSystemdatumForm="ngForm">
         <input class="form-control" type="date" id="date" name="date" placeholder="yyyy-mm-dd"[(ngModel)]="SystemDatum.datum" required #datum="ngModel">
         <p></p>
