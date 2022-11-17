@@ -11,32 +11,22 @@ export class FileUploadService {
 
   constructor(private http: HttpClient) { }
 
-  upload(file: File, name: string, picture: File): Observable<HttpEvent<any>> {
+  upload(file: File, name: string, picture: File): Observable<object> {
 
     const formData: FormData = new FormData();
     formData.append('file', file);
     formData.append('name', name);
     formData.append('picture', picture);
 
-    const req = new HttpRequest('POST', `${this.baseUrl}/liga/upload`, formData, {
-      reportProgress: true,
-      responseType: 'json'
-    });
-
-    return this.http.request(req);
+    return this.http.post(`${this.baseUrl}/liga/upload`, formData)
   }
 
-  uploadWithoutPicture(file: File, name: string): Observable<HttpEvent<any>>{
+  uploadWithoutPicture(file: File, name: string): Observable<object>{
     const formData: FormData = new FormData();
     formData.append('file', file);
     formData.append('name', name);
 
-    const req = new HttpRequest('POST', `${this.baseUrl}/liga/upload`, formData,{
-      reportProgress: true,
-      responseType: 'json'
-    });
-
-    return this.http.request(req);
+    return this.http.post(`${this.baseUrl}/liga/upload`, formData)
   }
 
 
