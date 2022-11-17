@@ -88,15 +88,15 @@ public class LigaService {
                     data.add(league);
                 }
 
-                //Adding new data to Liga object and saving to repo
-                liga.setLeagueData(data);
-                ligaRepo.save(liga);
-
                 if(leaguePicture != null){
                     liga.setLigaPicture(StringUtils.cleanPath(leaguePicture.getOriginalFilename()));
                     String uploadDir = "Pictures/liga-photos/" + liga.getId();
                     FileUploadUtil.saveFile(uploadDir, StringUtils.cleanPath(leaguePicture.getOriginalFilename()), leaguePicture);
                 }
+
+                //Adding new data to Liga object and saving to repo
+                liga.setLeagueData(data);
+                ligaRepo.save(liga);
 
             } catch (Exception e) {
                 e.printStackTrace();
