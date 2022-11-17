@@ -4,7 +4,6 @@
   <div class="form-group">
     <div class="form-group">
       <h3>Ligenübersicht</h3>
-
     </div>
         </div>
         <div class="card my-5">
@@ -14,12 +13,9 @@
               <tr>
                 <th scope="col">LigaID</th>
                 <th scope="col">Liga Name</th>
-
-
-
               </tr>
-
               </thead>
+              <!-- Liga Anzeigen Body -->
               <tbody>
               <tr *ngFor="let ligens of ligen">
                 <td>{{ ligens.id }}</td>
@@ -27,15 +23,14 @@
                 <div class="form-group">
                   <button  class="btnLiga" (click)="zeigeLigaDaten(ligens.id)">Zeige die Ligadaten</button>
                 </div>
-
-
               </tr>
               </tbody>
             </table>
-
           </div>
         </div>
 
+
+      <!--Tabelle für die Ligadaten -->
         <div class="login-form">
         <div class="card my-5">
           <div class="card-body">
@@ -49,7 +44,6 @@
                 <th scope="col">Team 2</th>
                 <th scope="col">Ergebnis</th>
                 <th scope="col" [hidden]="zeigeAktion" >Aktion</th>
-
               </tr>
               </thead>
               <tbody>
@@ -60,52 +54,45 @@
                 <td>{{ leaguedata.player1 }}</td>
                 <td>{{ leaguedata.player2 }}</td>
                 <td>{{ leaguedata.result }}</td>
-                <td> <button [hidden]="zeigeAktion" (click)="updateLeagueData(leaguedata.id)" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal">Update</button></td>
+                <td><button [hidden]="zeigeAktion" (click)="updateLeagueData(leaguedata.id)" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal">Update</button></td>
               </tr>
               </tbody>
             </table>
           </div>
-
         </div>
           <div class="form-group">
             <button (click)="checkRole()" class="btnSubmit">Zurück</button>
           </div>
         </div>
-
+    </div>
   </div>
-</div>
 
 
-
-
+<!-- PopUp fürs Updaten/Bearbeiten der Ligadaten -->
 <div class="modal" id="myModal">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form [formGroup]="LeagueDataupdateform" #upd (ngSubmit)="update(upd)">
-        <!-- Modal Header -->
+      <form [formGroup]="LeagueDataupdateform"  (ngSubmit)="update()">
+        <!-- Header -->
         <div class="modal-header">
           <h4 class="modal-title" style="text-align: center">Update Liga Daten</h4>
         </div>
 
-        <!-- Modal body -->
+        <!--  Body -->
         <div class="modal-body" >
-
           <div class="hidden">
             <label for="id">League Data ID</label>
             <input type="number" class="form-control"  formControlName="id" id="id" name="id" [(ngModel)]="leaguedatalist.id">
           </div>
-
           <div>
             <label for="date">Datum</label>
             <input type="date" class="form-control"   formControlName="date" id="date" name="date"[(ngModel)]="leaguedatalist.date">
           </div>
-
             <div >
               <label for="matchDay">Spieltag</label>
               <input type="number" class="form-control"  (keypress)="validateNo($event)" formControlName="matchDay" id="matchDay" name="matchDay"[(ngModel)]="leaguedatalist.matchDay">
             </div>
-
-            <div  >
+            <div>
               <label for="player1">Team 1</label>
               <input type="text" class="form-control" formControlName="player1" id="player1" name="player1"[(ngModel)]="leaguedatalist.player1">
             </div>
@@ -113,20 +100,20 @@
               <label for="player2">Team 2</label>
               <input type="text" class="form-control" formControlName="player2" id="player2" name="player2"  [(ngModel)]="leaguedatalist.player2">
             </div>
-            <div >
+            <div>
               <label for="result">Ergebnis</label>
               <input type="text" class="form-control" formControlName="result"  id="result" name="result" [(ngModel)]="leaguedatalist.result">
             </div>
           </div>
 
-        <!-- Modal footer -->
+        <!-- Footer -->
         <div class="modal-footer" >
-          <button type="submit" class="btn btn-success" >Update</button>
+          <button type="submit" class="btn btn-success">Update</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
         </div>
       </form>
-</div>
+      </div>
 
     </div>
-  </div>
+</div>
 

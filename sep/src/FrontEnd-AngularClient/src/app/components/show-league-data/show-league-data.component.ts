@@ -4,11 +4,7 @@ import {ShowleagueserviceService} from "../../services/showleagueservice.service
 import {Liga} from "../../models/liga";
 import {HttpClient} from "@angular/common/http";
 import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
-import {Subject} from "rxjs";
-
 import {UpdateleaguedataService} from "../../services/updateleaguedata.service";
-import {valueReferenceToExpression} from "@angular/compiler-cli/src/ngtsc/annotations/common";
-import {tsCastToAny} from "@angular/compiler-cli/src/ngtsc/typecheck/src/ts_util";
 import {Router} from "@angular/router";
 
 @Component({
@@ -18,13 +14,11 @@ import {Router} from "@angular/router";
 })
 export class ShowLeagueDataComponent implements OnInit {
 
-  data: Leaguedata[] | any;
   ligen: Liga [] | any;
+  data: Leaguedata[] | any;
   leaguedatalist: Leaguedata[] | any ;
   leaguedata : Leaguedata=new Leaguedata();
-
-
-  zeigeAktion:boolean= false;
+  zeigeAktion:boolean = false;
 
 
   constructor(private showleagueservice: ShowleagueserviceService,private http:HttpClient, private updateleaguedataservice:UpdateleaguedataService,  private dashboardRouter:Router) {
@@ -42,13 +36,11 @@ export class ShowLeagueDataComponent implements OnInit {
       player2: '',
       result: '',
       date: ''
-
-    }
-    this.leaguedatalist=nuller;
+      }
+    this.leaguedatalist=nuller; //Sonst undefined
     this.zeigeLigen();
-
-
   }
+
   zeigeLigen() {
     this.showleagueservice.findAll().subscribe(res => {
       this.ligen = res
@@ -56,13 +48,12 @@ export class ShowLeagueDataComponent implements OnInit {
   }
 
   zeigeLigaDaten(id:number) {
-
     this.showleagueservice.getAll(id).subscribe(res => {
       this.data = res
     })
   }
 
-
+//Formgroup erstellen mit passenden FormControls
   LeagueDataupdateform=new FormGroup({
     id:new FormControl(),
     matchDay:new FormControl(),
@@ -72,39 +63,34 @@ export class ShowLeagueDataComponent implements OnInit {
     date:new FormControl(),
 
   });
+
   updateLeagueData(id: number){
-
-
     this.updateleaguedataservice.getLeagueData(id)
       .subscribe(
         data => {
-          console.log(this.leaguedatalist)
-          console.log(data)
 
           this.leaguedatalist=data
-                  console.log(this.leaguedatalist)
+
         },
-        error => console.log(error));
+        error => alert('Keine entsprechenden Daten vorhanden'));
   }
 
 
+  update() {
 
-  update(upd:any) {
+    //neues objekt erstellt und aktuelle Daten aus dem Modal übergeben
     this.leaguedata = new Leaguedata();
 
     this.leaguedata.id = this.LeagueDataId?.value;
-
     this.leaguedata.matchDay = this.LeagueDataMatchday?.value;
-
     this.leaguedata.player1 = this.LeagueDataPlayer1?.value;
-
     this.leaguedata.player2 = this.LeagueDataPlayer2?.value;
-
     this.leaguedata.result = this.LeagueDataResult?.value;
-
     this.leaguedata.date = this.LeagueDataDate?.value;
 
     console.log(this.leaguedata)
+
+    //Das erstellte Objekt  fürs Updaten ans Backend übergeben
     this.updateleaguedataservice.updateLeagueData(this.leaguedata.id,this.leaguedata).subscribe(
       data => {
 
@@ -114,22 +100,19 @@ export class ShowLeagueDataComponent implements OnInit {
       error =>alert("Update war nicht erfolgreich"))
   }
 
+//aktuelle Daten aus der Updateform/Modal bekommen
   get LeagueDataId(){
     return this.LeagueDataupdateform.get("id");
   }
-
   get LeagueDataMatchday(){
     return this.LeagueDataupdateform.get('matchDay');
   }
-
   get LeagueDataDate(){
     return this.LeagueDataupdateform.get('date');
   }
-
   get LeagueDataPlayer1(){
     return this.LeagueDataupdateform.get('player1');
   }
-
   get LeagueDataPlayer2(){
     return this.LeagueDataupdateform.get('player2');
   }
@@ -137,7 +120,7 @@ export class ShowLeagueDataComponent implements OnInit {
     return this.LeagueDataupdateform.get('result');
   }
 
-
+//Methode validateNo aus Fremdcode: Link siehe unten¹
   validateNo(e:any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
@@ -147,23 +130,15 @@ export class ShowLeagueDataComponent implements OnInit {
   }
 
 
-checkRole(){
+  checkRole(){
     let user_Role = localStorage.getItem('role')
   if(user_Role == "ADMIN") {
   this.dashboardRouter.navigate(['/admin-dashboard'])
-}
-else {
+  }
+  else {
   this.dashboardRouter.navigate(['/dashboard'])
+  }
+  }
 }
 
-
-}
-
-
-
-}
-
-
-
-
-
+//Links: ¹https://stackoverflow.com/questions/41465542/angular2-input-field-to-accept-only-numbers
