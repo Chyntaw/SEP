@@ -23,6 +23,7 @@ export class ShowLeagueDataComponent implements OnInit {
   leaguedatalist: Leaguedata[] | any ;
   leaguedata : Leaguedata=new Leaguedata();
 
+
   zeigeAktion:boolean= false;
 
 
@@ -43,10 +44,7 @@ export class ShowLeagueDataComponent implements OnInit {
       date: ''
 
     }
-
     this.leaguedatalist=nuller;
-
-
     this.zeigeLigen();
 
 
@@ -54,10 +52,6 @@ export class ShowLeagueDataComponent implements OnInit {
   zeigeLigen() {
     this.showleagueservice.findAll().subscribe(res => {
       this.ligen = res
-
-
-
-
     })
   }
 
@@ -65,11 +59,9 @@ export class ShowLeagueDataComponent implements OnInit {
 
     this.showleagueservice.getAll(id).subscribe(res => {
       this.data = res
-
-
     })
-
   }
+
 
   LeagueDataupdateform=new FormGroup({
     id:new FormControl(),
@@ -119,7 +111,7 @@ export class ShowLeagueDataComponent implements OnInit {
        alert('Update erfolgreich')
 
       },
-      error =>alert("Update war nicht erfolgreich"));
+      error =>alert("Update war nicht erfolgreich"))
   }
 
   get LeagueDataId(){
