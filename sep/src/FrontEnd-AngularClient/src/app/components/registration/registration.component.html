@@ -34,7 +34,7 @@
             <div class="form-group">
               <label class="labelbild">Profilbild (optional)</label>
               <p></p>
-           <input type="file" name="image" accept="image/png, image/jpeg" class="form-control" [(ngModel)]="user.profilePicture"/>
+           <input type="file" name="image" accept="image/png, image/jpeg" class="form-control" (change)="selectProfilePicture($event)"/>
            </div >
             <div class="form-group" >
 

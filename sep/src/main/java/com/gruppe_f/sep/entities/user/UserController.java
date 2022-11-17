@@ -1,5 +1,7 @@
 package com.gruppe_f.sep.entities.user;
 
+
+import com.gruppe_f.sep.businesslogic.FileUploadUtil;
 import com.gruppe_f.sep.mail.MailSenderService;
 import dev.samstevens.totp.code.CodeGenerator;
 import dev.samstevens.totp.code.CodeVerifier;
@@ -43,16 +45,45 @@ public class UserController {
     }
 
     @PostMapping("/user/add")
-    public ResponseEntity<User> addUser(@RequestBody User userData) throws IOException {
+    public ResponseEntity<User> addUser(@RequestParam(value = "file", required = false) MultipartFile multipartFile,
+                                        @RequestParam("lastName") String lastName,
+                                        @RequestParam("firstName") String firstName,
+                                        @RequestParam(value = "birthDate", required = false) String birthDate,
+                                        @RequestParam("eMail") String eMail,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("role") String role) throws IOException {
 
-        System.out.println(userData.getProfilePicture());
-        for(User user: service.findAllUsers()) {
-            if (user.geteMail().equals(userData.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
+        User user;
+        user = new User(firstName, lastName, eMail, password, role);
+
+        for(User userDatabase: service.findAllUsers()) {
+            if (user.geteMail().equals(userDatabase.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         }
-        User newUser = service.addUser(userData);
-        return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        if(role.equals("BASIC")){
+            if(multipartFile != null){
+                System.out.println("TESTEST");
+                user.setProfilePicture(StringUtils.cleanPath(multipartFile.getOriginalFilename()));
+                user.setBirthDate(birthDate);
+
+                User newUser = service.addUser(user);
+                String uploadDir = "Pictures/user-photos/" + user.getId();
+                FileUploadUtil.saveFile(uploadDir, StringUtils.cleanPath(multipartFile.getOriginalFilename()), multipartFile);
+                return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            }
+            else{
+                user.setBirthDate(birthDate);
+                User newUser = service.addUser(user);
+                return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+            }
+        }
+        else{
+            User newUser = service.addUser(user);
+
+
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        }
     }
 
     @PostMapping("/user/login")

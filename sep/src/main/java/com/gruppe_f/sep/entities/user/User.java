@@ -60,6 +60,14 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public User (String firstName, String lastName, String eMail, String password, String role){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.eMail = eMail;
+        this.password = password;
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +

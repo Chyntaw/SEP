@@ -19,11 +19,15 @@ export class AdminRegistrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  userRegistration(){
+  userRegistration(): void{
     console.log(this.admin);
-    this.registrationservice.addUser(this.admin).subscribe(data=>{
-      let newUser = (<User>data)
+    this.registrationservice.addAdmin(this.admin.lastName,
+      this.admin.firstName,
+      this.admin.eMail,
+      this.admin.password,
+      this.admin.role).subscribe(data=>{
 
+      let newUser = (<User>data)
 
       //localStorage.setItem("0", newUser['id']);
       localStorage.setItem("eMail", newUser['eMail']);
@@ -31,13 +35,12 @@ export class AdminRegistrationComponent implements OnInit {
       localStorage.setItem("lastName", newUser['lastName']);
       localStorage.setItem("password", newUser['password']);
       localStorage.setItem("role", newUser['role'])
+
       this.dashboardRoute.navigate(['/admin-dashboard'])
-      alert("Registrierung erfolgreich")
 
-    },error=>alert("Registrierung war nicht erfolgreich"));
+      alert("Registrierung als Admin erfolgreich")
 
-
-
+    }, error => alert("Registrierung als Admin nicht erfolgreich"));
   }
 
 }
