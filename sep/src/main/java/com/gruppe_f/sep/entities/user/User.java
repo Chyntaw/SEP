@@ -1,8 +1,12 @@
 package com.gruppe_f.sep.entities.user;
 
+import com.gruppe_f.sep.entities.BettingRound.BettingRound;
+import com.gruppe_f.sep.entities.leagueData.LeagueData;
+
 import javax.persistence.*;
-import java.io.File;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Entity
@@ -32,9 +36,10 @@ public class User implements Serializable {
     @Column(name = "profilePicture")
     private String profilePicture;
 
+    @ManyToMany(mappedBy = "participants")
+    private List<BettingRound> bettingRounds;
 
-    private String secret;
-                                    //Generierte OTP
+    private String secret;          //Generierte OTP
 
     private String code;           //Eingegebene OTP
 

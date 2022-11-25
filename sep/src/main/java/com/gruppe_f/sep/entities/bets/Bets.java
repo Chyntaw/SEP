@@ -1,5 +1,7 @@
 package com.gruppe_f.sep.entities.bets;
 
+import com.gruppe_f.sep.entities.BettingRound.BettingRound;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,11 +12,18 @@ public class Bets {
     @Column(name = "betsid")
     private Long id;
 
-    @Column(name = "bets")
-    private String bets;
+    @Column(name = "bet")
+    private String bet;
+
+
     //private User user;
 
+
     public Bets(){}
+
+    public Bets(String bet){
+        this.bet = bet;
+    }
     public Long getId() {
         return id;
     }
@@ -24,10 +33,12 @@ public class Bets {
     }
 
     public String getBets() {
-        return bets;
+        return bet;
     }
 
     public void setBets(String bets) {
-        this.bets = bets;
+        this.bet = bets;
     }
+
+
 }
