@@ -37,18 +37,16 @@ public class SepGruppeFApplication {
 			repo.save(new SystemDate("1997-08-08"));
 
 			BettingRound bet = new BettingRound();
-			bet.getBetsList().add(new Bets("xD"));
-			bet.getBetsList().add(new Bets("2"));
-			bet.getBetsList().add(new Bets("Test3"));
-			bet.getBetsList().add(new Bets("4?"));
+			bet.getBetsList().add(new Bets("Bet1", (long) 1, (long) 2));
+			bet.getBetsList().add(new Bets("Bet2", (long)4, (long) 2));
+			bet.getBetsList().add(new Bets("Bet3", (long)5, (long) 12));
 
 			reposiTEST.save(bet);
 
 			BettingRound bet2 = new BettingRound();
-			bet2.getBetsList().add(new Bets("xD"));
-			bet2.getBetsList().add(new Bets("2"));
-			bet2.getBetsList().add(new Bets("Test3"));
-			bet2.getBetsList().add(new Bets("4?"));
+			bet2.getBetsList().add(new Bets("Bet4", (long)1, (long) 2));
+			bet2.getBetsList().add(new Bets("Bet5", (long)4, (long) 7));
+			bet2.getBetsList().add(new Bets("Bet6", (long)3, (long) 1));
 
 			reposiTEST.save(bet2);
 

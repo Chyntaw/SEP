@@ -2,7 +2,7 @@ package com.gruppe_f.sep.entities.BettingRound;
 
 import com.gruppe_f.sep.entities.bets.Bets;
 import com.gruppe_f.sep.entities.liga.Liga;
-import com.gruppe_f.sep.entities.scores.Scores;
+import com.gruppe_f.sep.entities.scores.Score;
 import com.gruppe_f.sep.entities.user.User;
 
 import javax.persistence.*;
@@ -26,7 +26,7 @@ public class BettingRound {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bettingroundid")
-    private List<Scores> scoresList;
+    private List<Score> scoresList;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bettingroundid")
@@ -130,11 +130,11 @@ public class BettingRound {
         this.ligaID = ligaID;
     }
 
-    public List<Scores> getScoresList() {
+    public List<Score> getScoresList() {
         return scoresList;
     }
 
-    public void setScoresList(List<Scores> scoresList) {
+    public void setScoresList(List<Score> scoresList) {
         this.scoresList = scoresList;
     }
 

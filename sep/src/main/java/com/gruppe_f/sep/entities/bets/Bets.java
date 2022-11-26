@@ -15,14 +15,18 @@ public class Bets {
     @Column(name = "bet")
     private String bet;
 
+    private Long userID;
+    private Long leagueDataid;
 
-    //private User user;
+    private int score;
 
 
     public Bets(){}
 
-    public Bets(String bet){
+    public Bets(String bet, Long userID, Long leagueDataid){
         this.bet = bet;
+        this.userID = userID;
+        this.leagueDataid = leagueDataid;
     }
     public Long getId() {
         return id;
@@ -40,5 +44,27 @@ public class Bets {
         this.bet = bets;
     }
 
+    public Long getUserID() {
+        return userID;
+    }
 
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public Long getLeagueDataid() {
+        return leagueDataid;
+    }
+
+    public void setLeagueDataid(Long leagueDataid) {
+        this.leagueDataid = leagueDataid;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 }
