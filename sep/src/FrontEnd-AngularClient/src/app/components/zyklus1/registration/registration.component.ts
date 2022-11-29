@@ -47,7 +47,7 @@ export class RegistrationComponent implements OnInit {
 
           let newUser = (<User>data)
 
-          //localStorage.setItem("0", newUser['id']);
+          localStorage.setItem("id", newUser['id']);
           localStorage.setItem("eMail", newUser['eMail']);
           localStorage.setItem("firstName", newUser['firstName']);
           localStorage.setItem("lastName", newUser['lastName']);
