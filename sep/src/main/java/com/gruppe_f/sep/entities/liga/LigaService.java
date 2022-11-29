@@ -73,6 +73,7 @@ public class LigaService {
                 List<LeagueData> data = new ArrayList<>();
                 String[] dateConv;
                 Liga liga = new Liga(name);
+                ligaRepo.save(liga);
 
                 for(String[] stringarr: csvData) {
                     LeagueData league = new LeagueData();
@@ -84,7 +85,7 @@ public class LigaService {
                     //If days of Date "d" -> convert to "dd"
                     if(dateConv[2].length() <2) dateConv[2] = "0"+dateConv[2];
                     league.setDate(dateConv[3]+"-"+monthMap.get(dateConv[1])+"-"+dateConv[2]);
-                    league.setLiga(liga);
+                    league.setLigaID(liga.getId());
                     data.add(league);
                 }
 

@@ -3,6 +3,7 @@ package com.gruppe_f.sep.entities.leagueData;
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.liga.Liga;
+import com.gruppe_f.sep.entities.liga.LigaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +20,13 @@ public class LeagueDataController {
 
     private final LeagueDataRepository repo;
     private final DateRepository repo2;
+    private final LigaRepository ligaRepo;
 
     @Autowired
-    public LeagueDataController(LeagueDataRepository repo, DateRepository repo2) {
+    public LeagueDataController(LeagueDataRepository repo, DateRepository repo2, LigaRepository ligaRepo) {
         this.repo = repo;
         this.repo2 = repo2;
+        this.ligaRepo = ligaRepo;
     }
 
     @PostMapping("/add")
@@ -41,22 +44,19 @@ public class LeagueDataController {
     @GetMapping(path = "/getAll/{id}")
     public ResponseEntity<List<LeagueData>> getLeagueData(@PathVariable("id") Long id) {
 
-        List<LeagueData> list = repo.findAll();
+        Liga liga = ligaRepo.findLigaByid(id);
+        List<LeagueData> list = liga.getLeagueData();
         List<SystemDate> sysDate = repo2.findAll();
         List<LeagueData> returnList = new ArrayList<>();
         for (LeagueData data : list) {
-            if (data.getLiga().getId() == id) {
                 //Getting LeagueData by ID and setting result of Future games "0-0"
                 if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) < 0) {
-                    data.getLiga().setLeagueData(null);
                     returnList.add(data);
                 } else {
-                    data.setResult("0-0");
-                    data.getLiga().setLeagueData(null);
+                    data.setResult("-");
                     returnList.add(data);
                 }
             }
-        }
         //Sorting Resulting LeagueData List by Date
         List<LeagueData> result = returnList.stream().sorted((x, y) -> x.getDate().compareTo(y.getDate())).collect(Collectors.toList());
 
@@ -65,16 +65,13 @@ public class LeagueDataController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LeagueData> getData(@PathVariable("id") Long id) {
-        LeagueData data = repo.findByid(id);
-        data.getLiga().setLeagueData(null);
-        return new ResponseEntity<>(data, HttpStatus.OK);
+    public ResponseEntity<LeagueData> getData(@PathVariable("id") int id) {
+        return new ResponseEntity<>(repo.findByid(id), HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateLeagueData(@PathVariable("id") Long id, @RequestBody LeagueData data) {
+    public ResponseEntity<?> updateLeagueData(@PathVariable("id") int id, @RequestBody LeagueData data) {
         LeagueData newData = repo.findByid(id);
-        newData.getLiga().setLeagueData(null);
         newData.setResult(data.getResult());
         newData.setDate(data.getDate());
         newData.setPlayer1(data.getPlayer1());
@@ -85,11 +82,11 @@ public class LeagueDataController {
     @GetMapping("/getByMatchday/{LigaID}/{matchDayID}")
     public ResponseEntity<?> getByMatchday(@PathVariable("LigaID")Long LigaID, @PathVariable("matchDayID")int matchday) {
 
-        List<LeagueData> matchDayList = repo.findBymatchDay(matchday);
+        Liga liga = ligaRepo.findLigaByid(LigaID);
+        List<LeagueData> matchDayList = liga.getLeagueData();
         List<LeagueData> returnList = new ArrayList<>();
         for(LeagueData data : matchDayList) {
-            if(data.getLiga().getId() == LigaID) {
-                data.getLiga().setLeagueData(null);
+            if(data.getMatchDay() == matchday) {
                 returnList.add(data);
             }
         }

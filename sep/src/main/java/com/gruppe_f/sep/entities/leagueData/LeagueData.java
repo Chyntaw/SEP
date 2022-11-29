@@ -7,6 +7,8 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+import java.util.Date;
+
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
@@ -23,9 +25,7 @@ public class LeagueData {
     private String result;
     private String date;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Liga liga;
+    private Long ligaID;
 
     public  LeagueData() {};
 
@@ -36,6 +36,14 @@ public class LeagueData {
         this.player1 = player1;
         this.player2 = player2;
         this.result = result;
+    }
+
+    public LeagueData(int matchDay, String player1, String player2, String result, Long ligaID) {
+        this.matchDay = matchDay;
+        this.player1 = player1;
+        this.player2 = player2;
+        this.result = result;
+        this.ligaID = ligaID;
     }
 
     public int getMatchDay() {
@@ -77,20 +85,20 @@ public class LeagueData {
         this.date = date;
     }
 
-    public Liga getLiga() {
-        return liga;
-    }
-
-    public void setLiga(Liga liga) {
-        this.liga = liga;
-    }
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Long getLigaID() {
+        return ligaID;
+    }
+
+    public void setLigaID(Long ligaID) {
+        this.ligaID = ligaID;
     }
 }
 

@@ -10,6 +10,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     User findUserByeMail(String eMail);
 
+    //List<User> findAll(List<Long> id);
+
 
 
 

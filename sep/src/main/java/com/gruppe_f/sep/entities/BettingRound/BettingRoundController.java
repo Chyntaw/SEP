@@ -5,6 +5,8 @@ import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.bets.Bets;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
+import com.gruppe_f.sep.entities.liga.Liga;
+import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.scores.Score;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
@@ -14,8 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -25,12 +29,14 @@ public class BettingRoundController {
     private UserRepository userRepo;
     private  LeagueDataRepository leagueDataRepo;
     private  DateRepository dateRepo;
+    private LigaRepository ligaRepo;
     @Autowired
-    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LeagueDataRepository leagueDataRepo, DateRepository dateRepo) {
+    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo) {
         this.repo = repo;
         this.userRepo = userRepo;
         this.leagueDataRepo = leagueDataRepo;
         this.dateRepo = dateRepo;
+        this.ligaRepo = ligaRepo;
     }
 
 
@@ -54,8 +60,13 @@ public class BettingRoundController {
     public ResponseEntity<?> addParticipant(@RequestParam("userid") Long userid, @RequestParam("bettingRoundid") Long bettingRoundid) {
         BettingRound bettingRound = repo.findById(bettingRoundid).get();
         List<User> participants = bettingRound.getParticipants();
+        //Check if user already participating
         if(participants.contains(userRepo.findById(userid).get())) return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+
         participants.add(userRepo.findById(userid).get());
+        bettingRound.getScoresList().add(new Score(0, userRepo.findById(userid).get()));
+
+        //ReturnType is Bettinground, not Userlist
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
     }
 
@@ -77,36 +88,42 @@ public class BettingRoundController {
         List<BettingRound> returnlist = new LinkedList<>();
 
         for (BettingRound bettingRound : list) {
-            if(bettingRound.isIsprivate()==false){
+            if(!bettingRound.isIsprivate()){
                 returnlist.add(bettingRound);
-
             }
         }
         return new ResponseEntity<>(returnlist, HttpStatus.OK);
 
-
     }
 
 
-
+    @GetMapping("getBets")
+    public ResponseEntity<?> getBets(@RequestParam("bettingRoundid")Long bettingRoundid, @RequestParam("userid")Long userid) {
+        List<Bets> bets = repo.findById(bettingRoundid).get().getBetsList();
+        List<Bets> retList = new ArrayList<>();
+        for(Bets bet: bets)
+            if(bet.getUserID() == userid) retList.add(bet);
+        return new ResponseEntity<>(retList, HttpStatus.OK);
+    }
 
     @PostMapping("placeBet")
     public ResponseEntity<?> placeBet(@RequestParam("bettingRoundid")Long bettingRoundid,
                                       @RequestParam("userid")Long userid,
-                                      @RequestParam("leagueDataid")Long leagueDataid,
+                                      @RequestParam("leagueDataid")int leagueDataid,
                                       @RequestParam("bet")String newBet) {
 
         BettingRound bettingRound = repo.findById(bettingRoundid).get();
         List<Bets> betsList = bettingRound.getBetsList();
         for(Bets bet: betsList) {
             //Check if user already placed Bet on this Game
-            if(bet.getUserID() == userid && bet.getLeagueDataid() == leagueDataid) {
+            if(bet.getUserID() == userid && bet.getLeagueData().getId() == leagueDataid) {
                 bet.setBets(newBet);
-                getLeagueDataByDate(bettingRound.getLigaID());
+                //getLeagueDataByDate(bettingRound.getLigaID());
                 return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
             }
         }
-        betsList.add(new Bets(newBet, userid, leagueDataid));
+        LeagueData data = leagueDataRepo.findByid(leagueDataid);
+        betsList.add(new Bets(newBet, userid, data));
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
 
     }
@@ -115,18 +132,69 @@ public class BettingRoundController {
     //Langsam versteh ich warum man das eigentlich in Controller und Serviceklassen aufteilen sollte. NAJA MACHSTE NIX
     public List<LeagueData> getLeagueDataByDate(Long id) {
 
-        List<LeagueData> list = leagueDataRepo.findAll();
+        //GEHT BESSER
+        Liga liga = ligaRepo.findLigaByid(id);
+        List<LeagueData> list = liga.getLeagueData();
         List<SystemDate> sysDate = dateRepo.findAll();
         List<LeagueData> returnList = new ArrayList<>();
         for (LeagueData data : list) {
-            if (data.getLiga().getId() == id) {
-                //Getting LeagueData by ID and setting result of Future games "0-0"
-                if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) < 0) {
-                    data.getLiga().setLeagueData(null);
-                    returnList.add(data);
-                }
+            //Getting LeagueData by ID and setting result of Future games "0-0"
+            if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) < 0) {
+                returnList.add(data);
             }
         }
         return returnList;
     }
+
+    @GetMapping("top3/{id}")
+    public ResponseEntity<?> getTop3(@PathVariable("id")Long id) {
+        BettingRound bettingRound = repo.findById(id).get();
+        List<Bets> betsList = bettingRound.getBetsList();
+        List<LeagueData> leagueDatalist = getLeagueDataByDate(bettingRound.getLigaID());
+
+        for(Bets bet: betsList) {
+            for(LeagueData data: leagueDatalist) {
+                if(bet.getLeagueData().getId() == data.getId()) {
+                    //If bet on score is correct, Strings of scores are identical
+                    if(bet.getBets().equals(data.getResult())) {bet.setScore(bettingRound.getCorrScorePoints()); continue;}
+                    //Get goals from LeagueData and from bet as int
+                    int[] goals = Arrays.stream(data.getResult().split("-")).mapToInt(Integer::parseInt).toArray();
+                    int[] betGoals = Arrays.stream(bet.getBets().split("-")).mapToInt(Integer::parseInt).toArray();
+                    int goalDiff = goals[0]-goals[1];
+                    int betDiff = betGoals[0]-betGoals[1];
+                    //Correct Goal Difference
+                    if(Math.abs(goalDiff) == Math.abs(betDiff)) {bet.setScore(bettingRound.getCorrGoalPoints()); continue;}
+                    //Correct Winner
+                    if((goalDiff < 0 && betDiff < 0) || (goalDiff >0 && betDiff >0)) bet.setScore(bettingRound.getCorrWinnerPoints());
+                }
+            }
+        }
+        List<Score> scoreList = bettingRound.getScoresList();
+        for(Score score:scoreList) {
+            for(Bets bet: betsList) {
+                if(score.getUserid() == bet.getUserID()) score.setScores(score.getScores()+ bet.getScore());
+            }
+        }
+        List<Score> list = scoreList.stream().sorted((x,y) -> x.getScores() - y.getScores()).collect(Collectors.toList());
+        List<Long> top3 = new ArrayList<>();
+        for(int i = 0; i < scoreList.size() && i <3; i++) top3.add(scoreList.get(i).getUserid());
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/getByMatchday/{userID}/{matchDayID}/{bettingroundID}")
+    public ResponseEntity<?> getByMatchday(@PathVariable("userID")Long userID, @PathVariable("matchDayID")int matchday, @PathVariable("bettingroundID")Long bettingroundID) {
+
+        BettingRound round = repo.findById(bettingroundID).get();
+        List<LeagueData> leagueData = ligaRepo.findLigaByid(round.getLigaID()).getLeagueData();
+        List<Bets> betsList = round.getBetsList();
+
+        List<Bets> returnList = new ArrayList<>();
+        for(LeagueData data : leagueData) {
+            if(data.getMatchDay() == matchday) {
+                //returnList.add(data);
+            }
+        }
+        return new ResponseEntity<>(betsList, HttpStatus.OK);
+    }
+
 }

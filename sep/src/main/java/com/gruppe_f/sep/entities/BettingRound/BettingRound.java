@@ -26,7 +26,7 @@ public class BettingRound {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bettingroundid")
-    private List<Score> scoresList;
+    private List<Score> scoresList = new LinkedList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bettingroundid")

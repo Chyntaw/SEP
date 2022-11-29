@@ -1,6 +1,7 @@
 package com.gruppe_f.sep.entities.bets;
 
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
+import com.gruppe_f.sep.entities.leagueData.LeagueData;
 
 import javax.persistence.*;
 
@@ -16,17 +17,19 @@ public class Bets {
     private String bet;
 
     private Long userID;
-    private Long leagueDataid;
+
+    @OneToOne
+    private LeagueData leagueData;
 
     private int score;
 
 
     public Bets(){}
 
-    public Bets(String bet, Long userID, Long leagueDataid){
+    public Bets(String bet, Long userID, LeagueData data){
         this.bet = bet;
         this.userID = userID;
-        this.leagueDataid = leagueDataid;
+        this.leagueData = data;
     }
     public Long getId() {
         return id;
@@ -52,13 +55,6 @@ public class Bets {
         this.userID = userID;
     }
 
-    public Long getLeagueDataid() {
-        return leagueDataid;
-    }
-
-    public void setLeagueDataid(Long leagueDataid) {
-        this.leagueDataid = leagueDataid;
-    }
 
     public int getScore() {
         return score;
@@ -66,5 +62,13 @@ public class Bets {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public LeagueData getLeagueData() {
+        return leagueData;
+    }
+
+    public void setLeagueData(LeagueData leagueData) {
+        this.leagueData = leagueData;
     }
 }

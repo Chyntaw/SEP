@@ -1,5 +1,7 @@
 package com.gruppe_f.sep.entities.scores;
 
+import com.gruppe_f.sep.entities.user.User;
+
 import javax.persistence.*;
 
 @Entity
@@ -15,10 +17,12 @@ public class Score {
 
     private Long userid;
 
+    @OneToOne
+    private User user;
 
     public Score(){}
 
-    public Score(int score, Long userid){this.score = score; this.userid = userid;}
+    public Score(int score, User user){this.score = score; this.user = user;}
 
 
 
