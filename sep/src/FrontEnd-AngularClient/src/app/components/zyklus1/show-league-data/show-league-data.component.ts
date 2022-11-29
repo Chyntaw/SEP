@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import {Leaguedata} from "../../models/leaguedata";
-import {ShowleagueserviceService} from "../../services/showleagueservice.service";
-import {Liga} from "../../models/liga";
+import {Leaguedata} from "../../../models/leaguedata";
+import {ShowleagueserviceService} from "../../../services/showleagueservice.service";
+import {Liga} from "../../../models/liga";
 import {HttpClient} from "@angular/common/http";
 import {FormControl, FormGroup, Validator, Validators} from "@angular/forms";
-import {UpdateleaguedataService} from "../../services/updateleaguedata.service";
+import {UpdateleaguedataService} from "../../../services/updateleaguedata.service";
 import {Router} from "@angular/router";
+import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
+import {BettingRound} from "../../../models/betting-round";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-show-league-data',
@@ -19,26 +22,33 @@ export class ShowLeagueDataComponent implements OnInit {
   leaguedatalist: Leaguedata[] | any ;
   leaguedata : Leaguedata=new Leaguedata();
   zeigeAktion:boolean = false;
+  ligaid!:number;
+  betRound:BettingRound = new BettingRound();
 
 
-  constructor(private showleagueservice: ShowleagueserviceService,private http:HttpClient, private updateleaguedataservice:UpdateleaguedataService,  private dashboardRouter:Router) {
+  constructor(private showleagueservice: ShowleagueserviceService,
+              private http:HttpClient,
+              private updateleaguedataservice:UpdateleaguedataService,
+              private dashboardRouter:Router,
+              private tipprundenService: TipprundenserviceService) {
   }
 
   ngOnInit(): void {
-      let user_role = localStorage.getItem("role")
-      if(user_role=='BASIC'){
-        this.zeigeAktion=true;}
+    this.zeigeLigen();
+    let user_role = localStorage.getItem("role")
+    if(user_role=='BASIC'){
+      this.zeigeAktion=true;}
 
-      let nuller: Leaguedata = {
+    let nuller: Leaguedata = {
       id: 0,
       matchDay: 0,
       player1: '',
       player2: '',
       result: '',
       date: ''
-      }
+    }
     this.leaguedatalist=nuller; //Sonst undefined
-    this.zeigeLigen();
+
   }
 
   zeigeLigen() {
@@ -94,7 +104,7 @@ export class ShowLeagueDataComponent implements OnInit {
     this.updateleaguedataservice.updateLeagueData(this.leaguedata.id,this.leaguedata).subscribe(
       data => {
 
-       alert('Update erfolgreich')
+        alert('Update erfolgreich')
 
       },
       error =>alert("Update war nicht erfolgreich"))
@@ -132,13 +142,40 @@ export class ShowLeagueDataComponent implements OnInit {
 
   checkRole(){
     let user_Role = localStorage.getItem('role')
-  if(user_Role == "ADMIN") {
-  this.dashboardRouter.navigate(['/admin-dashboard'])
+    if(user_Role == "ADMIN") {
+      this.dashboardRouter.navigate(['/admin-dashboard'])
+    }
+    else {
+      this.dashboardRouter.navigate(['/dashboard'])
+    }
   }
-  else {
-  this.dashboardRouter.navigate(['/dashboard'])
+
+  //Tipprunden
+  sichereId(id:number){
+
+    this.ligaid=id;
+    console.log(this.ligaid)
+
   }
-  }
+  erstelleTipprunde(id:number){
+
+
+    let ownerID = Number( localStorage.getItem('id'))
+    console.log(ownerID)
+    this.betRound.ligaID=id;
+    this.tipprundenService.createTipprunde(id, ownerID, this.betRound.name,this.betRound.isPrivate, this.betRound.corrScorePoints, this.betRound.corrGoalPoints, this.betRound.corrWinnerPoints, this.betRound.passwordTipprunde)
+      .subscribe(res=>{
+          alert("Tipprunde erstellt")
+          console.log(res)
+
+        },error =>alert("Tipprunde konnte nicht erstellt werden")
+      )}
+
+
+
+
+
+
 }
 
 //Links: ¹https://stackoverflow.com/questions/41465542/angular2-input-field-to-accept-only-numbers

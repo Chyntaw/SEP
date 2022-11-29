@@ -1,0 +1,91 @@
+<div class="login-container">
+  <div class="login-form">
+    <div class="form-group">
+      <div class="form-group">
+        <h3>Meine Tipprunden</h3>
+      </div>
+    </div>
+    <div class="card my-5">
+      <div class="card-body">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tipprunden Name</th>
+            <th scope="col">Aktion</th>
+          </tr>
+          </thead>
+          <!-- Liga Anzeigen Body -->
+          <tbody>
+          <tr *ngFor="let mytippround of mytiprounds">
+            <td>{{ mytippround.name}}</td>
+            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID)" >Tipps abgeben</button>
+              <button  class="btnLiga" >Ergebnisse</button>
+              <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PopUp fürs Abgeben der Tipps -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  #addTipp="ngForm">
+        <!-- Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align: center">Tipps abgeben</h4>
+        </div>
+
+        <!-- Body-->
+        <div class="modal-body" >
+          <div class="card my-5">
+            <div class="card-body">
+              <select class="dropdown">
+                <option class="dropdown-item" *ngFor="let x of matchDayCount" (click)="MatchDayDaten(x)">Spieltag:{{x}} </option>
+              </select>
+
+              <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                  <th scope="col" >Mannschaft 1</th>
+                  <th scope="col">Mannschaft 2</th>
+                  <th scope="col">Dein Tipp</th>
+                  <th scope="col">Tipphilfe</th>
+                </tr>
+                </thead>
+                <!-- MatchDayDaten Anzeigen Body -->
+                <tbody>
+                <tr *ngFor="let x of matchDayDaten">
+                  <td>{{ x.player1}}</td>
+                  <td>{{ x.player2}}</td>
+                  <td><form [formGroup]="TippAbgabeForm" >
+                      <input  id="name" type="text" class="form-control" formControlName="tippAbgabe" [pattern]="tippPattern" Placeholder="Zahl1-Zahl 2" (keypress)="validateNo($event)">
+                      <div *ngIf="f.tippAbgabe.errors?.['pattern']">Falsches Format</div>
+                    </form>
+                  </td>
+                  <td><button>Tipphilfe</button></td>
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer-->
+        <div class="modal-footer" >
+          <button type="submit" class="btn btn-success" >Tipps speichern!</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+

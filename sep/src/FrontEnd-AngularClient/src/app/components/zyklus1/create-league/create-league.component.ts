@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {FileUploadService} from "../../services/services/file-upload.service";
-import {Liga} from "../../models/liga";
+import {FileUploadService} from "../../../services/services/file-upload.service";
+import {Liga} from "../../../models/liga";
 
 @Component({
   selector: 'app-create-league',

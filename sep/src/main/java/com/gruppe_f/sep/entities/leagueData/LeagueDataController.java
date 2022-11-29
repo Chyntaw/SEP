@@ -82,5 +82,17 @@ public class LeagueDataController {
         newData.setMatchDay(data.getMatchDay());
         return new ResponseEntity<>(repo.save(newData), HttpStatus.OK);
     }
+    @GetMapping("/getByMatchday/{LigaID}/{matchDayID}")
+    public ResponseEntity<?> getByMatchday(@PathVariable("LigaID")Long LigaID, @PathVariable("matchDayID")int matchday) {
 
+        List<LeagueData> matchDayList = repo.findBymatchDay(matchday);
+        List<LeagueData> returnList = new ArrayList<>();
+        for(LeagueData data : matchDayList) {
+            if(data.getLiga().getId() == LigaID) {
+                data.getLiga().setLeagueData(null);
+                returnList.add(data);
+            }
+        }
+        return new ResponseEntity<>(returnList, HttpStatus.OK);
+    }
 }

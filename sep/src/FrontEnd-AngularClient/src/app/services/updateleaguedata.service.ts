@@ -16,16 +16,16 @@ export class UpdateleaguedataService {
 
 
 
-  updateLeagueData(id: number, value: object): Observable<Object> {
+  updateLeagueData(id: number, value: object): Observable<object> {
 
-      return this.http.put(`${this.baseUrl}update/${id}`, value);
+    return this.http.put(`${this.baseUrl}update/${id}`, value);
 
 
 
   }
 
 
-  getLeagueData(id: number): Observable<Object> {
+  getLeagueData(id: number): Observable<object> {
     return this.http.get(`${this.baseUrl}`+id);
   }
 }

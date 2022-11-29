@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ChangeDateServiceService} from "../../services/changeDateService.service";
-import {SystemDatum} from "../../models/SystemDatum";
+import {ChangeDateServiceService} from "../../../services/changeDateService.service";
+import {SystemDatum} from "../../../models/SystemDatum";
 
 @Component({
   selector: 'app-systemdatum',

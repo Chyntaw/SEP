@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {User} from "../../models/roles/user/user";
-import {RegistrationserviceService} from "../../services/registrationservice.service";
+import {User} from "../../../models/roles/user/user";
+import {RegistrationserviceService} from "../../../services/registrationservice.service";
 import {Router} from "@angular/router";
-import {Admin} from "../../models/roles/admin/admin";
+import {Admin} from "../../../models/roles/admin/admin";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 //import {Role} from "../../models/role/role";
 

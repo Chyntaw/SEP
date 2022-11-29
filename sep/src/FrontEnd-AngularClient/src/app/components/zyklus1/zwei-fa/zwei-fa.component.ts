@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {User} from "../../models/roles/user/user";
-import {ZweiFaserviceService} from "../../services/zwei-faservice.service";
+import {User} from "../../../models/roles/user/user";
+import {ZweiFaserviceService} from "../../../services/zwei-faservice.service";
 import {Router} from "@angular/router";
 
 @Component({

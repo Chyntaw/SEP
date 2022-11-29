@@ -28,7 +28,7 @@ public class SepGruppeFApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(UserRepository repository, DateRepository repo, BettingRoundRepository reposiTEST, LigaService service) {
+	CommandLineRunner init(UserRepository repository, DateRepository repo) {
 		return args -> {
 			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@gmx.ru", "passWORT!", "ADMIN"));
 			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
@@ -36,19 +36,6 @@ public class SepGruppeFApplication {
 			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
 			repo.save(new SystemDate("1997-08-08"));
 
-			BettingRound bet = new BettingRound();
-			bet.getBetsList().add(new Bets("Bet1", (long) 1, (long) 2));
-			bet.getBetsList().add(new Bets("Bet2", (long)4, (long) 2));
-			bet.getBetsList().add(new Bets("Bet3", (long)5, (long) 12));
-
-			reposiTEST.save(bet);
-
-			BettingRound bet2 = new BettingRound();
-			bet2.getBetsList().add(new Bets("Bet4", (long)1, (long) 2));
-			bet2.getBetsList().add(new Bets("Bet5", (long)4, (long) 7));
-			bet2.getBetsList().add(new Bets("Bet6", (long)3, (long) 1));
-
-			reposiTEST.save(bet2);
 
 		};
 	}

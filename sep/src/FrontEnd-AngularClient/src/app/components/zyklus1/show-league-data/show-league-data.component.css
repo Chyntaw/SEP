@@ -70,16 +70,16 @@
 
 }
 .btnLiga{
-margin-top: 20px;
-margin-bottom: 30px;
-font-weight: 600;
-width: 80%;
-color: #FFFFFF;
-background-color: #282726;
-border: none;
-border-radius: 1.5rem;
-padding:4%;
-font-size: 30px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  font-weight: 600;
+  width: 80%;
+  color: #FFFFFF;
+  background-color: #282726;
+  border: none;
+  border-radius: 1.5rem;
+  padding:4%;
+  font-size: 30px;
 }
 .hidden{
   display:none;

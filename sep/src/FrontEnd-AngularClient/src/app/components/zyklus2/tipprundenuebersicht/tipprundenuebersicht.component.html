@@ -1,0 +1,28 @@
+<div class="login-container">
+  <div class="login-form">
+    <div class="form-group">
+      <div class="form-group">
+        <h3>Tipprundenübersicht</h3>
+      </div>
+    </div>
+    <div class="card my-5">
+      <div class="card-body">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tipprunden Name</th>
+            <th scope="col">Aktion</th>
+          </tr>
+          </thead>
+          <!-- Liga Anzeigen Body -->
+          <tbody>
+          <tr *ngFor="let tippround of tiprounds">
+            <td>{{ tippround.name}}</td>
+            <td><button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>

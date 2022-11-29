@@ -71,6 +71,25 @@ public class BettingRoundController {
         return new ResponseEntity<>(returnlist, HttpStatus.OK);
     }
 
+    @GetMapping("getAllPublicRounds")
+    public ResponseEntity<?>getAllPublicRounds(){
+        List<BettingRound> list = repo.findAll();
+        List<BettingRound> returnlist = new LinkedList<>();
+
+        for (BettingRound bettingRound : list) {
+            if(bettingRound.isIsprivate()==false){
+                returnlist.add(bettingRound);
+
+            }
+        }
+        return new ResponseEntity<>(returnlist, HttpStatus.OK);
+
+
+    }
+
+
+
+
     @PostMapping("placeBet")
     public ResponseEntity<?> placeBet(@RequestParam("bettingRoundid")Long bettingRoundid,
                                       @RequestParam("userid")Long userid,
