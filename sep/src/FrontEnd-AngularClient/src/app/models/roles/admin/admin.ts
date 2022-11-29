@@ -1,5 +1,5 @@
 export class Admin {
-
+  id!:string;
   eMail!:string;
   password!:string;
   lastName!:string;
