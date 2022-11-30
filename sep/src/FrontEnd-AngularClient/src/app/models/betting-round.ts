@@ -6,6 +6,7 @@ export class BettingRound {
   corrGoalPoints!:number;
   corrWinnerPoints!:number;
   passwordTipprunde?:string;
+  id!:number;
 
 
 }
