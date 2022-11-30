@@ -18,7 +18,7 @@
           <tbody>
           <tr *ngFor="let mytippround of mytiprounds">
             <td>{{ mytippround.name}}</td>
-            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID)" >Tipps abgeben</button>
+            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Tipps abgeben</button>
               <button  class="btnLiga" >Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
             </td>
@@ -54,20 +54,23 @@
                   <th scope="col" >Mannschaft 1</th>
                   <th scope="col">Mannschaft 2</th>
                   <th scope="col">Dein Tipp</th>
+                  <th scope="col">Aktueller Tipp</th>
                   <th scope="col">Tipphilfe</th>
                 </tr>
                 </thead>
                 <!-- MatchDayDaten Anzeigen Body -->
                 <tbody>
-                <tr *ngFor="let x of matchDayDaten">
-                  <td>{{ x.player1}}</td>
-                  <td>{{ x.player2}}</td>
+                <tr *ngFor="let x of matchDayDaten, let index = index">
+                  <td>{{ matchDayDaten[index].player1}}</td>
+                  <td>{{ matchDayDaten[index].player2 }}</td>
+
                   <td><form [formGroup]="TippAbgabeForm" >
                       <input  id="name" type="text" class="form-control" formControlName="tippAbgabe" [pattern]="tippPattern" Placeholder="Zahl1-Zahl 2" (keypress)="validateNo($event)">
                       <div *ngIf="f.tippAbgabe.errors?.['pattern']">Falsches Format</div>
                     </form>
                   </td>
                   <td><button>Tipphilfe</button></td>
+                  <td>{{ Bets[index] }}</td>
 
                 </tr>
                 </tbody>

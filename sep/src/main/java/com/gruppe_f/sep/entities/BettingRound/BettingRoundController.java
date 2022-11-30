@@ -106,6 +106,26 @@ public class BettingRoundController {
         return new ResponseEntity<>(retList, HttpStatus.OK);
     }
 
+    @PutMapping("getBetsByLeagueDataID")
+    public ResponseEntity<?> BetsByLDI(@RequestParam("userID")Long userID, @RequestParam("leagueDataids")Integer[] leagueDataids, @RequestParam("bettingRoundID")Long bettingRoundID) {
+        List<Bets> betsList = repo.findById(bettingRoundID).get().getBetsList();
+        List<String> returnList = new ArrayList<>();
+
+        for(int x = 0; x < leagueDataids.length; x++) {
+            for(Bets bet: betsList) {
+                if(bet.getUserID() == userID && bet.getLeagueData().getId() == leagueDataids[x]) {
+                    returnList.add(bet.getBets());
+                }
+            }
+            if(x == returnList.size()-1) continue;
+            returnList.add("N/A");
+        }
+        for(Integer inte: leagueDataids)  System.out.println(returnList);
+        System.out.println(leagueDataids);
+        return new ResponseEntity<>(returnList, HttpStatus.OK);
+    }
+
+
     @PostMapping("placeBet")
     public ResponseEntity<?> placeBet(@RequestParam("bettingRoundid")Long bettingRoundid,
                                       @RequestParam("userid")Long userid,

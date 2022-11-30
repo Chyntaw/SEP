@@ -15,7 +15,9 @@ export class MeinetipprundenComponent implements OnInit {
   mytiprounds: BettingRound[] | any;
   matchDayCount:Array<number> = new Array(34);
   matchDayDaten:Leaguedata[] | any;
+  Bets: String[] | any;
   _ligaID!:number;
+  tipRundenID!: number;
 
 
   constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
@@ -56,15 +58,29 @@ export class MeinetipprundenComponent implements OnInit {
         this.matchDayCount[i]=i;
     }
   }
-  SaveligaID(ligaID:number){
+  SaveligaID(ligaID:number, tippRundenid:number){
     this._ligaID=ligaID;
+    this.tipRundenID = tippRundenid;
   }
   MatchDayDaten(matchDayID:number){
     this.showleaguedataservice.getAllMatchDayDaten(this._ligaID,matchDayID).subscribe(res=>{
 
       this.matchDayDaten=res;
+      let arr1 : Number[] = [];
+      for(var val of this.matchDayDaten) {
+        arr1.push(val.id);
+      }
+      console.log(arr1);
+      let userid = Number(localStorage.getItem('id'))
+      this.getBets(userid, arr1, this.tipRundenID)
     })
 
+  }
+  getBets(userID:number, leagueDataIDs:Number[], bettingRoundID:number) {
+    this.tipprundenservice.getBetsByLeagueDataID(userID, leagueDataIDs, bettingRoundID).subscribe(res => {
+      console.log(res)
+      this.Bets = res;
+    })
   }
 
   validateNo(e:any): boolean {

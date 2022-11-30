@@ -55,6 +55,14 @@ export class TipprundenserviceService {
     console.log(this._tipprunde)
   }
 
+  getBetsByLeagueDataID(userID:number, leagueDataids:Number[], bettingRoundID:number): Observable<any> {
+    const formData2: FormData = new FormData();
+    formData2.append("userID", String(userID));
+    formData2.append("leagueDataids", String(leagueDataids));
+    formData2.append("bettingRoundID", String(bettingRoundID));
+    return this.http.put(`${this.baseUrl}/getBetsByLeagueDataID`, formData2);
+  }
+
 
 
 }
