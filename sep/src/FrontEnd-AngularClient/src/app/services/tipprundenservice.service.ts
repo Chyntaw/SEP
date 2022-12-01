@@ -56,13 +56,22 @@ export class TipprundenserviceService {
   }
 
   getBetsByLeagueDataID(userID:number, leagueDataids:Number[], bettingRoundID:number): Observable<any> {
-    const formData2: FormData = new FormData();
-    formData2.append("userID", String(userID));
-    formData2.append("leagueDataids", String(leagueDataids));
-    formData2.append("bettingRoundID", String(bettingRoundID));
-    return this.http.put(`${this.baseUrl}/getBetsByLeagueDataID`, formData2);
+    const formData: FormData = new FormData();
+    formData.append("userID", String(userID));
+    formData.append("leagueDataids", String(leagueDataids));
+    formData.append("bettingRoundID", String(bettingRoundID));
+    return this.http.put(`${this.baseUrl}/getBetsByLeagueDataID`, formData);
   }
 
+    placeBet(bettingRoundid:number, userid:number, leagueDataid:number, newBet:string):Observable<any>{
+      const formData: FormData = new FormData();
+      formData.append("bettingRoundid",String(bettingRoundid))
+      formData.append("userid",String(userid))
+      formData.append("leagueDataid",String(leagueDataid))
+      formData.append("newBet",newBet)
 
 
+   return this.http.post(`${this.baseUrl}/placeBet`, formData)
+
+  }
 }

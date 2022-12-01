@@ -130,7 +130,7 @@ public class BettingRoundController {
     public ResponseEntity<?> placeBet(@RequestParam("bettingRoundid")Long bettingRoundid,
                                       @RequestParam("userid")Long userid,
                                       @RequestParam("leagueDataid")int leagueDataid,
-                                      @RequestParam("bet")String newBet) {
+                                      @RequestParam("newBet")String newBet) {
 
         BettingRound bettingRound = repo.findById(bettingRoundid).get();
         List<Bets> betsList = bettingRound.getBetsList();

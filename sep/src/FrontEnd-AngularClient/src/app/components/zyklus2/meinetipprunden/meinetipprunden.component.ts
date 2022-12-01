@@ -3,7 +3,9 @@ import {Leaguedata} from "../../../models/leaguedata";
 import {ShowleagueserviceService} from "../../../services/showleagueservice.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BettingRound} from "../../../models/betting-round";
+import {Bets} from "../../../models/bets";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -18,6 +20,8 @@ export class MeinetipprundenComponent implements OnInit {
   Bets: String[] | any;
   _ligaID!:number;
   tipRundenID!: number;
+  newBet:Bets = new Bets();
+  newBets:Bets[] | any;
 
 
   constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
@@ -25,6 +29,7 @@ export class MeinetipprundenComponent implements OnInit {
   ngOnInit(): void {
    this.ArrayFüllen()
     this.zeigeMeineTipprunden()
+
 
   }
   tippPattern ='^[0-9]+[-]+[0-9]*$';
@@ -37,8 +42,12 @@ export class MeinetipprundenComponent implements OnInit {
   get f() {
     return this.TippAbgabeForm.controls;
   }
-
-
+  get tippAbgabeWert(){
+    return this.TippAbgabeForm.get("tippAbgabe")
+  }
+  FormControlReset(){
+    this.TippAbgabeForm.controls.tippAbgabe.setValue(null)
+}
 
   zeigeMeineTipprunden(){
 
@@ -82,6 +91,18 @@ export class MeinetipprundenComponent implements OnInit {
       this.Bets = res;
     })
   }
+  placeBet(leagueDataid:number){
+   let bet:any;
+
+    bet=this.tippAbgabeWert?.value;
+
+    let userid = Number(localStorage.getItem('id'))
+
+    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,bet).subscribe(res=>{
+      alert("Tipp gespeichert!")
+    },error=>alert("Tipp konnte nicht gespeichert werden"));
+  }
+
 
   validateNo(e:any): boolean {
     const charCode = e.which ? e.which : e.keyCode;

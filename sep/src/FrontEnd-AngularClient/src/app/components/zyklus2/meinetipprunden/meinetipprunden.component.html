@@ -45,7 +45,7 @@
           <div class="card my-5">
             <div class="card-body">
               <select class="dropdown">
-                <option class="dropdown-item" *ngFor="let x of matchDayCount" (click)="MatchDayDaten(x)">Spieltag:{{x}} </option>
+                <option class="dropdown-item" *ngFor="let x of matchDayCount" (click)="MatchDayDaten(x); FormControlReset()">Spieltag:{{x}} </option>
               </select>
 
               <table class="table table-bordered table-striped">
@@ -56,6 +56,8 @@
                   <th scope="col">Dein Tipp</th>
                   <th scope="col">Aktueller Tipp</th>
                   <th scope="col">Tipphilfe</th>
+                  <th scope="col">Aktion</th>
+
                 </tr>
                 </thead>
                 <!-- MatchDayDaten Anzeigen Body -->
@@ -65,13 +67,13 @@
                   <td>{{ matchDayDaten[index].player2 }}</td>
 
                   <td><form [formGroup]="TippAbgabeForm" >
-                      <input  id="name" type="text" class="form-control" formControlName="tippAbgabe" [pattern]="tippPattern" Placeholder="Zahl1-Zahl 2" (keypress)="validateNo($event)">
+                      <input id="name" type="text" class="form-control" formControlName="tippAbgabe" [pattern]="tippPattern" Placeholder="Zahl 1 - Zahl 2" (keypress)="validateNo($event)">
                       <div *ngIf="f.tippAbgabe.errors?.['pattern']">Falsches Format</div>
                     </form>
                   </td>
-                  <td><button>Tipphilfe</button></td>
                   <td>{{ Bets[index] }}</td>
-
+                  <td><button class="btn btn-info">Tipphilfe</button></td>
+                  <td><button type="submit" class="btn btn-success" (click)="placeBet(matchDayDaten[index].id)">Speichern</button></td>
                 </tr>
                 </tbody>
               </table>
@@ -82,8 +84,7 @@
 
         <!-- Footer-->
         <div class="modal-footer" >
-          <button type="submit" class="btn btn-success" >Tipps speichern!</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Speichern</button>
         </div>
       </form>
     </div>
