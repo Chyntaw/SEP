@@ -14,9 +14,16 @@ public class Alias {
     private Long id;
     @Column(name="alias")
     private String alias;
-    //private User user;
+
+    private Long userID;
 
     public Alias(){}
+
+    public Alias(String alias, Long userID) {
+        this.alias = alias;
+        this.userID = userID;
+    }
+
     public Long getId() {
         return id;
     }
@@ -33,4 +40,11 @@ public class Alias {
         this.alias = alias;
     }
 
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
 }

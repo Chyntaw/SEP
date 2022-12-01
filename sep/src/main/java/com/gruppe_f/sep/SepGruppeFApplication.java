@@ -5,6 +5,10 @@ import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
 import com.gruppe_f.sep.entities.BettingRound.BettingRoundRepository;
 import com.gruppe_f.sep.entities.bets.Bets;
+import com.gruppe_f.sep.entities.leagueData.LeagueData;
+import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
+import com.gruppe_f.sep.entities.liga.Liga;
+import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.liga.LigaService;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
@@ -28,15 +32,29 @@ public class SepGruppeFApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(UserRepository repository, DateRepository repo) {
+	CommandLineRunner init(UserRepository repository, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo) {
 		return args -> {
 			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@gmx.ru", "passWORT!", "ADMIN"));
+			repository.save(new User("Test","Hodenburg","02.02.1000", "t@t.de", "test", "Basic"));
+			repository.save(new User("Test","Lmao>Burg","02.02.1000", "xD@xD.de", "xD", "Basic"));
 			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
 			repository.save(new User("Peter","Parker","02.02.2002", "rofl@yahoo.de", "mirdochwayne", "ADMIN"));
 			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
-			repo.save(new SystemDate("1997-08-08"));
+			repo.save(new SystemDate("3000-08-08"));
 
-
+			/*
+			Liga testLiga = new Liga("Nationalistische Nationalliga", null);
+			ligarepo.save(testLiga);
+			LeagueData data = new LeagueData(1, "Testspieler1", "Testspieler2", "1-0", (long)1);
+			data.setDate("2020-05-05");
+			LeagueData data2 = new LeagueData(2, "MEIN_BVB", "Dein BvB", "11-10", (long)1);
+			data.setDate("2020-05-05");
+			ldrepo.save(data);
+			ldrepo.save(data2);
+			testLiga.getLeagueData().add(data);
+			testLiga.getLeagueData().add(data2);
+			ligarepo.save(testLiga);
+			*/
 		};
 	}
 
