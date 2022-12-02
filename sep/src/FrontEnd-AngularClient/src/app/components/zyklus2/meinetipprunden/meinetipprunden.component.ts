@@ -29,10 +29,10 @@ export class MeinetipprundenComponent implements OnInit {
   ngOnInit(): void {
    this.ArrayFüllen()
     this.zeigeMeineTipprunden()
-    this.Bets=""
+
 
   }
-  tippPattern ='^[0-9]+[-]+[0-9]*$';
+  tippPattern ='^[0-9]+[-][0-9]+$';
   TippAbgabeForm= new FormGroup({
     tippAbgabe: new FormControl('', Validators.compose([
       Validators.required,
@@ -91,14 +91,28 @@ export class MeinetipprundenComponent implements OnInit {
       this.Bets = res;
     })
   }
-  placeBet(leagueDataid:number,index:number){
+
+// show TipHelp
+  getTipHelp(player1: string, player2: string, id: number) {
+    this.tipprundenservice.getTipHelpByTeams(player1, player2, id).subscribe(data => {
+      let leaguedataResult = <Leaguedata>data
+      if("N/A" == leaguedataResult.result) {
+        alert("Keine Tipphilfe derzeit verfügbar")
+      }
+      else {
+        alert("Unser Tipp: " + leaguedataResult.result)
+      }
+    })
+  }
+
+  placeBet(leagueDataid:number){
    let bet:any;
 
     bet=this.tippAbgabeWert?.value;
 
     let userid = Number(localStorage.getItem('id'))
 
-    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,this.matchDayDaten[index].newBet).subscribe(res=>{
+    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,bet).subscribe(res=>{
       alert("Tipp gespeichert!")
     },error=>alert("Tipp konnte nicht gespeichert werden"));
   }

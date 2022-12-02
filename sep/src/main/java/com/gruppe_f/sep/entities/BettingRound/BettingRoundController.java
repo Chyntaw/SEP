@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.BettingRound;
 
+import com.gruppe_f.sep.businesslogic.TipHelper;
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.alias.Alias;
@@ -11,16 +12,21 @@ import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.scores.Score;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
+import com.gruppe_f.sep.mail.MailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -31,13 +37,15 @@ public class BettingRoundController {
     private  LeagueDataRepository leagueDataRepo;
     private  DateRepository dateRepo;
     private LigaRepository ligaRepo;
+    private MailSenderService mailService;
     @Autowired
-    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo) {
+    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo, MailSenderService mailService) {
         this.repo = repo;
         this.userRepo = userRepo;
         this.leagueDataRepo = leagueDataRepo;
         this.dateRepo = dateRepo;
         this.ligaRepo = ligaRepo;
+        this.mailService = mailService;
     }
 
 
@@ -154,6 +162,21 @@ public class BettingRoundController {
     }
 
 
+
+    @PostMapping("getTipHelp")
+    public ResponseEntity<?> getTipHelpByTeams(@RequestParam("player1") String player1,
+                                               @RequestParam("player2") String player2,
+                                               @RequestParam("id") Long id) {
+
+        TipHelper tipHelper = new TipHelper(dateRepo, leagueDataRepo);
+
+        LeagueData leagueData = new LeagueData();
+        leagueData.setResult(tipHelper.tipHelp(player1, player2, id));
+
+        return new ResponseEntity<>(leagueData, HttpStatus.OK);
+    }
+
+
     //Langsam versteh ich warum man das eigentlich in Controller und Serviceklassen aufteilen sollte. NAJA MACHSTE NIX
     public List<LeagueData> getLeagueDataByDate(Long id) {
 
@@ -163,8 +186,8 @@ public class BettingRoundController {
         List<SystemDate> sysDate = dateRepo.findAll();
         List<LeagueData> returnList = new ArrayList<>();
         for (LeagueData data : list) {
-            //Getting LeagueData by ID and setting result of Future games "0-0"
-            if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) <= 0) {
+            //Getting LeagueData by Date
+            if (compareDates(data.getDate(), sysDate.get(0).getLocalDate()) <= 0) {
                 returnList.add(data);
             }
         }
@@ -244,6 +267,36 @@ public class BettingRoundController {
         aliasList.add(new Alias(alias, userID));
         repo.save(betR);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/shareBets/{userID}/{bettingroundID}/{friendID}")
+    public ResponseEntity<?> shareBets(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID, @PathVariable("friendID")Long friendID) {
+        BettingRound bettingRound = repo.findById(bettingroundID).get();
+        List<Bets> betsList = bettingRound.getBetsList();
+        User user = userRepo.findById(userID).get();
+        User mailRecipient = userRepo.findById(friendID).get();
+
+        if(!betsList.isEmpty()) {
+            String mailBody ="Moin Diggi,\nfolgende Tipps hab ich abgegeben.\n\nGaLiGrü \nDein "+user.getFirstName()+" "+user.getLastName()+"\n\nPlayer 1\t\tPlayer 2\t\tMein Tipp\n\n";
+            for(Bets bet: betsList) {
+                if(bet.getUserID() == userID) {
+                String player1 = bet.getLeagueData().getPlayer1();
+                String player2 = bet.getLeagueData().getPlayer2();
+                String myBet = bet.getBets();
+                mailBody += player1 +"\t\t" + player2+"\t\t"+ myBet+"\n";
+                }
+            }
+            mailBody += "\n\nWenn du auch so geile Tipps abgeben willst, KOMM IN DIE GRUPPE";
+
+            mailService.sendEmail(mailRecipient.geteMail(),
+                    "Meine Tipps in Tipprunde: "+bettingRound.getName(),
+                    mailBody);      //schick Email hoffentlich
+
+            //After Mail was sent, HttpStatus.OK
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        //Forbidden, if User has no Tipps in this Tippround.
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
 }

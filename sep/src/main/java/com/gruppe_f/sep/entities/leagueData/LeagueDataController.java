@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/leagueData")
@@ -50,7 +52,7 @@ public class LeagueDataController {
         List<LeagueData> returnList = new ArrayList<>();
         for (LeagueData data : list) {
                 //Getting LeagueData by ID and setting result of Future games "0-0"
-                if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) < 0) {
+                if (compareDates(data.getDate(), sysDate.get(0).getLocalDate()) < 0) {
                     returnList.add(data);
                 } else {
                     data.setResult("-");
