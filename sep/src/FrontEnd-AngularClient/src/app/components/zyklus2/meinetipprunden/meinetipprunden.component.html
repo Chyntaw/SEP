@@ -73,7 +73,7 @@
                   </td>
                   <td>{{ Bets[index] }}</td>
                   <td><button class="btn btn-info">Tipphilfe</button></td>
-                  <td><button type="submit" class="btn btn-success" (click)="placeBet(matchDayDaten[index].id)">Speichern</button></td>
+                  <td><button type="submit" class="btn btn-success" [disabled]="TippAbgabeForm.controls.tippAbgabe.invalid" (click)="placeBet(matchDayDaten[index].id)">Speichern</button></td>
                 </tr>
                 </tbody>
               </table>

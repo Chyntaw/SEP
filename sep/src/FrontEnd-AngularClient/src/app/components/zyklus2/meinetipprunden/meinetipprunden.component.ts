@@ -32,7 +32,7 @@ export class MeinetipprundenComponent implements OnInit {
 
 
   }
-  tippPattern ='^[0-9]+[-]+[0-9]*$';
+  tippPattern ='^[0-9]+[-][0-9]+$';
   TippAbgabeForm= new FormGroup({
     tippAbgabe: new FormControl('', Validators.compose([
       Validators.required,

@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/bettingRound/")
@@ -163,8 +165,8 @@ public class BettingRoundController {
         List<SystemDate> sysDate = dateRepo.findAll();
         List<LeagueData> returnList = new ArrayList<>();
         for (LeagueData data : list) {
-            //Getting LeagueData by ID and setting result of Future games "0-0"
-            if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) <= 0) {
+            //Getting LeagueData by Date
+            if (compareDates(data.getDate(), sysDate.get(0).getLocalDate()) <= 0) {
                 returnList.add(data);
             }
         }
