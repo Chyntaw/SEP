@@ -2,6 +2,7 @@ package com.gruppe_f.sep.entities.BettingRound;
 
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
+import com.gruppe_f.sep.entities.alias.Alias;
 import com.gruppe_f.sep.entities.bets.Bets;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
@@ -60,11 +61,14 @@ public class BettingRoundController {
     public ResponseEntity<?> addParticipant(@RequestParam("userid") Long userid, @RequestParam("bettingRoundid") Long bettingRoundid) {
         BettingRound bettingRound = repo.findById(bettingRoundid).get();
         List<User> participants = bettingRound.getParticipants();
+        User newParticipant = userRepo.findById(userid).get();
         //Check if user already participating
-        if(participants.contains(userRepo.findById(userid).get())) return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+        if(participants.contains(newParticipant)) return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
 
-        participants.add(userRepo.findById(userid).get());
-        bettingRound.getScoresList().add(new Score(0, userRepo.findById(userid).get()));
+        participants.add(newParticipant);
+        bettingRound.getScoresList().add(new Score(0, newParticipant));
+        //Create Alias for new participant, Alias init with firstname, can be changed calling the same method.
+        changeAlias(userid, bettingRoundid, newParticipant.getFirstName());
 
         //ReturnType is Bettinground, not Userlist
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
@@ -74,11 +78,11 @@ public class BettingRoundController {
     public ResponseEntity<?> getRoundsbyUserid(@PathVariable("id")Long id) {
         List<BettingRound> list = repo.findAll();
         List<BettingRound> returnlist = new LinkedList<>();
-        for(BettingRound round: list) {
-            for(User user: round.getParticipants()) {
+
+        for(BettingRound round: list)
+            for(User user: round.getParticipants())
                 if(user.getId()==id) returnlist.add(round);
-            }
-        }
+
         return new ResponseEntity<>(returnlist, HttpStatus.OK);
     }
 
@@ -120,8 +124,6 @@ public class BettingRoundController {
             if(x == returnList.size()-1) continue;
             returnList.add("N/A");
         }
-        for(Integer inte: leagueDataids)  System.out.println(returnList);
-        System.out.println(leagueDataids);
         return new ResponseEntity<>(returnList, HttpStatus.OK);
     }
 
@@ -137,13 +139,16 @@ public class BettingRoundController {
         for(Bets bet: betsList) {
             //Check if user already placed Bet on this Game
             if(bet.getUserID() == userid && bet.getLeagueData().getId() == leagueDataid) {
-                bet.setBets(newBet);
+                if(newBet == null) betsList.remove(bet);
+                else bet.setBets(newBet);
                 //getLeagueDataByDate(bettingRound.getLigaID());
                 return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
             }
         }
-        LeagueData data = leagueDataRepo.findByid(leagueDataid);
-        betsList.add(new Bets(newBet, userid, data));
+        if(newBet != null) {
+            LeagueData data = leagueDataRepo.findByid(leagueDataid);
+            betsList.add(new Bets(newBet, userid, data));
+        }
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
 
     }
@@ -159,18 +164,19 @@ public class BettingRoundController {
         List<LeagueData> returnList = new ArrayList<>();
         for (LeagueData data : list) {
             //Getting LeagueData by ID and setting result of Future games "0-0"
-            if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) < 0) {
+            if (data.getDate().compareTo(sysDate.get(0).getLocalDate()) <= 0) {
                 returnList.add(data);
             }
         }
         return returnList;
     }
 
-    @GetMapping("top3/{id}")
-    public ResponseEntity<?> getTop3(@PathVariable("id")Long id) {
+    @GetMapping("leaderboard/{bettingroundid}")
+    public ResponseEntity<?> leaderboard(@PathVariable("bettingroundid")Long id) {
         BettingRound bettingRound = repo.findById(id).get();
         List<Bets> betsList = bettingRound.getBetsList();
         List<LeagueData> leagueDatalist = getLeagueDataByDate(bettingRound.getLigaID());
+        System.out.println(leagueDatalist.size());
 
         for(Bets bet: betsList) {
             for(LeagueData data: leagueDatalist) {
@@ -192,12 +198,19 @@ public class BettingRoundController {
         List<Score> scoreList = bettingRound.getScoresList();
         for(Score score:scoreList) {
             for(Bets bet: betsList) {
-                if(score.getUserid() == bet.getUserID()) score.setScores(score.getScores()+ bet.getScore());
+                if(score.getUser().getId() == bet.getUserID()) score.setScores(score.getScores()+ bet.getScore());
             }
         }
         List<Score> list = scoreList.stream().sorted((x,y) -> x.getScores() - y.getScores()).collect(Collectors.toList());
-        List<Long> top3 = new ArrayList<>();
-        for(int i = 0; i < scoreList.size() && i <3; i++) top3.add(scoreList.get(i).getUserid());
+        /*
+        for(Score score:list) {
+            for(Alias alias: bettingRound.getAliasList()) {
+                if(score.getUser().getId() == alias.getUserID()) {
+                    score.getUser().setFirstName(alias.getAlias());
+                }
+            }
+        }
+        */
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -215,6 +228,22 @@ public class BettingRoundController {
             }
         }
         return new ResponseEntity<>(betsList, HttpStatus.OK);
+    }
+
+    @PutMapping("/changeAlias")
+    public ResponseEntity<?> changeAlias(@RequestParam("userID")Long userID, @RequestParam("bettingroundID")Long bettingroundID, @RequestParam("alias")String alias ) {
+        BettingRound betR = repo.findById(bettingroundID).get();
+        List<Alias> aliasList = betR.getAliasList();
+        for(Alias userAlias : aliasList) {
+            if(userAlias.getUserID() == userID) {
+                userAlias.setAlias(alias);
+                repo.save(betR);
+                return  new ResponseEntity<>(HttpStatus.OK);
+            }
+        }
+        aliasList.add(new Alias(alias, userID));
+        repo.save(betR);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 }

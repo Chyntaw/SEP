@@ -3,7 +3,7 @@ version: '2'
 services:
 
   app:
-    image: 'tippspiel'
+    image: 'tippspiel:latest'
     ports:
       - "8080:8080"
     build:
@@ -29,7 +29,7 @@ services:
       - POSTGRES_PASSWORD=password
 
   frontend:
-    image: client
+    image: 'client:latest'
     container_name: client
     build: ..\..\FrontEnd-AngularClient
     ports:

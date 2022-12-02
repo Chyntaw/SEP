@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.BettingRound;
 
+import com.gruppe_f.sep.entities.alias.Alias;
 import com.gruppe_f.sep.entities.bets.Bets;
 import com.gruppe_f.sep.entities.liga.Liga;
 import com.gruppe_f.sep.entities.scores.Score;
@@ -31,6 +32,10 @@ public class BettingRound {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bettingroundid")
     private List<Bets> betsList = new LinkedList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "bettingroundid")
+    private List<Alias> aliasList = new LinkedList<>();
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "participants",
@@ -160,5 +165,13 @@ public class BettingRound {
 
     public void setParticipants(List<User> participants) {
         this.participants = participants;
+    }
+
+    public List<Alias> getAliasList() {
+        return aliasList;
+    }
+
+    public void setAliasList(List<Alias> aliasList) {
+        this.aliasList = aliasList;
     }
 }
