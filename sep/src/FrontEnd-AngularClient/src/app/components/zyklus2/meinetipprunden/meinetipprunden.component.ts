@@ -29,7 +29,7 @@ export class MeinetipprundenComponent implements OnInit {
   ngOnInit(): void {
    this.ArrayFüllen()
     this.zeigeMeineTipprunden()
-
+    this.Bets=""
 
   }
   tippPattern ='^[0-9]+[-]+[0-9]*$';
@@ -91,14 +91,14 @@ export class MeinetipprundenComponent implements OnInit {
       this.Bets = res;
     })
   }
-  placeBet(leagueDataid:number){
+  placeBet(leagueDataid:number,index:number){
    let bet:any;
 
     bet=this.tippAbgabeWert?.value;
 
     let userid = Number(localStorage.getItem('id'))
 
-    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,bet).subscribe(res=>{
+    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,this.matchDayDaten[index].newBet).subscribe(res=>{
       alert("Tipp gespeichert!")
     },error=>alert("Tipp konnte nicht gespeichert werden"));
   }

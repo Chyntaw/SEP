@@ -5,5 +5,6 @@ export class Leaguedata {
   player2:string='';
   result:string='';
   date:string='';
+  newBet?:string;
 
 }

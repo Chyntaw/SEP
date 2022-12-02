@@ -22,6 +22,7 @@ export class ShowLeagueDataComponent implements OnInit {
   leaguedatalist: Leaguedata[] | any ;
   leaguedata : Leaguedata=new Leaguedata();
   zeigeAktion:boolean = false;
+  zeigeTippRundenErstellen:boolean=true;
   ligaid!:number;
   betRound:BettingRound = new BettingRound();
 
@@ -39,6 +40,10 @@ export class ShowLeagueDataComponent implements OnInit {
     if(user_role=='BASIC'){
       this.zeigeAktion=true;}
 
+    if(user_role==localStorage.getItem("role"))
+    if(user_role=='ADMIN'){
+      this.zeigeTippRundenErstellen=false;
+    }
     let nuller: Leaguedata = {
       id: 0,
       matchDay: 0,
@@ -100,7 +105,7 @@ export class ShowLeagueDataComponent implements OnInit {
 
     console.log(this.leaguedata)
 
-    //Das erstellte Objekt  fürs Updaten ans Backend übergeben
+    //Das erstellte Objekt fürs Updaten ans Backend übergeben
     this.updateleaguedataservice.updateLeagueData(this.leaguedata.id,this.leaguedata).subscribe(
       data => {
 

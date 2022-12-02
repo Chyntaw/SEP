@@ -67,13 +67,13 @@
                   <td>{{ matchDayDaten[index].player2 }}</td>
 
                   <td><form [formGroup]="TippAbgabeForm" >
-                      <input id="name" type="text" class="form-control" formControlName="tippAbgabe" [pattern]="tippPattern" Placeholder="Zahl 1 - Zahl 2" (keypress)="validateNo($event)">
-                      <div *ngIf="f.tippAbgabe.errors?.['pattern']">Falsches Format</div>
+                      <input [(ngModel)]="matchDayDaten[index].newBet" [ngModelOptions]="{standalone: true}" id="tippabgabe" name="tippabgabe" type="text" [pattern]="tippPattern" Placeholder="Zahl 1 - Zahl 2" (keypress)="validateNo($event)">
+                    <div *ngIf="f.tippAbgabe.errors?.['pattern']">Falsches Format</div>
                     </form>
                   </td>
                   <td>{{ Bets[index] }}</td>
                   <td><button class="btn btn-info">Tipphilfe</button></td>
-                  <td><button type="submit" class="btn btn-success" (click)="placeBet(matchDayDaten[index].id)">Speichern</button></td>
+                  <td><button type="submit" class="btn btn-success" (click)="placeBet(matchDayDaten[index].id, index)" >Speichern</button></td>
                 </tr>
                 </tbody>
               </table>
@@ -84,7 +84,7 @@
 
         <!-- Footer-->
         <div class="modal-footer" >
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Speichern</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
         </div>
       </form>
     </div>

@@ -28,6 +28,6 @@ export class TipprundenuebersichtComponent implements OnInit {
 
   }
   tipprundeBeitreten(name:string){
-
+    
   }
 }
