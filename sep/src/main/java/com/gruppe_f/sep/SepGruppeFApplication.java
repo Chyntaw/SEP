@@ -23,6 +23,8 @@ import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class SepGruppeFApplication {
@@ -40,21 +42,31 @@ public class SepGruppeFApplication {
 			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
 			repository.save(new User("Peter","Parker","02.02.2002", "rofl@yahoo.de", "mirdochwayne", "ADMIN"));
 			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
-			repo.save(new SystemDate("3000-08-08"));
+			repo.save(new SystemDate("2020-05-14"));
 
-			/*
+
 			Liga testLiga = new Liga("Nationalistische Nationalliga", null);
 			ligarepo.save(testLiga);
-			LeagueData data = new LeagueData(1, "Testspieler1", "Testspieler2", "1-0", (long)1);
-			data.setDate("2020-05-05");
-			LeagueData data2 = new LeagueData(2, "MEIN_BVB", "Dein BvB", "11-10", (long)1);
-			data.setDate("2020-05-05");
-			ldrepo.save(data);
-			ldrepo.save(data2);
-			testLiga.getLeagueData().add(data);
-			testLiga.getLeagueData().add(data2);
+			List<LeagueData> dataList = new ArrayList<>();
+			dataList.add(new LeagueData(1, "Testspieler1", "Testspieler2", "1-0", (long)1));
+			dataList.add(new LeagueData(2, "MEIN_BVB", "Dein BvB", "11-10", (long)1));
+			dataList.add(new LeagueData(2, "User BVB", "Euer BvB", "2-0", (long)1));
+			dataList.add(new LeagueData(3, "DeineMUdda", "DeinVadda", "0-2", (long)1));
+			dataList.add(new LeagueData(3, "Bayern", "Dein BvB", "11-2", (long)1));
+			dataList.add(new LeagueData(4, "FC Schalke", "BvB", "1-10", (long)1));
+			dataList.add(new LeagueData(4, "Kaiserslautern", "Roz-weiss Essen", "0-0", (long)1));
+			dataList.add(new LeagueData(5, "DurchfallKing", "Tütensuppe", "3-1", (long)1));
+			dataList.add(new LeagueData(5, "BurgerKing", "Eintopf", "6-8", (long)1));
+			dataList.add(new LeagueData(6, "McDonlads", "Die Simpson", "2-7", (long)1));
+			int x = 10;
+			for(LeagueData data: dataList) {
+				data.setDate("2020-05-"+Integer.toString(x));
+				ldrepo.save(data);
+				testLiga.getLeagueData().add(data);
+				x++;
+			}
 			ligarepo.save(testLiga);
-			*/
+
 		};
 	}
 
