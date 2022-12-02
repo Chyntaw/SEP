@@ -72,7 +72,7 @@
                     </form>
                   </td>
                   <td>{{ Bets[index] }}</td>
-                  <td><button class="btn btn-info">Tipphilfe</button></td>
+                  <td><button class="btn btn-info" (click)="getTipHelp(matchDayDaten[index].player1, matchDayDaten[index].player2, matchDayDaten[index].id)">Tipphilfe</button></td>
                   <td><button type="submit" class="btn btn-success" [disabled]="TippAbgabeForm.controls.tippAbgabe.invalid" (click)="placeBet(matchDayDaten[index].id)">Speichern</button></td>
                 </tr>
                 </tbody>
@@ -84,7 +84,7 @@
 
         <!-- Footer-->
         <div class="modal-footer" >
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Speichern</button>
+          <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">Speichern</button>
         </div>
       </form>
     </div>

@@ -91,6 +91,20 @@ export class MeinetipprundenComponent implements OnInit {
       this.Bets = res;
     })
   }
+
+// show TipHelp
+  getTipHelp(player1: string, player2: string, id: number) {
+    this.tipprundenservice.getTipHelpByTeams(player1, player2, id).subscribe(data => {
+      let leaguedataResult = <Leaguedata>data
+      if("N/A" == leaguedataResult.result) {
+        alert("Keine Tipphilfe derzeit verfügbar")
+      }
+      else {
+        alert("Unser Tipp: " + leaguedataResult.result)
+      }
+    })
+  }
+
   placeBet(leagueDataid:number){
    let bet:any;
 

@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.BettingRound;
 
+import com.gruppe_f.sep.businesslogic.TipHelper;
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.alias.Alias;
@@ -158,6 +159,21 @@ public class BettingRoundController {
         }
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
 
+    }
+
+
+
+    @PostMapping("getTipHelp")
+    public ResponseEntity<?> getTipHelpByTeams(@RequestParam("player1") String player1,
+                                               @RequestParam("player2") String player2,
+                                               @RequestParam("id") Long id) {
+
+        TipHelper tipHelper = new TipHelper(dateRepo, leagueDataRepo);
+
+        LeagueData leagueData = new LeagueData();
+        leagueData.setResult(tipHelper.tipHelp(player1, player2, id));
+
+        return new ResponseEntity<>(leagueData, HttpStatus.OK);
     }
 
 
