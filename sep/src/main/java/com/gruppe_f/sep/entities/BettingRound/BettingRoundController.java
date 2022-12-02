@@ -11,11 +11,14 @@ import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.scores.Score;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
+import com.gruppe_f.sep.mail.MailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -33,13 +36,15 @@ public class BettingRoundController {
     private  LeagueDataRepository leagueDataRepo;
     private  DateRepository dateRepo;
     private LigaRepository ligaRepo;
+    private MailSenderService mailService;
     @Autowired
-    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo) {
+    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo, MailSenderService mailService) {
         this.repo = repo;
         this.userRepo = userRepo;
         this.leagueDataRepo = leagueDataRepo;
         this.dateRepo = dateRepo;
         this.ligaRepo = ligaRepo;
+        this.mailService = mailService;
     }
 
 
@@ -246,6 +251,36 @@ public class BettingRoundController {
         aliasList.add(new Alias(alias, userID));
         repo.save(betR);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/shareBets/{userID}/{bettingroundID}/{friendID}")
+    public ResponseEntity<?> shareBets(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID, @PathVariable("friendID")Long friendID) {
+        BettingRound bettingRound = repo.findById(bettingroundID).get();
+        List<Bets> betsList = bettingRound.getBetsList();
+        User user = userRepo.findById(userID).get();
+        User mailRecipient = userRepo.findById(friendID).get();
+
+        if(!betsList.isEmpty()) {
+            String mailBody ="Moin Diggi,\nfolgende Tipps hab ich abgegeben.\n\nGaLiGrü \nDein "+user.getFirstName()+" "+user.getLastName()+"\n\nPlayer 1\t\tPlayer 2\t\tMein Tipp\n\n";
+            for(Bets bet: betsList) {
+                if(bet.getUserID() == userID) {
+                String player1 = bet.getLeagueData().getPlayer1();
+                String player2 = bet.getLeagueData().getPlayer2();
+                String myBet = bet.getBets();
+                mailBody += player1 +"\t\t" + player2+"\t\t"+ myBet+"\n";
+                }
+            }
+            mailBody += "\n\nWenn du auch so geile Tipps abgeben willst, KOMM IN DIE GRUPPE";
+
+            mailService.sendEmail(mailRecipient.geteMail(),
+                    "Meine Tipps in Tipprunde: "+bettingRound.getName(),
+                    mailBody);      //schick Email hoffentlich
+
+            //After Mail was sent, HttpStatus.OK
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        //Forbidden, if User has no Tipps in this Tippround.
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
 }

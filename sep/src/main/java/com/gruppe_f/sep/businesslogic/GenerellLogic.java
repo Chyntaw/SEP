@@ -4,12 +4,18 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class GenerellLogic {
-    /* Works similar to compareTo, returns negative int if
-    *   right bigger left.
-    *       Hab jz kein bock mehr das zu kommentieren, schau in compareTo methode.
-    * */
+    /* Works similar to compareTo, returns
+    *       -1 if left < right,
+    *       1 if right > left,
+    *       0 if identical
+    *
+    * requested param1, param2: Date-String in format yyyy-mm-dd
+    */
     public static int compareDates(String date1, String date2) {
 
+        if(date1 == null || date2 == null) throw new NullPointerException();
+
+        //Get Dates as Integer
         int[] dateleft = Arrays.stream(date1.split("-")).mapToInt(Integer::parseInt).toArray();
         int[] dateright = Arrays.stream(date2.split("-")).mapToInt(Integer::parseInt).toArray();
 
