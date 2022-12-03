@@ -20,6 +20,8 @@ import { SystemdatumComponent } from './components/zyklus1/systemdatum/systemdat
 import { ShowLeagueDataComponent } from './components/zyklus1/show-league-data/show-league-data.component';
 import {MeinetipprundenComponent} from "./components/zyklus2/meinetipprunden/meinetipprunden.component";
 import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebersicht/tipprundenuebersicht.component";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -39,18 +41,20 @@ import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebe
     MeinetipprundenComponent
 
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        RouterOutlet,
-      RouterModule,
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    RouterOutlet,
+    RouterModule,
+    MatFormFieldModule,
+    MatSelectModule,
 
-    ],
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })
