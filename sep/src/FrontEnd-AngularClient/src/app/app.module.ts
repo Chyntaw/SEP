@@ -22,6 +22,7 @@ import {MeinetipprundenComponent} from "./components/zyklus2/meinetipprunden/mei
 import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebersicht/tipprundenuebersicht.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import {Ng2SearchPipeModule} from "ng2-search-filter";
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import {MatSelectModule} from "@angular/material/select";
     SystemdatumComponent,
     ShowLeagueDataComponent,
     TipprundenuebersichtComponent,
-    MeinetipprundenComponent
+    MeinetipprundenComponent,
+
 
   ],
   imports: [
@@ -53,6 +55,7 @@ import {MatSelectModule} from "@angular/material/select";
     RouterModule,
     MatFormFieldModule,
     MatSelectModule,
+    Ng2SearchPipeModule,
 
   ],
   providers: [],

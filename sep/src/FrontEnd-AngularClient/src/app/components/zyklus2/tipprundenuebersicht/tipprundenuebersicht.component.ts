@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {BettingRound} from "../../../models/betting-round";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
 import {Leaguedata} from "../../../models/leaguedata";
+import { Pipe, PipeTransform } from '@angular/core';
+import { transform } from 'typescript';
 
 @Component({
   selector: 'app-tipprundenuebersicht',
@@ -11,19 +13,30 @@ import {Leaguedata} from "../../../models/leaguedata";
 export class TipprundenuebersichtComponent implements OnInit {
 
   tiprounds: BettingRound[] | any;
-
+  ArrayWithTiproundsOwnerIDS : Number[] = [];
+  CurrentUserID!:number;
+  searchInput!:any
+  searchInput2!:any
 
 
   constructor(private tipprundenService:TipprundenserviceService) { }
 
   ngOnInit(): void {
     this.zeigeTipprunden();
+    this.CurrentUserID=Number(localStorage.getItem("id"))
   }
 
   zeigeTipprunden(){
     this.tipprundenService.getAllPublicTipprunden().subscribe(res=>{
       console.log(res)
       this.tiprounds=res;
+
+      for(var value of this.tiprounds) {
+        this.ArrayWithTiproundsOwnerIDS.push(value.ownerID);
+      }
+      console.log(this.ArrayWithTiproundsOwnerIDS);
+
+
     })
 
   }
@@ -38,4 +51,6 @@ export class TipprundenuebersichtComponent implements OnInit {
 
 
   }
+
+
 }

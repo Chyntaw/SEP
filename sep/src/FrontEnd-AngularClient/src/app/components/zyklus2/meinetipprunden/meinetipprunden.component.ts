@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {Leaguedata} from "../../../models/leaguedata";
 import {ShowleagueserviceService} from "../../../services/showleagueservice.service";
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BettingRound} from "../../../models/betting-round";
 import {Bets} from "../../../models/bets";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
-import {error} from "@angular/compiler-cli/src/transformers/util";
-import {copyArrayItem} from "@angular/cdk/drag-drop";
-import {MatNavList} from "@angular/material/list";
-import {IndexingContext} from "@angular/compiler-cli/src/ngtsc/indexer";
 
 @Component({
   selector: 'app-meinetipprunden',

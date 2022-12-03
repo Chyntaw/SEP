@@ -1,9 +1,48 @@
+<div class="table1">
 <div class="login-container">
   <div class="login-form">
     <div class="form-group">
       <div class="form-group">
-        <h3>Tipprundenübersicht</h3>
+        <h3>Öffentliche Tipprunden</h3>
       </div>
+    </div>
+    <div class="input-group rounded">
+      <input name="searchInput" [(ngModel)]="searchInput" id="searchInput" class="form-control" placeholder="Tipprunden nach Namen filtern" type="search">
+    </div>
+    <div class="card my-5">
+      <div class="card-body">
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th ng scope="col">Tipprunden Name</th>
+            <th scope="col">Aktion</th>
+          </tr>
+          </thead>
+          <!-- Liga Anzeigen Body -->
+          <tbody>
+          <tr *ngFor="let tippround of tiprounds  | filter:searchInput, let index = index">
+            <td>{{ tippround.name}}</td>
+            <td><button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID" (click)="tipprundeBeitreten(tippround.id)">Beitreten</button>
+                <button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID" >Einladen</button></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="table2">
+<div class="login-container">
+  <div class="login-form">
+    <div class="form-group">
+      <div class="form-group">
+        <h3>Private Tipprunden</h3>
+      </div>
+    </div>
+    <div class="input-group rounded">
+      <input name="searchInput" [(ngModel)]="searchInput2" id="searchInput2" class="form-control rounded" placeholder="Tipprunden nach Namen filtern" type="search">
     </div>
     <div class="card my-5">
       <div class="card-body">
@@ -16,13 +55,16 @@
           </thead>
           <!-- Liga Anzeigen Body -->
           <tbody>
-          <tr *ngFor="let tippround of tiprounds">
-            <td>{{ tippround.name}}</td>
-            <td><button  class="btnLiga" (click)="tipprundeBeitreten(tippround.id)">Beitreten</button></td>
+          <tr>
+            <td></td>
+            <td><button  class="btnLiga" >Beitreten</button>
+              <button  class="btnLiga">Einladen</button></td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
-  </div>
+</div>
+</div>
+
