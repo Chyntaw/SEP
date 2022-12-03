@@ -83,4 +83,12 @@ export class TipprundenserviceService {
    return this.http.post(`${this.baseUrl}/placeBet`, formData)
 
   }
+  addParticipant(userid:number, bettingRoundid:number):Observable<any>{
+    const formData: FormData = new FormData();
+    formData.append("bettingRoundid",String(bettingRoundid))
+    formData.append("userid",String(userid))
+
+    return this.http.post(`${this.baseUrl}/addParticipant`, formData)
+  }
 }
+

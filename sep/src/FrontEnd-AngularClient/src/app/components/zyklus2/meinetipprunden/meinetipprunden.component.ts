@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import {Leaguedata} from "../../../models/leaguedata";
 import {ShowleagueserviceService} from "../../../services/showleagueservice.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BettingRound} from "../../../models/betting-round";
 import {Bets} from "../../../models/bets";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {copyArrayItem} from "@angular/cdk/drag-drop";
+import {MatNavList} from "@angular/material/list";
+import {IndexingContext} from "@angular/compiler-cli/src/ngtsc/indexer";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -24,6 +27,7 @@ export class MeinetipprundenComponent implements OnInit {
   newBets:Bets[] | any;
 
 
+
   constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
 
   ngOnInit(): void {
@@ -34,7 +38,7 @@ export class MeinetipprundenComponent implements OnInit {
   }
   tippPattern ='^[0-9]+[-][0-9]+$';
   TippAbgabeForm= new FormGroup({
-    tippAbgabe: new FormControl('', Validators.compose([
+    tippAbgabe: new FormControl('',Validators.compose([
       Validators.required,
       Validators.pattern(this.tippPattern)]))
   })
@@ -105,14 +109,10 @@ export class MeinetipprundenComponent implements OnInit {
     })
   }
 
-  placeBet(leagueDataid:number){
-   let bet:any;
-
-    bet=this.tippAbgabeWert?.value;
-
+  placeBet(leagueDataid:number, index:number){
     let userid = Number(localStorage.getItem('id'))
 
-    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,bet).subscribe(res=>{
+    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,this.matchDayDaten[index].newBet).subscribe(res=>{
       alert("Tipp gespeichert!")
     },error=>alert("Tipp konnte nicht gespeichert werden"));
   }

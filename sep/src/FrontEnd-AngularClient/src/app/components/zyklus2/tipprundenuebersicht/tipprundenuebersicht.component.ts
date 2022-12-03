@@ -27,7 +27,15 @@ export class TipprundenuebersichtComponent implements OnInit {
     })
 
   }
-  tipprundeBeitreten(name:string){
-    
+  tipprundeBeitreten(bettingroundid:number){
+    let userid = Number(localStorage.getItem("id"))
+    this.tipprundenService.addParticipant(userid,bettingroundid).subscribe(res=>{
+
+      alert("Beitritt erfolgreich")
+
+    },error =>alert("Beitritt nicht erfolgreich"))
+
+
+
   }
 }

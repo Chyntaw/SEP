@@ -18,7 +18,7 @@
           <tbody>
           <tr *ngFor="let tippround of tiprounds">
             <td>{{ tippround.name}}</td>
-            <td><button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button></td>
+            <td><button  class="btnLiga" (click)="tipprundeBeitreten(tippround.id)">Beitreten</button></td>
           </tr>
           </tbody>
         </table>
