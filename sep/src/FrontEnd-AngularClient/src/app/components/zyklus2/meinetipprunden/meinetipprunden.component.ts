@@ -17,6 +17,7 @@ import {IndexingContext} from "@angular/compiler-cli/src/ngtsc/indexer";
 })
 export class MeinetipprundenComponent implements OnInit {
 
+  userid = Number(localStorage.getItem('id'));
   mytiprounds: BettingRound[] | any;
   matchDayCount:Array<number> = new Array(34);
   matchDayDaten:Leaguedata[] | any;
@@ -24,8 +25,8 @@ export class MeinetipprundenComponent implements OnInit {
   _ligaID!:number;
   tipRundenID!: number;
   newBet:Bets = new Bets();
-  newBets:Bets[] | any;
-
+  selectedBettingRoundID: number | any;
+  myTippRundenByLigaID: BettingRound[] | any;
 
 
   constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
@@ -38,7 +39,7 @@ export class MeinetipprundenComponent implements OnInit {
   }
   tippPattern ='^[0-9]+[-][0-9]+$';
   TippAbgabeForm= new FormGroup({
-    tippAbgabe: new FormControl('',Validators.compose([
+    tippAbgabe: new FormControl('', Validators.compose([
       Validators.required,
       Validators.pattern(this.tippPattern)]))
   })
@@ -53,14 +54,18 @@ export class MeinetipprundenComponent implements OnInit {
     this.TippAbgabeForm.controls.tippAbgabe.setValue(null)
 }
 
+  getTippRundenByLigaID(bettingroundID:number) {
+    this.tipprundenservice.getTipprundeByLigaID(bettingroundID, this.userid).subscribe(res => {
+      this.myTippRundenByLigaID = res;
+      this.selectedBettingRoundID = bettingroundID;
+      }
+
+    )
+  }
+
   zeigeMeineTipprunden(){
 
-    let userid = Number(localStorage.getItem('id'))
-
-    this.tipprundenservice.getRoundsbyUserID(userid).subscribe(res=>{
-
-        console.log(res)
-
+    this.tipprundenservice.getRoundsbyUserID(this.userid).subscribe(res=>{
           this.mytiprounds=res;
     })
 
@@ -84,8 +89,7 @@ export class MeinetipprundenComponent implements OnInit {
         arr1.push(val.id);
       }
       console.log(arr1);
-      let userid = Number(localStorage.getItem('id'))
-      this.getBets(userid, arr1, this.tipRundenID)
+      this.getBets(this.userid, arr1, this.tipRundenID)
     })
 
   }
@@ -95,6 +99,7 @@ export class MeinetipprundenComponent implements OnInit {
       this.Bets = res;
     })
   }
+
 
 // show TipHelp
   getTipHelp(player1: string, player2: string, id: number) {
@@ -108,11 +113,9 @@ export class MeinetipprundenComponent implements OnInit {
       }
     })
   }
-
   placeBet(leagueDataid:number, index:number){
-    let userid = Number(localStorage.getItem('id'))
 
-    this.tipprundenservice.placeBet(this.tipRundenID, userid, leagueDataid,this.matchDayDaten[index].newBet).subscribe(res=>{
+    this.tipprundenservice.placeBet(this.tipRundenID, this.userid, leagueDataid,this.matchDayDaten[index].newBet).subscribe(res=>{
       alert("Tipp gespeichert!")
     },error=>alert("Tipp konnte nicht gespeichert werden"));
   }
@@ -125,6 +128,12 @@ export class MeinetipprundenComponent implements OnInit {
       return false
     }
     return true
+  }
+
+  transferBets(toTipprundenID:number) {
+    this.tipprundenservice.transferBets(this.selectedBettingRoundID, toTipprundenID, this.userid).subscribe(res => {
+      alert("Tipps übernommen!")
+    },error=>alert("Fehler beim übernehmen der Tipps"));
   }
 
 }

@@ -42,6 +42,14 @@ export class TipprundenserviceService {
 
   }
 
+  getTipprundeByLigaID(bettingroundID:number, userID:number) {
+    return this.http.get(`${this.baseUrl}/getTipprundeByLigaID/`+userID+'/'+bettingroundID);
+  }
+
+  transferBets(fromTipprundenID:number, toTipprundenID:number, userID:number) {
+    return this.http.get(`${this.baseUrl}/transferBets/`+fromTipprundenID+`/`+toTipprundenID+`/`+userID);
+  }
+
 
 
   getTipprunde() {

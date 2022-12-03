@@ -299,4 +299,46 @@ public class BettingRoundController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @GetMapping("/getTipprundeByLigaID/{userID}/{bettingroundID}")
+    public ResponseEntity<?> getTipprundeByLigaID(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID) {
+        List<BettingRound> allRounds = repo.findAll();
+        List<BettingRound> returnList = new ArrayList<>();
+        User currUser = userRepo.findById(userID).get();
+        Long currLigaID = repo.findById(bettingroundID).get().getLigaID();
+        for(BettingRound round: allRounds) {
+            if(round.getParticipants().contains(currUser) && (round.getLigaID() == currLigaID) && (round.getId() != bettingroundID)) returnList.add(round);
+            }
+        return new ResponseEntity<>(returnList, HttpStatus.OK);
+    }
+
+    @GetMapping("transferBets/{fromTipprundenID}/{toTipprundenID}/{userID}")
+    public ResponseEntity<?> transferBets(@PathVariable("fromTipprundenID")Long fromID, @PathVariable("toTipprundenID")Long toID, @PathVariable("userID")Long userID) {
+        BettingRound fromRound = repo.findById(fromID).get();
+        BettingRound toRound = repo.findById(toID).get();
+
+        List<Bets> existingBets = fromRound.getBetsList();
+        //If no Bets present, End here
+        if(existingBets.isEmpty()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        List<Bets> newBets = toRound.getBetsList();
+        for(Bets oldBet: existingBets) {
+            boolean changed = false;
+            if(!newBets.isEmpty()) {
+                for(Bets newBet: newBets) {
+                    //Check if there already exists a bet for this game by the user
+                    if((oldBet.getUserID() == userID) && (newBet.getUserID() == userID) && (oldBet.getLeagueData().getId() == newBet.getLeagueData().getId())) {
+                        newBet.setBets(oldBet.getBets());
+                        changed = true;
+                    }
+                }
+            }
+            //If nothing was changed before
+            if(!changed) {
+                newBets.add(new Bets(oldBet.getBets(), oldBet.getUserID(), oldBet.getLeagueData()));
+            }
+        }
+        repo.save(toRound);
+        repo.save(fromRound);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
