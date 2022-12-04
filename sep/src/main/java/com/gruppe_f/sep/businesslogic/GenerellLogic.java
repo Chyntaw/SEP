@@ -25,4 +25,11 @@ public class GenerellLogic {
         return leftDate.compareTo(rightDate);
     }
 
+    public static String rightPadtext(String text, int length) {
+        for(int currlength = text.length(); currlength < length; currlength++) {
+            text += " ";
+        }
+        return text;
+    }
+
 }

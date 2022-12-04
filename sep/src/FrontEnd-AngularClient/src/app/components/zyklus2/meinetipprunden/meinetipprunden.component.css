@@ -9,10 +9,10 @@
 }
 
 .login-container{
-  margin-left: 23%;
+  margin-left: 13%;
 
-  margin-right: 35%;
-  padding-bottom: 20%;
+  margin-right: 25%;
+  padding-bottom: 10%;
 }
 
 .login-form{
@@ -89,4 +89,16 @@
   --bs-modal-width: 2000px;
 
 }
+.uebernehmen{
+ padding-bottom: 2px;
+  color: #282726;
+  background-color:#FFFFFF;
 
+}
+.float-start{
+  margin-left: 40px;
+}
+.form-group{
+  margin-bottom: 70px;
+  margin-top: -80px;
+}

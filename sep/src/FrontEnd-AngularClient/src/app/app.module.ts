@@ -22,6 +22,7 @@ import {MeinetipprundenComponent} from "./components/zyklus2/meinetipprunden/mei
 import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebersicht/tipprundenuebersicht.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profile.component";
 import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
 
@@ -43,6 +44,9 @@ import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.
     MeinetipprundenComponent,
     UserProfileComponent,
     FriendListComponent,
+    MeinetipprundenComponent,
+
+
   ],
   imports: [
     BrowserModule,
@@ -56,6 +60,7 @@ import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.
     RouterModule,
     MatFormFieldModule,
     MatSelectModule,
+    Ng2SearchPipeModule,
 
   ],
   providers: [],

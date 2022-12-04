@@ -98,5 +98,9 @@ export class TipprundenserviceService {
 
     return this.http.post(`${this.baseUrl}/addParticipant`, formData)
   }
+  findByName(searchInput:string){
+    console.log(searchInput)
+    return this.http.get<BettingRound[]>(this.baseUrl+"/name/"+searchInput);
+  }
 }
 

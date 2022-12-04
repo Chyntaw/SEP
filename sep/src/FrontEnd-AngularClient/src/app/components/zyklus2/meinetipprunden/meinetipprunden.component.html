@@ -4,7 +4,33 @@
       <div class="form-group">
         <h3>Meine Tipprunden</h3>
       </div>
+      <div class="uebernehmen">
+        <div class="float-start">
+          <h4>Tipps übernehmen</h4>
+          <mat-form-field appearance="fill">
+            <mat-label>From</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let tipprunde of mytiprounds" [value]="tipprunde.name" (click)="getTippRundenByLigaID(tipprunde.id)"  >
+                {{tipprunde.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <h4>Tipps einfügen</h4>
+          <mat-form-field appearance="fill">
+            <mat-label>To</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let tipprunde of myTippRundenByLigaID" [value]="tipprunde.name" (click) ="transferBets(tipprunde.id)">
+                {{tipprunde.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
+
     <div class="card my-5">
       <div class="card-body">
         <table class="table table-bordered table-striped">
@@ -92,28 +118,4 @@
 
   </div>
 </div>
-<div>
-<div>
-  <h4>Tipps übernehmen</h4>
-  <mat-form-field appearance="fill">
-    <mat-label>From</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let tipprunde of mytiprounds" [value]="tipprunde.name" (click)="getTippRundenByLigaID(tipprunde.id)"  >
-        {{tipprunde.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
 
-<div>
-  <h4>Tipps einfügen</h4>
-  <mat-form-field appearance="fill">
-    <mat-label>To</mat-label>
-    <mat-select>
-      <mat-option *ngFor="let tipprunde of myTippRundenByLigaID" [value]="tipprunde.name" (click) ="transferBets(tipprunde.id)">
-        {{tipprunde.name}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>
-</div>

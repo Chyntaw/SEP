@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
+import static com.gruppe_f.sep.businesslogic.GenerellLogic.rightPadtext;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -277,11 +279,20 @@ public class BettingRoundController {
         User mailRecipient = userRepo.findById(friendID).get();
 
         if(!betsList.isEmpty()) {
-            String mailBody ="Moin Diggi,\nfolgende Tipps hab ich abgegeben.\n\nGaLiGrü \nDein "+user.getFirstName()+" "+user.getLastName()+"\n\nPlayer 1\t\tPlayer 2\t\tMein Tipp\n\n";
+
+            //Eig unnötig, hab ich nur hinzugefügt, damit die Mail n bisschen schöner formatiert ist.
+            int longestPlayer1 = 0;
+            int longestPlayer2 = 0;
+            for(Bets tempBet:betsList) {
+                if(tempBet.getLeagueData().getPlayer1().length() > longestPlayer1) longestPlayer1 = tempBet.getLeagueData().getPlayer1().length();
+                if(tempBet.getLeagueData().getPlayer2().length() > longestPlayer2) longestPlayer2 = tempBet.getLeagueData().getPlayer2().length();
+            }
+            //Beggining of Mail Message
+            String mailBody ="Moin " +mailRecipient.getFirstName()+ ",\nfolgende Tipps hab ich abgegeben.\n\nGaLiGrü \nDein "+user.getFirstName()+" "+user.getLastName()+"\n\n\n"+rightPadtext("Player 1", longestPlayer1)+"\t\t"+rightPadtext("Player 2", longestPlayer2)+"\t\tMein Tipp\n";
             for(Bets bet: betsList) {
                 if(bet.getUserID() == userID) {
-                String player1 = bet.getLeagueData().getPlayer1();
-                String player2 = bet.getLeagueData().getPlayer2();
+                String player1 = rightPadtext(bet.getLeagueData().getPlayer1(), longestPlayer1);
+                String player2 = rightPadtext(bet.getLeagueData().getPlayer2(), longestPlayer2);
                 String myBet = bet.getBets();
                 mailBody += player1 +"\t\t" + player2+"\t\t"+ myBet+"\n";
                 }
