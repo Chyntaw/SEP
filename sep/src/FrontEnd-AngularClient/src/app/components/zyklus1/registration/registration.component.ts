@@ -47,12 +47,12 @@ export class RegistrationComponent implements OnInit {
 
           let newUser = (<User>data)
 
-          localStorage.setItem("id", newUser['id']);
-          localStorage.setItem("eMail", newUser['eMail']);
-          localStorage.setItem("firstName", newUser['firstName']);
-          localStorage.setItem("lastName", newUser['lastName']);
-          localStorage.setItem("password", newUser['password']);
-          localStorage.setItem("role", newUser['role'])
+          sessionStorage.setItem("id", newUser['id']);
+          sessionStorage.setItem("eMail", newUser['eMail']);
+          sessionStorage.setItem("firstName", newUser['firstName']);
+          sessionStorage.setItem("lastName", newUser['lastName']);
+          sessionStorage.setItem("password", newUser['password']);
+          sessionStorage.setItem("role", newUser['role'])
 
 
           if(this.user) {
@@ -76,12 +76,12 @@ export class RegistrationComponent implements OnInit {
 
         let newUser = (<User>data)
 
-        localStorage.setItem("id", newUser['id']);
-        localStorage.setItem("eMail", newUser['eMail']);
-        localStorage.setItem("firstName", newUser['firstName']);
-        localStorage.setItem("lastName", newUser['lastName']);
-        localStorage.setItem("password", newUser['password']);
-        localStorage.setItem("role", newUser['role'])
+        sessionStorage.setItem("id", newUser['id']);
+        sessionStorage.setItem("eMail", newUser['eMail']);
+        sessionStorage.setItem("firstName", newUser['firstName']);
+        sessionStorage.setItem("lastName", newUser['lastName']);
+        sessionStorage.setItem("password", newUser['password']);
+        sessionStorage.setItem("role", newUser['role'])
 
 
         if(this.user) {

@@ -102,5 +102,14 @@ export class TipprundenserviceService {
     console.log(searchInput)
     return this.http.get<BettingRound[]>(this.baseUrl+"/name/"+searchInput);
   }
+
+
+
+
+
+
+
+
+
 }
 

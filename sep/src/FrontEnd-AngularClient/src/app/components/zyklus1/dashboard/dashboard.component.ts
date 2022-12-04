@@ -11,14 +11,14 @@ export class DashboardComponent implements OnInit {
   constructor(private router:Router) { }
 
   ngOnInit(): void {
-    if(!localStorage.getItem("eMail")) {
+    if(!sessionStorage.getItem("eMail")) {
       this.router.navigate(['login'])
       alert("Bitte melden Sie sich zunächst an.")
     }
   }
 
   logout() {
-    localStorage.clear()
+    sessionStorage.clear()
     this.router.navigate(['/login'])
   }
 

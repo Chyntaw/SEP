@@ -31,7 +31,7 @@ export class TipprundenuebersichtComponent implements OnInit {
 
   ngOnInit(): void {
     this.zeigeTipprunden();
-    this.CurrentUserID=Number(localStorage.getItem("id"))
+    this.CurrentUserID=Number(sessionStorage.getItem("id"))
     this.searchFriends();
   }
 
@@ -50,7 +50,7 @@ export class TipprundenuebersichtComponent implements OnInit {
 
   }
   tipprundeBeitreten(bettingroundid:number){
-    let userid = Number(localStorage.getItem("id"))
+    let userid = Number(sessionStorage.getItem("id"))
     this.tipprundenService.addParticipant(userid,bettingroundid).subscribe(res=>{
 
       alert("Beitritt erfolgreich")
@@ -63,7 +63,7 @@ export class TipprundenuebersichtComponent implements OnInit {
 
 
   tipprundeEinladen(bettingroundid:number){
-    const userEmail = localStorage.getItem("eMail")
+    const userEmail = sessionStorage.getItem("eMail")
     if(userEmail && this.selectedFriend){
       this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedFriend).subscribe()
     }
@@ -73,7 +73,7 @@ export class TipprundenuebersichtComponent implements OnInit {
 
 
   searchFriends(){
-    const email:string | null = localStorage.getItem('eMail');
+    const email:string | null = sessionStorage.getItem('eMail');
 
     if(email){
       this.friendListService.showFriends(email).subscribe(data=>{

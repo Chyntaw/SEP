@@ -24,11 +24,12 @@ export class FriendListComponent implements OnInit {
 
   ngOnInit() {
     this.showFriendList();
+    //this.getFriendImages();
     this.getUser();
   }
 
   getImage(eMail: string){
-//    const eMail = localStorage.getItem('eMail')
+//    const eMail = sessionStorage.getItem('eMail')
     if(eMail){
       this.friendListService.getImagesromFriend(eMail).subscribe(res=>{
         if(res != null){
@@ -45,7 +46,7 @@ export class FriendListComponent implements OnInit {
 
 
   showFriendList() {
-    const email:string | null = localStorage.getItem('eMail');
+    const email:string | null = sessionStorage.getItem('eMail');
 
     if(email){
       this.friendListService.showFriends(email).subscribe(data=>{
@@ -74,7 +75,7 @@ export class FriendListComponent implements OnInit {
   }
 
   acceptFriend(friendEmail: string){
-    const currentEmail: string | null = localStorage.getItem('eMail');
+    const currentEmail: string | null = sessionStorage.getItem('eMail');
     if(currentEmail){
       console.log(friendEmail, currentEmail)
       this.friendListService.acceptFriend(currentEmail, friendEmail).subscribe(res=>{
@@ -84,7 +85,7 @@ export class FriendListComponent implements OnInit {
   }
 
   declineFriend(friendEmail: string){
-    const currentEmail: string | null = localStorage.getItem('eMail');
+    const currentEmail: string | null = sessionStorage.getItem('eMail');
     if(currentEmail){
       this.friendListService.declineFriend(currentEmail, friendEmail).subscribe();
     }
@@ -92,7 +93,7 @@ export class FriendListComponent implements OnInit {
 
 
   removeFriend(friendEmail: string) {
-    const currentEmail: string | null = localStorage.getItem('eMail')
+    const currentEmail: string | null = sessionStorage.getItem('eMail')
 
     if(currentEmail){
       this.friendListService.removeFriend(currentEmail, friendEmail).subscribe();
@@ -101,7 +102,7 @@ export class FriendListComponent implements OnInit {
   }
 
   getUser():void{
-    const email: string|null = localStorage.getItem('eMail');
+    const email: string|null = sessionStorage.getItem('eMail');
     if(email){
       this.user.eMail = email;
     }

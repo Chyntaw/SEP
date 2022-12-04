@@ -42,7 +42,7 @@ export class UserProfileComponent implements OnInit{
 
 
   addUser(): void {
-    const loggedInEMail:string  | null = localStorage.getItem('eMail');
+    const loggedInEMail:string  | null = sessionStorage.getItem('eMail');
 
     if(loggedInEMail){
       this.getUserService.addUser(loggedInEMail, this.userToShow.eMail).subscribe(data =>{

@@ -36,11 +36,11 @@ export class ShowLeagueDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.zeigeLigen();
-    let user_role = localStorage.getItem("role")
+    let user_role = sessionStorage.getItem("role")
     if(user_role=='BASIC'){
       this.zeigeAktion=true;}
 
-    if(user_role==localStorage.getItem("role"))
+    if(user_role==sessionStorage.getItem("role"))
     if(user_role=='ADMIN'){
       this.zeigeTippRundenErstellen=false;
     }
@@ -146,7 +146,7 @@ export class ShowLeagueDataComponent implements OnInit {
 
 
   checkRole(){
-    let user_Role = localStorage.getItem('role')
+    let user_Role = sessionStorage.getItem('role')
     if(user_Role == "ADMIN") {
       this.dashboardRouter.navigate(['/admin-dashboard'])
     }
@@ -165,7 +165,7 @@ export class ShowLeagueDataComponent implements OnInit {
   erstelleTipprunde(id:number){
 
 
-    let ownerID = Number( localStorage.getItem('id'))
+    let ownerID = Number( sessionStorage.getItem('id'))
     console.log(ownerID)
     this.betRound.ligaID=id;
     this.tipprundenService.createTipprunde(id, ownerID, this.betRound.name,this.betRound.isPrivate, this.betRound.corrScorePoints, this.betRound.corrGoalPoints, this.betRound.corrWinnerPoints, this.betRound.passwordTipprunde)

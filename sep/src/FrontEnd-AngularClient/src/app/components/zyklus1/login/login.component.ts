@@ -37,13 +37,13 @@ userLogin() {
     const data_str = JSON.stringify(data);
     const jsondata = JSON.parse(data_str)
 
-    localStorage.setItem("id", jsondata['id']);
-    localStorage.setItem("eMail", jsondata['eMail']);
-    localStorage.setItem("firstName", jsondata['firstName']);
-    localStorage.setItem("lastName", jsondata['lastName']);
-    localStorage.setItem("password", jsondata['password']);
-    localStorage.setItem("role", jsondata['role'])
-    //localStorage.setItem("6", jsondata['profilePicture']) TODO: PB speichern in localStorage
+    sessionStorage.setItem("id", jsondata['id']);
+    sessionStorage.setItem("eMail", jsondata['eMail']);
+    sessionStorage.setItem("firstName", jsondata['firstName']);
+    sessionStorage.setItem("lastName", jsondata['lastName']);
+    sessionStorage.setItem("password", jsondata['password']);
+    sessionStorage.setItem("role", jsondata['role'])
+    //sessionStorage.setItem("6", jsondata['profilePicture']) TODO: PB speichern in sessionStorage
     this.zwei_faRouter.navigate(['/zwei-fa'])
 
    alert("Login ist korrekt")

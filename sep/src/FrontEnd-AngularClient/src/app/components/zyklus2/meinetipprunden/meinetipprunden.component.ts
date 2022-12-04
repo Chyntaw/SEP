@@ -13,7 +13,7 @@ import {TipprundenserviceService} from "../../../services/tipprundenservice.serv
 })
 export class MeinetipprundenComponent implements OnInit {
 
-  userid = Number(localStorage.getItem('id'));
+  userid = Number(sessionStorage.getItem('id'));
   mytiprounds: BettingRound[] | any;
   matchDayCount:Array<number> = new Array(34);
   matchDayDaten:Leaguedata[] | any;
