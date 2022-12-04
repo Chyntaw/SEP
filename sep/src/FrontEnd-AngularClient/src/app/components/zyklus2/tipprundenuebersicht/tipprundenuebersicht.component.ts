@@ -4,6 +4,8 @@ import {TipprundenserviceService} from "../../../services/tipprundenservice.serv
 import {Leaguedata} from "../../../models/leaguedata";
 import { Pipe, PipeTransform } from '@angular/core';
 import { transform } from 'typescript';
+import {User} from "../../../models/roles/user/user";
+import {FriendListService} from "../../../services/friend-list.service";
 
 @Component({
   selector: 'app-tipprundenuebersicht',
@@ -18,12 +20,19 @@ export class TipprundenuebersichtComponent implements OnInit {
   searchInput!:any
   searchInput2!:any
 
+  user:User = new User();
+  friends: User [] | any;
 
-  constructor(private tipprundenService:TipprundenserviceService) { }
+  selectedFriend: string | undefined;
+
+
+
+  constructor(private tipprundenService:TipprundenserviceService, private friendListService: FriendListService) { }
 
   ngOnInit(): void {
     this.zeigeTipprunden();
     this.CurrentUserID=Number(localStorage.getItem("id"))
+    this.searchFriends();
   }
 
   zeigeTipprunden(){
@@ -51,6 +60,33 @@ export class TipprundenuebersichtComponent implements OnInit {
 
 
   }
+
+
+  tipprundeEinladen(bettingroundid:number){
+    const userEmail = localStorage.getItem("eMail")
+    if(userEmail && this.selectedFriend){
+      this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedFriend).subscribe()
+    }
+
+  }
+
+
+
+  searchFriends(){
+    const email:string | null = localStorage.getItem('eMail');
+
+    if(email){
+      this.friendListService.showFriends(email).subscribe(data=>{
+        console.log(data)
+        this.friends = data;
+      })
+    }
+  }
+
+  onSelected(selectedFriendEmail: string){
+    this.selectedFriend = selectedFriendEmail;
+  }
+
 
 
 }

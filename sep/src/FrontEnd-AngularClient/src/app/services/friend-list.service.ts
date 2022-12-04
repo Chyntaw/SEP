@@ -65,4 +65,9 @@ export class FriendListService {
   getImagesromFriend(eMail: string) {
     return this.http.get(`${this.databaseURL+'/user/'+eMail+'/image'}`)
   }
+
+
+  tipprundeEinladen(bettingroundid:number, currentEmail: string, friendEmail: string):Observable<any>{
+    return this.http.get(`${this.databaseURL+'/user/inviteFriend/'+currentEmail+'/'+friendEmail+'/'+bettingroundid}`)
+  }
 }

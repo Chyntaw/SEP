@@ -3,11 +3,16 @@ package com.gruppe_f.sep.entities.friends;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserService;
+import com.gruppe_f.sep.mail.MailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +25,9 @@ public class FriendController {
 
     private final UserService userService;
     private final FriendService friendService;
+
+    @Autowired
+    MailSenderService mailSenderService;
 
     private final ImageRepository imageRepository;
 
@@ -108,37 +116,19 @@ public class FriendController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    //user/friends/'+eMail+'/images         list images of friends                  klappt nicht
-/*
-    @GetMapping("user/friends/{eMail}/images")
-    public ResponseEntity<List<ImageModel>> getImagesOfFriends(@PathVariable("eMail") String currentEmail){
 
-        User currentUser = userService.findUserByeMail(currentEmail);
-        List<User> myFriends = friendService.getFriends(currentUser);
+    @GetMapping("/user/inviteFriend/{currentEmail}/{friendEmail}/{bettingroundid}")
+    public ResponseEntity<?>sendTipprundenInvite(@PathVariable("currentEmail") String currentUserEmail,
+                                                 @PathVariable("friendEmail") String friendEmail,
+                                                 @PathVariable("{bettingroundid}") Long id){
 
-        List<ImageModel> imagesOfFriends = null;
-
-
-        for(User userDatabase: myFriends){
-            if(userDatabase.getImage() != null){
-                final Optional<ImageModel> retrievedImage = imageRepository.findByName(currentUser.getImage().getName());
-                ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
-                        decompressBytes(retrievedImage.get().getPicByte()));
-
-                imagesOfFriends.add(img);
-            }
-            else{
-                imagesOfFriends.add(null);
-            }
-        }
+        mailSenderService.sendEmail(friendEmail,
+                currentUserEmail + "möchte Sie zur Tipprunde: " + " einladen.",
+                "http://localhost:4200/tipprunden-uebersicht/");
 
 
-        return new ResponseEntity<>(imagesOfFriends ,HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
-
- */
 
 
     // uncompress the image bytes before returning it to the angular application

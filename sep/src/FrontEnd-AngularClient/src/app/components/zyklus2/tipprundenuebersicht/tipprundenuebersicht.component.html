@@ -23,7 +23,15 @@
           <tr *ngFor="let tippround of tiprounds  | filter:searchInput, let index = index">
             <td>{{ tippround.name}}</td>
             <td><button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID" (click)="tipprundeBeitreten(tippround.id)">Beitreten</button>
-                <button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID" >Einladen</button></td>
+                <button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID" (click)="tipprundeEinladen(tippround.id)">Einladen</button></td>
+            <td>
+              <label [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID">
+                <select #friend (change)="onSelected(friend.value)">
+                  <option value="" disabled selected>select a friend</option>
+                  <option *ngFor="let showFriends of friends" [value]="showFriends.eMail">{{showFriends.eMail}}</option>
+                </select>
+              </label>
+            </td>
           </tr>
           </tbody>
         </table>
