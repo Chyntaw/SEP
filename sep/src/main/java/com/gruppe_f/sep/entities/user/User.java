@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.user;
 
+import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 
@@ -33,8 +34,10 @@ public class User implements Serializable {
 
     @Column(name = "password")
     private String password;
-    @Column(name = "profilePicture")
-    private String profilePicture;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "pictureID" , referencedColumnName = "pictureid")
+    private ImageModel image;
 
     @ManyToMany(mappedBy = "participants")
     private List<BettingRound> bettingRounds;
@@ -55,13 +58,13 @@ public class User implements Serializable {
     }
 
     //Create new User with Profile Picture (optional)
-    public User(String firstName, String lastName, String birthDate, String eMail, String password, String profilePicture, String role) {
+    public User(String firstName, String lastName, String birthDate, String eMail, String password, ImageModel imageModel, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
         this.eMail = eMail;
         this.password = password;
-        this.profilePicture = profilePicture;
+        this.image = imageModel;
         this.role = role;
     }
 
@@ -134,15 +137,6 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-
     public String getSecret() {
         return secret;
     }
@@ -160,4 +154,12 @@ public class User implements Serializable {
     }
 
     public Long getId() {return this.id;}
+
+    public ImageModel getImage() {
+        return image;
+    }
+
+    public void setImage(ImageModel image) {
+        this.image = image;
+    }
 }

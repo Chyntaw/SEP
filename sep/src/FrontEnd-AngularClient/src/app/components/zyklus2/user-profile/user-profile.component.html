@@ -1,0 +1,43 @@
+
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-6 login-form">
+      <h3 class="headline">Profil Suche</h3>
+
+
+      <form (ngSubmit)="addUser()">
+        <button class="btnSubmit">Freund Hinzufügen</button>
+      </form>
+
+      <form (ngSubmit)="getUser()">
+        <div class="form-group">
+          <input type="text" class="form-control" value="" placeholder="Email" id="email" name="email" [(ngModel)]="user.eMail"/>
+        </div>
+        <div class="form-group">
+          <button  class="btnSubmit">Suchen</button>
+        </div>
+      </form>
+
+      <h3 class="headline-date">Email:<pre></pre> {{this.userToShow.eMail}} </h3>
+      <h3 class="headline-date">Lastname:<pre></pre> {{this.userToShow.lastName}} </h3>
+      <h3 class="headline-date">Firstname:<pre></pre> {{this.userToShow.firstName}} </h3>
+      <h3 class="headline-date">Birthdate:<pre></pre> {{this.userToShow.birthDate}} </h3>
+      <h3 class="headline-date">Profilepicture:<pre></pre></h3>
+      <div class="container row">
+        <div class="col-md-12">
+          <div *ngIf=retrievedImage>
+            <img [src]="retrievedImage"height="100" width="100">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <button routerLink="/dashboard" class="btnSubmit">Zurück</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+

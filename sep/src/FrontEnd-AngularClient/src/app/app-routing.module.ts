@@ -12,6 +12,8 @@ import {SystemdatumComponent} from "./components/zyklus1/systemdatum/systemdatum
 import {ShowLeagueDataComponent} from "./components/zyklus1/show-league-data/show-league-data.component";
 import {MeinetipprundenComponent} from "./components/zyklus2/meinetipprunden/meinetipprunden.component";
 import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebersicht/tipprundenuebersicht.component";
+import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profile.component";
+import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
 
 
 const MeineRouten : Routes = [
@@ -26,6 +28,8 @@ const MeineRouten : Routes = [
   {path: 'show_league', component: ShowLeagueDataComponent},
   {path: 'tipprunden-uebersicht', component: TipprundenuebersichtComponent},
   {path: 'meineTipprunden', component: MeinetipprundenComponent},
+  {path: 'getUser', component: UserProfileComponent},
+  {path: 'friend-list', component: FriendListComponent},
 
 
   {path: '',   redirectTo: '/login', pathMatch: 'full'}

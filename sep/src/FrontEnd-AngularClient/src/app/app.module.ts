@@ -22,6 +22,8 @@ import {MeinetipprundenComponent} from "./components/zyklus2/meinetipprunden/mei
 import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebersicht/tipprundenuebersicht.component";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profile.component";
+import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
 
 
 @NgModule({
@@ -38,8 +40,9 @@ import {MatSelectModule} from "@angular/material/select";
     SystemdatumComponent,
     ShowLeagueDataComponent,
     TipprundenuebersichtComponent,
-    MeinetipprundenComponent
-
+    MeinetipprundenComponent,
+    UserProfileComponent,
+    FriendListComponent,
   ],
   imports: [
     BrowserModule,

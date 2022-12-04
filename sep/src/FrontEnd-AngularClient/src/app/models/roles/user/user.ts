@@ -9,6 +9,7 @@ export class User {
   profilePicture?:File;  //? macht das Attribut optional
   role: string = 'BASIC';
   code?:string;
+  profilePictureId?:number;
 
 
 

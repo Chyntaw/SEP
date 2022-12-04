@@ -1,0 +1,128 @@
+
+<div class="container login-container">
+  <div class="row">
+    <div class="col-md-6 login-form">
+      <h3 class="headline">Friendlist</h3>
+
+
+      <div class="card my-5">
+        <div class="card-body">
+          <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+              <th scope="col">Firstname</th>
+              <th scope="col">Lastname</th>
+              <th scope="col">Picture</th>
+            </tr>
+            </thead>
+            <!-- Freundesliste Anzeigen Body-->
+            <tbody>
+            <tr *ngFor="let users of friends">
+              <td>{{ users.firstName }}</td>
+              <td>{{ users.lastName }}</td>
+              <!--    <td>
+                     <div class="container row">
+                      <div class="col-md-12">
+
+                        <div *ngIf=retrievedImage>
+                         <img [src]="retrievedImage" height="100" width="100">
+                        </div>
+                      </div>
+                    </div>
+                  </td>-->
+              <td><button  (click) = "removeFriend(users.eMail)" class='btn btn-info'>Löschen</button></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+      <!--Tabelle für die Freundschaftsanfragen(Empfangen) -->
+      <div class="login-form">
+        <div class="card my-5">
+          <div class="card-body">
+            <button  class="myButton" (click)="showPendingFriendList(this.user.eMail)">Zeige Freundschaftsanfragen</button>
+            <div class="form-group">
+            </div>
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Picture</th>
+
+              </tr>
+              </thead>
+              <!-- Freundesliste Anzeigen Body-->
+              <tbody>
+              <tr *ngFor="let pendingUsers of pendingFriends">
+                <td>{{ pendingUsers.firstName }}</td>
+                <td>{{ pendingUsers.lastName }}</td>
+                <!--   <td>
+                     <div class="container row">
+                       <div class="col-md-12">
+                         <div *ngIf=retrievedImage>
+                           <img [src]="retrievedImage">
+                         </div>
+                       </div>
+                   </div>
+                   </td>    -->
+                <td><button  (click) = "acceptFriend(pendingUsers.eMail)" class='btn btn-info'>Accept</button></td>
+                <td><button  (click) = "declineFriend(pendingUsers.eMail)" class='btn btn-info'>Decline</button></td>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--Tabelle für die Freundschaftsanfragen(Gesendet) -->
+      <div class="login-form">
+        <div class="card my-5">
+          <div class="card-body">
+            <button  class="myButton" (click)="showSendedFriendRequest(this.user.eMail)">Zeige Geschickte Freundschaftsanfragen</button>
+            <div class="form-group">
+            </div>
+            <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Picture</th>
+
+              </tr>
+              </thead>
+              <!-- Freundesliste Anzeigen Body-->
+              <tbody>
+              <tr *ngFor="let pendingRequestesUsers of pendingRequestedFriends">
+                <td>{{ pendingRequestesUsers.firstName }}</td>
+                <td>{{ pendingRequestesUsers.lastName }}</td>
+                <!--     <td>
+                       <div class="container row">
+                         <div class="col-md-12">
+                           <div *ngIf=retrievedImage>
+                             <img [src]="retrievedImage">
+                           </div>
+                         </div>
+                     </div>
+                     </td>-->
+                <td><button (click) = "declineFriend(pendingRequestesUsers.eMail)" class='btn btn-info'>Remove</button></td>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <button routerLink="/dashboard" class="btnSubmit">Zurück</button>
+    </div>
+  </div>
+</div>
+
+
