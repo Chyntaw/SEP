@@ -86,38 +86,32 @@ public class BettingRoundController {
 
     @GetMapping("getRoundsbyUserID/{id}")
     public ResponseEntity<?> getRoundsbyUserid(@PathVariable("id")Long id) {
-        List<BettingRound> list = repo.findAll();
-        List<BettingRound> returnlist = new LinkedList<>();
+        //Get all Bettingrounds from Repo
+        List<BettingRound> list = repo.findAll().stream()
+                //only return Bettingrounds in which User with id {id} participates
+                //by checking whether userlist of bettinground contains current User
+                .filter(bettingRound -> bettingRound.getParticipants().stream().anyMatch(user -> user.getId() == id)).collect(Collectors.toList());
 
-        for(BettingRound round: list)
-            for(User user: round.getParticipants())
-                if(user.getId()==id) returnlist.add(round);
-
-        return new ResponseEntity<>(returnlist, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping("getAllPublicRounds")
     public ResponseEntity<?>getAllPublicRounds(){
-        List<BettingRound> list = repo.findAll();
-        List<BettingRound> returnlist = new LinkedList<>();
 
-        for (BettingRound bettingRound : list) {
-            if(!bettingRound.isIsprivate()){
-                returnlist.add(bettingRound);
-            }
-        }
-        return new ResponseEntity<>(returnlist, HttpStatus.OK);
+        List<BettingRound> list = repo.findAll().stream().filter(x -> !x.isIsprivate()).collect(Collectors.toList());
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
 
     }
 
 
     @GetMapping("getBets")
     public ResponseEntity<?> getBets(@RequestParam("bettingRoundid")Long bettingRoundid, @RequestParam("userid")Long userid) {
-        List<Bets> bets = repo.findById(bettingRoundid).get().getBetsList();
-        List<Bets> retList = new ArrayList<>();
-        for(Bets bet: bets)
-            if(bet.getUserID() == userid) retList.add(bet);
-        return new ResponseEntity<>(retList, HttpStatus.OK);
+
+        List<Bets> bets = repo.findById(bettingRoundid).get().getBetsList().stream()
+                    .filter(x -> x.getUserID() == userid).collect(Collectors.toList());
+
+        return new ResponseEntity<>(bets, HttpStatus.OK);
     }
 
     @PutMapping("getBetsByLeagueDataID")
@@ -181,19 +175,13 @@ public class BettingRoundController {
 
     //Langsam versteh ich warum man das eigentlich in Controller und Serviceklassen aufteilen sollte. NAJA MACHSTE NIX
     public List<LeagueData> getLeagueDataByDate(Long id) {
+        //Get current Systemdate from Repository
+        String currDate =  dateRepo.findAll().get(0).getLocalDate();
 
-        //GEHT BESSER
-        Liga liga = ligaRepo.findLigaByid(id);
-        List<LeagueData> list = liga.getLeagueData();
-        List<SystemDate> sysDate = dateRepo.findAll();
-        List<LeagueData> returnList = new ArrayList<>();
-        for (LeagueData data : list) {
-            //Getting LeagueData by Date
-            if (compareDates(data.getDate(), sysDate.get(0).getLocalDate()) <= 0) {
-                returnList.add(data);
-            }
-        }
-        return returnList;
+        List<LeagueData> list = ligaRepo.findLigaByid(id).getLeagueData().stream()
+                .filter(x -> compareDates(x.getDate(), currDate) <= 0).collect(Collectors.toList());
+
+        return list;
     }
 
     @GetMapping("leaderboard/{bettingroundid}")
@@ -239,21 +227,6 @@ public class BettingRoundController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-    @GetMapping("/getByMatchday/{userID}/{matchDayID}/{bettingroundID}")
-    public ResponseEntity<?> getByMatchday(@PathVariable("userID")Long userID, @PathVariable("matchDayID")int matchday, @PathVariable("bettingroundID")Long bettingroundID) {
-
-        BettingRound round = repo.findById(bettingroundID).get();
-        List<LeagueData> leagueData = ligaRepo.findLigaByid(round.getLigaID()).getLeagueData();
-        List<Bets> betsList = round.getBetsList();
-
-        List<Bets> returnList = new ArrayList<>();
-        for(LeagueData data : leagueData) {
-            if(data.getMatchDay() == matchday) {
-                //returnList.add(data);
-            }
-        }
-        return new ResponseEntity<>(betsList, HttpStatus.OK);
-    }
 
     @PutMapping("/changeAlias")
     public ResponseEntity<?> changeAlias(@RequestParam("userID")Long userID, @RequestParam("bettingroundID")Long bettingroundID, @RequestParam("alias")String alias ) {

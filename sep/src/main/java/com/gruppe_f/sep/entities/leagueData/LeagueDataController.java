@@ -21,13 +21,13 @@ import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
 public class LeagueDataController {
 
     private final LeagueDataRepository repo;
-    private final DateRepository repo2;
+    private final DateRepository dateRepo;
     private final LigaRepository ligaRepo;
 
     @Autowired
-    public LeagueDataController(LeagueDataRepository repo, DateRepository repo2, LigaRepository ligaRepo) {
+    public LeagueDataController(LeagueDataRepository repo, DateRepository dateRepo, LigaRepository ligaRepo) {
         this.repo = repo;
-        this.repo2 = repo2;
+        this.dateRepo = dateRepo;
         this.ligaRepo = ligaRepo;
     }
 
@@ -46,23 +46,16 @@ public class LeagueDataController {
     @GetMapping(path = "/getAll/{id}")
     public ResponseEntity<List<LeagueData>> getLeagueData(@PathVariable("id") Long id) {
 
-        Liga liga = ligaRepo.findLigaByid(id);
-        List<LeagueData> list = liga.getLeagueData();
-        List<SystemDate> sysDate = repo2.findAll();
-        List<LeagueData> returnList = new ArrayList<>();
-        for (LeagueData data : list) {
-                //Getting LeagueData by ID and setting result of Future games "0-0"
-                if (compareDates(data.getDate(), sysDate.get(0).getLocalDate()) < 0) {
-                    returnList.add(data);
-                } else {
-                    data.setResult("-");
-                    returnList.add(data);
-                }
-            }
-        //Sorting Resulting LeagueData List by Date
-        List<LeagueData> result = returnList.stream().sorted((x, y) -> x.getDate().compareTo(y.getDate())).collect(Collectors.toList());
+        List<LeagueData> list = ligaRepo.findLigaByid(id).getLeagueData();
+        String currDate =  dateRepo.findAll().get(0).getLocalDate();
 
-        return new ResponseEntity<>(result, HttpStatus.OK);
+        //Compare Date of each element of the List to System Date.
+        //If Future - Game -> set result to "-"
+        list.stream().forEach(x -> {
+            if(!(compareDates(x.getDate(), currDate) < 0)) x.setResult("-");
+        });
+                                    //Return list sorted by Date
+        return new ResponseEntity<>(list.stream().sorted((x, y) -> x.getDate().compareTo(y.getDate())).collect(Collectors.toList()), HttpStatus.OK);
 
     }
 
@@ -84,15 +77,10 @@ public class LeagueDataController {
     @GetMapping("/getByMatchday/{LigaID}/{matchDayID}")
     public ResponseEntity<?> getByMatchday(@PathVariable("LigaID")Long LigaID, @PathVariable("matchDayID")int matchday) {
 
-        Liga liga = ligaRepo.findLigaByid(LigaID);
-        List<LeagueData> matchDayList = liga.getLeagueData();
-        List<LeagueData> returnList = new ArrayList<>();
-        for(LeagueData data : matchDayList) {
-            if(data.getMatchDay() == matchday) {
-                returnList.add(data);
-            }
-        }
-        return new ResponseEntity<>(returnList, HttpStatus.OK);
+        List<LeagueData> matchDayList = ligaRepo.findLigaByid(LigaID).getLeagueData().stream()
+                .filter(x -> x.getMatchDay() == matchday).collect(Collectors.toList());
+
+        return new ResponseEntity<>(matchDayList, HttpStatus.OK);
     }
 
     @GetMapping("/getMatchdays/{ligaID}")
