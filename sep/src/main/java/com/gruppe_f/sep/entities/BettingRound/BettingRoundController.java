@@ -63,25 +63,30 @@ public class BettingRoundController {
 
         BettingRound bettingRound = new BettingRound(name, ownerID, ligaID, isPrivate, corrScorePoints, corrGoalPoints, corrWinnerPoints, password);
         repo.save(bettingRound);
-        addParticipant(ownerID, bettingRound.getId());
+        addParticipant(ownerID, bettingRound.getId(), "");
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
     }
 
     @PostMapping("addParticipant")
-    public ResponseEntity<?> addParticipant(@RequestParam("userid") Long userid, @RequestParam("bettingRoundid") Long bettingRoundid) {
+    public ResponseEntity<?> addParticipant(@RequestParam("userid") Long userid, @RequestParam("bettingRoundid") Long bettingRoundid, @RequestParam("password")String password) {
         BettingRound bettingRound = repo.findById(bettingRoundid).get();
         List<User> participants = bettingRound.getParticipants();
         User newParticipant = userRepo.findById(userid).get();
         //Check if user already participating
         if(participants.contains(newParticipant)) return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
 
-        participants.add(newParticipant);
-        bettingRound.getScoresList().add(new Score(0, newParticipant));
-        //Create Alias for new participant, Alias init with firstname, can be changed calling the same method.
-        changeAlias(userid, bettingRoundid, newParticipant.getFirstName());
-
-        //ReturnType is Bettinground, not Userlist
-        return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
+        //If bettinground has no PW or if User is Owner, User is immediately added
+        if(bettingRound.getPassword() == null || bettingRound.getOwnerID() == userid) {
+            participants.add(newParticipant);
+            bettingRound.getScoresList().add(new Score(0, newParticipant));
+            return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
+        } else {
+            //If User submits either no or a wrong Password, HttpStatus Forbidden
+            if(password == null || !bettingRound.getPassword().equals(password)) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            //Otherwise add User to Participants and save to Repo.
+            participants.add(newParticipant);
+            return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
+        }
     }
 
     @GetMapping("getRoundsbyUserID/{id}")
@@ -214,8 +219,8 @@ public class BettingRoundController {
                 if(score.getUser().getId() == bet.getUserID()) score.setScores(score.getScores()+ bet.getScore());
             }
         }
-        List<Score> list = scoreList.stream().sorted((x,y) -> x.getScores() - y.getScores()).collect(Collectors.toList());
-        /*
+        List<Score> list = scoreList.stream().sorted((x,y) -> y.getScores() - x.getScores()).collect(Collectors.toList());
+
         for(Score score:list) {
             for(Alias alias: bettingRound.getAliasList()) {
                 if(score.getUser().getId() == alias.getUserID()) {
@@ -223,7 +228,7 @@ public class BettingRoundController {
                 }
             }
         }
-        */
+
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -300,22 +305,25 @@ public class BettingRoundController {
         BettingRound fromRound = repo.findById(fromID).get();
         BettingRound toRound = repo.findById(toID).get();
 
-        List<Bets> existingBets = fromRound.getBetsList();
+        //Get existing Bets, filtered by userID
+        List<Bets> existingBets = fromRound.getBetsList().stream().filter(x -> x.getUserID() == userID).collect(Collectors.toList());
         //If no Bets present, End here
         if(existingBets.isEmpty()) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        List<Bets> newBets = toRound.getBetsList();
+
+        //If user already has bets in new Tipping round, get bets
+        List<Bets> newBets = toRound.getBetsList().stream().filter(x -> x.getUserID() == userID).collect(Collectors.toList());
         for(Bets oldBet: existingBets) {
             boolean changed = false;
             if(!newBets.isEmpty()) {
                 for(Bets newBet: newBets) {
                     //Check if there already exists a bet for this game by the user
-                    if((oldBet.getUserID() == userID) && (newBet.getUserID() == userID) && (oldBet.getLeagueData().getId() == newBet.getLeagueData().getId())) {
+                    if((oldBet.getLeagueData().getId() == newBet.getLeagueData().getId())) {
                         newBet.setBets(oldBet.getBets());
                         changed = true;
                     }
                 }
             }
-            //If nothing was changed before
+            //If nothing was changed before add a new Bet to Bettinground
             if(!changed) {
                 newBets.add(new Bets(oldBet.getBets(), oldBet.getUserID(), oldBet.getLeagueData()));
             }
