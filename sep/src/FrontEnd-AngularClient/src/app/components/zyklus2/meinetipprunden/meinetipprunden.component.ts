@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {BettingRound} from "../../../models/betting-round";
 import {Bets} from "../../../models/bets";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
+import {Score} from "../../../models/score";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -23,7 +24,7 @@ export class MeinetipprundenComponent implements OnInit {
   newBet:Bets = new Bets();
   selectedBettingRoundID: number | any;
   myTippRundenByLigaID: BettingRound[] | any;
-
+  leaderboard!:Score[] | any;
 
   constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
 
@@ -131,5 +132,13 @@ export class MeinetipprundenComponent implements OnInit {
       alert("Tipps übernommen!")
     },error=>alert("Fehler beim übernehmen der Tipps"));
   }
+  getLeaderBoard(tipprundenID:number){
 
+    this.tipprundenservice.getLeaderBoard(tipprundenID).subscribe(res=>{
+      console.log(res)
+      this.leaderboard=res;
+      console.log(this.leaderboard)
+    })
+
+}
 }

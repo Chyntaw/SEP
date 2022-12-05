@@ -1,3 +1,4 @@
+
 <div class="login-container">
   <div class="login-form">
     <div class="form-group">
@@ -31,6 +32,8 @@
       </div>
     </div>
 
+
+
     <div class="card my-5">
       <div class="card-body">
         <table class="table table-bordered table-striped">
@@ -45,7 +48,7 @@
           <tr *ngFor="let mytippround of mytiprounds">
             <td>{{ mytippround.name}}</td>
             <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Tipps abgeben</button>
-              <button  class="btnLiga" >Ergebnisse</button>
+              <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id)">Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
             </td>
           </tr>
@@ -119,3 +122,47 @@
   </div>
 </div>
 
+
+<!-- PopUp fürs Abgeben der Tipps -->
+<div class="modal" id="myModal2">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  #addTipp="ngForm">
+        <!-- Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align: center">Leaderboard zur Tipprunde {{tipRundenID}}</h4>
+        </div>
+
+        <!-- Body-->
+        <div class="modal-body" >
+          <div class="card my-5">
+            <div class="card-body">
+              <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr>
+                  <th scope="col" >Teilnehmer</th>
+                  <th scope="col">Punkte</th>
+                </tr>
+                </thead>
+                <!-- MatchDayDaten Anzeigen Body -->
+                <tbody>
+                <tr *ngFor="let x of leaderboard, let index = index">
+                  <td>{{ x.user.lastName}}, {{x.user.firstName}}</td>
+                  <td>{{ x.scores }}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Footer-->
+        <div class="modal-footer" >
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

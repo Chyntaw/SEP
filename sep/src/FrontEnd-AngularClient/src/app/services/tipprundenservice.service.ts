@@ -103,7 +103,11 @@ export class TipprundenserviceService {
     return this.http.get<BettingRound[]>(this.baseUrl+"/name/"+searchInput);
   }
 
+  getLeaderBoard(bettingroundid:number){
 
+    return this.http.get(`${this.baseUrl}/leaderboard/`+bettingroundid)
+
+  }
 
 
 
