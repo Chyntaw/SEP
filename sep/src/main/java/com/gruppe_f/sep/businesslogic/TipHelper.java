@@ -174,7 +174,7 @@ public class TipHelper {
             result[1] *= 2;
         }
 
-        // multiply with 1.5 but make sure an int is saved if two values
+        // multiply with 1.5 but make sure an int is saved for the two values
         if(result[2] == 2) {
             result[0] = (int) ((float)result[0] * 1.5);
             result[1] = (int) ((float)result[1] * 1.5);

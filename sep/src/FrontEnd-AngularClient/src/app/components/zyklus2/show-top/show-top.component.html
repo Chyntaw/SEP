@@ -1,0 +1,43 @@
+<div class="login-container">
+  <div class="login-form">
+    <div class="form-group">
+      <div class="form-group">
+        <h3>Top</h3>
+      </div>
+    </div>
+
+    <h4 style="color: #FFFFFF">Top Mannschaften</h4>
+    <table class="table table-bordered table-striped" style="background-color:#FFFFFF;">
+      <thead>
+      <tr>
+        <th scope="col" >Mannschaft</th>
+        <th scope="col">Punkte</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let team of topTeams">
+        <td>{{team.player1}}</td>
+        <td>{{team.result}}</td>
+      </tr>
+      </tbody>
+    </table>
+
+
+    <h4 style="color: #FFFFFF">Top Nutzer</h4>
+          <table class="table table-bordered table-striped" style="background-color:#FFFFFF;">
+            <thead>
+            <tr>
+              <th scope="col" >Vorname</th>
+              <th scope="col">Nachname</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let user of topBets">
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+            </tr>
+            </tbody>
+          </table>
+  </div>
+</div>
+

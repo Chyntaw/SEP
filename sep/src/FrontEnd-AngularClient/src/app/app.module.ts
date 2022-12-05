@@ -25,6 +25,7 @@ import {MatSelectModule} from "@angular/material/select";
 import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profile.component";
 import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
+import { ShowTopComponent } from './components/zyklus2/show-top/show-top.component';
 
 
 @NgModule({
@@ -46,6 +47,8 @@ import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.
     FriendListComponent,
     MeinetipprundenComponent,
 
+    MeinetipprundenComponent,
+    ShowTopComponent
 
   ],
   imports: [

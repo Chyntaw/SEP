@@ -15,6 +15,7 @@ import {TipprundenuebersichtComponent} from "./components/zyklus2/tipprundenuebe
 import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profile.component";
 import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
 
+import {ShowTopComponent} from "./components/zyklus2/show-top/show-top.component";
 
 const MeineRouten : Routes = [
   {path:'login', component: LoginComponent},
@@ -30,6 +31,7 @@ const MeineRouten : Routes = [
   {path: 'meineTipprunden', component: MeinetipprundenComponent},
   {path: 'getUser', component: UserProfileComponent},
   {path: 'friend-list', component: FriendListComponent},
+  {path: 'showTop', component: ShowTopComponent},
 
 
   {path: '',   redirectTo: '/login', pathMatch: 'full'}

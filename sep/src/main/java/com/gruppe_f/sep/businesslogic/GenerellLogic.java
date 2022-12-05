@@ -1,5 +1,7 @@
 package com.gruppe_f.sep.businesslogic;
 
+import com.gruppe_f.sep.entities.leagueData.LeagueData;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -32,4 +34,25 @@ public class GenerellLogic {
         return text;
     }
 
+
+    // checks who is winner of match
+    // return    1 for player1
+    //          -1 for player2
+    //           0 for draw
+    public static int FirstIsWinner(LeagueData leagueData) {
+        String result = leagueData.getResult();
+        int result1 = Integer.parseInt(result.split("-")[0]);
+        int result2 = Integer.parseInt(result.split("-")[1]);
+        if(result1 > result2) {
+            return 1;
+        }
+        else {
+            if(result2 > result1) {
+                return -1;
+            }
+            else {
+                return 0;
+            }
+        }
+    }
 }
