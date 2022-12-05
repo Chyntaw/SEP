@@ -5,6 +5,10 @@ import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.alias.Alias;
 import com.gruppe_f.sep.entities.bets.Bets;
+import com.gruppe_f.sep.entities.friends.Friend;
+import com.gruppe_f.sep.entities.friends.FriendController;
+import com.gruppe_f.sep.entities.friends.FriendRepository;
+import com.gruppe_f.sep.entities.friends.FriendService;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
 import com.gruppe_f.sep.entities.liga.Liga;
@@ -21,10 +25,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.sql.Array;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
@@ -40,14 +42,16 @@ public class BettingRoundController {
     private  DateRepository dateRepo;
     private LigaRepository ligaRepo;
     private MailSenderService mailService;
+    private FriendService friendService;
     @Autowired
-    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo, MailSenderService mailService) {
+    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo, MailSenderService mailService, FriendService friendService) {
         this.repo = repo;
         this.userRepo = userRepo;
         this.leagueDataRepo = leagueDataRepo;
         this.dateRepo = dateRepo;
         this.ligaRepo = ligaRepo;
         this.mailService = mailService;
+        this.friendService= friendService;
     }
 
 
@@ -76,15 +80,16 @@ public class BettingRoundController {
         if(participants.contains(newParticipant)) return new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
 
         //If bettinground has no PW or if User is Owner, User is immediately added
-        if(bettingRound.getPassword() == null || bettingRound.getOwnerID() == userid) {
+        if(bettingRound.getPassword().equals("undefined")  || bettingRound.getOwnerID() == userid) {
             participants.add(newParticipant);
             bettingRound.getScoresList().add(new Score(0, newParticipant));
             return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
         } else {
             //If User submits either no or a wrong Password, HttpStatus Forbidden
-            if(password == null || !bettingRound.getPassword().equals(password)) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            if(password==null || !bettingRound.getPassword().equals(password)) return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             //Otherwise add User to Participants and save to Repo.
             participants.add(newParticipant);
+            bettingRound.getScoresList().add(new Score(0, newParticipant));
             return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
         }
     }
@@ -108,6 +113,7 @@ public class BettingRoundController {
         return new ResponseEntity<>(list, HttpStatus.OK);
 
     }
+
 
 
     @GetMapping("getBets")
@@ -235,15 +241,17 @@ public class BettingRoundController {
 
     @PutMapping("/changeAlias")
     public ResponseEntity<?> changeAlias(@RequestParam("userID")Long userID, @RequestParam("bettingroundID")Long bettingroundID, @RequestParam("alias")String alias ) {
-        BettingRound betR = repo.findById(bettingroundID).get();
+        BettingRound betR = repo.getById(bettingroundID);
         List<Alias> aliasList = betR.getAliasList();
+        if(!aliasList.isEmpty()){
         for(Alias userAlias : aliasList) {
             if(userAlias.getUserID() == userID) {
                 userAlias.setAlias(alias);
+                aliasList.add(userAlias);
                 repo.save(betR);
                 return  new ResponseEntity<>(HttpStatus.OK);
             }
-        }
+        }}
         aliasList.add(new Alias(alias, userID));
         repo.save(betR);
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -333,4 +341,46 @@ public class BettingRoundController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/getTippRoundByID/{bettingRoundID}")
+    public ResponseEntity<?> getTipprundeByLigaID(@PathVariable("bettingRoundID")Long bettingRoundID) {
+        BettingRound currRound = repo.findById(bettingRoundID).get();
+       return new ResponseEntity<>(currRound, HttpStatus.OK);
+
+
+    }
+    @GetMapping("/getAllPrivateRounds/{userid}")
+    public ResponseEntity<?> getAllPrivateRounds(@PathVariable Long userid) {
+        List<User> friends =  friendService.getFriendsByUserID(userid);
+        List<BettingRound> list = repo.findAll().stream().filter(x -> x.isIsprivate()).collect(Collectors.toList());
+        List<BettingRound> returnList = new LinkedList<>();
+        Long[] friendIds = new Long[friends.size()];
+
+        for(int i=0; i<friendIds.length;i++){
+            friendIds[i]=friends.get(i).getId();
+        }
+        for(int i=0;i<friendIds.length;i++) {
+            for (BettingRound betsRound : list) {
+                if (betsRound.getOwnerID() == friendIds[i]) {
+                    returnList.add(betsRound);
+                }
+            }
+        }
+
+        return new ResponseEntity<>(returnList, HttpStatus.OK);
+
+    }
+   /* @GetMapping("/getAllPrivateRoundsFromOwner/{userid}")
+    public ResponseEntity<?> getAllPrivateFromOwnerRounds(@PathVariable Long userid) {
+        List<BettingRound> list = repo.findAll().stream().filter(x -> x.isIsprivate()).collect(Collectors.toList());
+        List<BettingRound> returnList = new LinkedList<>();
+
+        for(BettingRound betsRound:list){
+            if(betsRound.getOwnerID()==userid){
+                returnList.add(betsRound);
+            }
+        }
+
+        return new ResponseEntity<>(returnList, HttpStatus.OK);
+
+    }*/
 }

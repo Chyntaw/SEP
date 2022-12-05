@@ -181,6 +181,28 @@ public class FriendService {
         return friendUsers;
     }
 
+    public List<User> getFriendsByUserID(Long userID){         //get accepted friends
+
+        User user = userRepository.findById(userID).get();
+
+        List<Friend> friendsByFirstUser = friendRepository.findByFirstUser(user);
+        List<Friend> friendsBySecondUser = friendRepository.findBySecondUser(user);
+        List<User> friendUsers = new ArrayList<>();
+
+        for (Friend friend : friendsByFirstUser) {
+            if(!friend.isPending()){
+                friendUsers.add(userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+            }
+        }
+        for (Friend friend : friendsBySecondUser) {
+            if(!friend.isPending()){
+                friendUsers.add(userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+            }
+        }
+        return friendUsers;
+    }
+
+
 
     public void unfriend(String currentUserEmail, String friendUserEmail) {
         User currentUser = userRepository.findUserByeMail(currentUserEmail);

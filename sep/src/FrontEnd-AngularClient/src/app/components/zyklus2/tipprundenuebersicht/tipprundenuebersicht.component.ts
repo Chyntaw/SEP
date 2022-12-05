@@ -15,15 +15,19 @@ import {FriendListService} from "../../../services/friend-list.service";
 export class TipprundenuebersichtComponent implements OnInit {
 
   tiprounds: BettingRound[] | any;
+  privateTiprounds: BettingRound[] | any;
   ArrayWithTiproundsOwnerIDS : Number[] = [];
+  ArrayWithPrivateTiproundsOwnerIDS : Number[] = [];
   CurrentUserID!:number;
+  CurrentTiproundID!:number;
   searchInput!:any
   searchInput2!:any
-
   user:User = new User();
   friends: User [] | any;
-
   selectedFriend: string | undefined;
+  currTippRoundHasPassword!:boolean;
+  alias!:string;
+  password:string="";
 
 
 
@@ -31,6 +35,7 @@ export class TipprundenuebersichtComponent implements OnInit {
 
   ngOnInit(): void {
     this.zeigeTipprunden();
+    this.zeigePrivateTipprunden();
     this.CurrentUserID=Number(sessionStorage.getItem("id"))
     this.searchFriends();
   }
@@ -47,11 +52,30 @@ export class TipprundenuebersichtComponent implements OnInit {
 
 
     })
-
   }
+  zeigePrivateTipprunden(){
+     let userid = Number(sessionStorage.getItem('id'))
+    this.tipprundenService.getAllPrivateTipproundsByEmail(userid).subscribe(res=>{
+      console.log(res);
+      this.privateTiprounds=res;
+      for(var value of this.privateTiprounds) {
+        this.ArrayWithPrivateTiproundsOwnerIDS.push(res.ownerID);
+      }
+      console.log(this.ArrayWithPrivateTiproundsOwnerIDS)
+    })
+  }
+
+
   tipprundeBeitreten(bettingroundid:number){
+    console.log(this.CurrentTiproundID)
+    console.log(bettingroundid)
+
+  this.tipprundenService.addAlias(this.alias,this.CurrentUserID,bettingroundid).subscribe(res=>{
+
+    })
+
     let userid = Number(sessionStorage.getItem("id"))
-    this.tipprundenService.addParticipant(userid,bettingroundid).subscribe(res=>{
+    this.tipprundenService.addParticipant(userid,bettingroundid,this.password).subscribe(res=>{
 
       alert("Beitritt erfolgreich")
 
@@ -86,7 +110,24 @@ export class TipprundenuebersichtComponent implements OnInit {
   onSelected(selectedFriendEmail: string){
     this.selectedFriend = selectedFriendEmail;
   }
+  saveTiproundID(tiproundID:number){
+
+    this.CurrentTiproundID=tiproundID;
+  }
+  GetCurrTippRound(tiproundID:number){
+
+    this.tipprundenService.getTipproundByID(tiproundID).subscribe(res=>{
+      console.log(res.password)
 
 
+          if(res.password=="" || res.password=="undefined"){
+            this.currTippRoundHasPassword=true;
+          }
+          else{
+            this.currTippRoundHasPassword=false
+          }
+
+    })
+  }
 
 }

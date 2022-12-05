@@ -9,7 +9,7 @@ import {BettingRound} from "../models/betting-round";
 export class TipprundenserviceService {
 
   private baseUrl = 'http://localhost:8080/bettingRound';
-  public _tipprunde!:BettingRound;
+
 
   constructor(private http:HttpClient) { }
 
@@ -26,7 +26,9 @@ export class TipprundenserviceService {
     formData.append('corrScorePoints', String(corrScorePoints));
     formData.append('corrGoalPoints', String(corrGoalPoints));
     formData.append('corrWinnerPoints', String(corrWinnerPoints));
-    formData.append('password', String(passwordTipprunde));
+    if(passwordTipprunde=="")
+    formData.append('password', "undefined");
+    else formData.append('password', String(passwordTipprunde))
     console.log(formData)
 
     return this.http.post(`${this.baseUrl}/create`, formData)
@@ -48,19 +50,6 @@ export class TipprundenserviceService {
 
   transferBets(fromTipprundenID:number, toTipprundenID:number, userID:number) {
     return this.http.get(`${this.baseUrl}/transferBets/`+fromTipprundenID+`/`+toTipprundenID+`/`+userID);
-  }
-
-
-
-  getTipprunde() {
-
-    console.log(this._tipprunde)
-    return this._tipprunde;
-  }
-
-  setTipprunde(value: BettingRound) {
-    this._tipprunde = value;
-    console.log(this._tipprunde)
   }
 
 
@@ -91,10 +80,13 @@ export class TipprundenserviceService {
    return this.http.post(`${this.baseUrl}/placeBet`, formData)
 
   }
-  addParticipant(userid:number, bettingRoundid:number):Observable<any>{
+  addParticipant(userid:number, bettingRoundid:number, password:string):Observable<any>{
     const formData: FormData = new FormData();
     formData.append("bettingRoundid",String(bettingRoundid))
     formData.append("userid",String(userid))
+    formData.append("password", password)
+
+    console.log(formData)
 
     return this.http.post(`${this.baseUrl}/addParticipant`, formData)
   }
@@ -103,17 +95,28 @@ export class TipprundenserviceService {
     return this.http.get<BettingRound[]>(this.baseUrl+"/name/"+searchInput);
   }
 
-  getLeaderBoard(bettingroundid:number){
+  getLeaderBoard(bettingroundid:number):Observable<any>{
 
     return this.http.get(`${this.baseUrl}/leaderboard/`+bettingroundid)
 
   }
+  getTipproundByID(bettingRoundID:number):Observable<any>{
 
+    return this.http.get(`${this.baseUrl}/getTippRoundByID/`+bettingRoundID)
+  }
+  getAllPrivateTipproundsByEmail(userid:number):Observable<any>{
 
+    return this.http.get(`${this.baseUrl}/getAllPrivateRounds/`+userid)
+  }
 
+  addAlias(alias:string, userID:number,bettingroundID:number){
+    const formData: FormData = new FormData();
+    formData.append("bettingroundID",String(bettingroundID));
+    formData.append("userID",String(userID));
+    formData.append("alias",alias);
 
-
-
+    return this.http.put(`${this.baseUrl}/changeAlias`,formData)
+  }
 
 }
 

@@ -22,8 +22,8 @@
           <tbody>
           <tr *ngFor="let tippround of tiprounds  | filter:searchInput, let index = index">
             <td>{{ tippround.name}}</td>
-            <td><button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID" (click)="tipprundeBeitreten(tippround.id)">Beitreten</button>
-                <button  class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID" (click)="tipprundeEinladen(tippround.id)">Einladen</button></td>
+            <td><button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]==this.CurrentUserID" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(tippround.id); GetCurrTippRound(tippround.id)">Beitreten</button>
+                <button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]!=this.CurrentUserID" (click)="tipprundeEinladen(tippround.id)">Einladen</button></td>
             <td>
               <label [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID">
                 <select #friend (change)="onSelected(friend.value)">
@@ -56,17 +56,16 @@
       <div class="card-body">
         <table class="table table-bordered table-striped">
           <thead class="thead-dark">
-          <tr>
+          <tr >
             <th scope="col">Tipprunden Name</th>
             <th scope="col">Aktion</th>
           </tr>
           </thead>
           <!-- Liga Anzeigen Body -->
           <tbody>
-          <tr>
-            <td></td>
-            <td><button  class="btnLiga" >Beitreten</button>
-              <button  class="btnLiga">Einladen</button></td>
+          <tr *ngFor="let x of privateTiprounds | filter:searchInput2, let index=index">
+            <td>{{x.name}}</td>
+            <td><button  class="btnLiga"   [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID">Beitreten</button>
           </tr>
           </tbody>
         </table>
@@ -76,3 +75,37 @@
 </div>
 </div>
 
+
+<!-- PopUp fürs Beitreten einer Tipprunde -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  #joinTipprunde="ngForm">
+        <!-- Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align: center">Tipprunde Beitreten</h4>
+        </div>
+
+        <!-- Body-->
+        <div class="modal-body" >
+          <div>
+            <label for="name">Alias Name (optional)</label>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="alias">
+          </div>
+          <div>
+            <label [hidden]="currTippRoundHasPassword" for="passwordTipprunde">Passwort</label>
+            <input [hidden]="currTippRoundHasPassword" type="password" class="form-control"  id="passwordTipprunde" name="passwordTipprunde" [(ngModel)]="password" >
+          </div>
+
+        </div>
+
+        <!-- Footer-->
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" (click)="tipprundeBeitreten(CurrentTiproundID)">Tipprunde beitreten</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

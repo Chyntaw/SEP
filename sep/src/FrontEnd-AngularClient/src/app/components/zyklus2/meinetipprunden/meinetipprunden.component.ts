@@ -26,6 +26,7 @@ export class MeinetipprundenComponent implements OnInit {
   myTippRundenByLigaID: BettingRound[] | any;
   leaderboard!:Score[] | any;
 
+
   constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
 
   ngOnInit(): void {
