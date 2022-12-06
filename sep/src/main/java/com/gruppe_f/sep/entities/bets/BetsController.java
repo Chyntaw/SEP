@@ -1,11 +1,8 @@
 package com.gruppe_f.sep.entities.bets;
 
-import com.gruppe_f.sep.businesslogic.GenerellLogic;
-import com.gruppe_f.sep.date.DateRepository;
+import com.gruppe_f.sep.businesslogic.GenerellLogisch;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
-import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +40,7 @@ public class BetsController {
         // go through all bets for overall calculation
         for(Bets bet : allBets) {
 
-            int firstWins = GenerellLogic.FirstIsWinner(bet.getLeagueData());
+            int firstWins = GenerellLogisch.FirstIsWinner(bet.getLeagueData());
             // points are accounted to winner or in draw to both
             switch(firstWins) {
                 case 1:

@@ -1,15 +1,11 @@
 package com.gruppe_f.sep.businesslogic;
 
 import com.gruppe_f.sep.date.DateRepository;
-import com.gruppe_f.sep.date.DateService;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
-import com.gruppe_f.sep.businesslogic.GenerellLogic.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -64,7 +60,7 @@ public class TipHelper {
         // 1. in all_league_data needs to be an entry
         // 2. as long as the systemdate is later than the last matchdays
         while(  !spec_league_data.isEmpty() &&
-                GenerellLogic.compareDates(systemDate.getLocalDate(), spec_league_data.get(0).getDate()) > 0) {
+                GenerellLogisch.compareDates(systemDate.getLocalDate(), spec_league_data.get(0).getDate()) > 0) {
             System.out.println(spec_league_data.get(0).getDate());
             System.out.println(systemDate.getLocalDate());
             // add value to list for player1 if player1 is in current value

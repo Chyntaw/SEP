@@ -2,35 +2,25 @@ package com.gruppe_f.sep.entities.BettingRound;
 
 import com.gruppe_f.sep.businesslogic.TipHelper;
 import com.gruppe_f.sep.date.DateRepository;
-import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.alias.Alias;
 import com.gruppe_f.sep.entities.bets.Bets;
-import com.gruppe_f.sep.entities.friends.Friend;
-import com.gruppe_f.sep.entities.friends.FriendController;
-import com.gruppe_f.sep.entities.friends.FriendRepository;
 import com.gruppe_f.sep.entities.friends.FriendService;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
-import com.gruppe_f.sep.entities.liga.Liga;
 import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.scores.Score;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
 import com.gruppe_f.sep.mail.MailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.*;
-import java.sql.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
-import static com.gruppe_f.sep.businesslogic.GenerellLogic.rightPadtext;
+import static com.gruppe_f.sep.businesslogic.GenerellLogisch.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -198,33 +188,20 @@ public class BettingRoundController {
     @GetMapping("leaderboard/{bettingroundid}")
     public ResponseEntity<?> leaderboard(@PathVariable("bettingroundid")Long id) {
         BettingRound bettingRound = repo.findById(id).get();
-        List<Bets> betsList = bettingRound.getBetsList();
-        List<LeagueData> leagueDatalist = getLeagueDataByDate(bettingRound.getLigaID());
-        System.out.println(leagueDatalist.size());
+        String currDate =  dateRepo.findAll().get(0).getLocalDate();
 
-        for(Bets bet: betsList) {
-            for(LeagueData data: leagueDatalist) {
-                if(bet.getLeagueData().getId() == data.getId()) {
-                    //If bet on score is correct, Strings of scores are identical
-                    if(bet.getBets().equals(data.getResult())) {bet.setScore(bettingRound.getCorrScorePoints()); continue;}
-                    //Get goals from LeagueData and from bet as int
-                    int[] goals = Arrays.stream(data.getResult().split("-")).mapToInt(Integer::parseInt).toArray();
-                    int[] betGoals = Arrays.stream(bet.getBets().split("-")).mapToInt(Integer::parseInt).toArray();
-                    int goalDiff = goals[0]-goals[1];
-                    int betDiff = betGoals[0]-betGoals[1];
-                    //Correct Goal Difference
-                    if(Math.abs(goalDiff) == Math.abs(betDiff)) {bet.setScore(bettingRound.getCorrGoalPoints()); continue;}
-                    //Correct Winner
-                    if((goalDiff < 0 && betDiff < 0) || (goalDiff >0 && betDiff >0)) bet.setScore(bettingRound.getCorrWinnerPoints());
-                }
-            }
-        }
+        //Save resulting Bets with Scores to repository
+        repo.save(calculateScore(currDate, bettingRound));
+
+        List<Bets> betsList = bettingRound.getBetsList();
+
         List<Score> scoreList = bettingRound.getScoresList();
         for(Score score:scoreList) {
             for(Bets bet: betsList) {
-                if(score.getUser().getId() == bet.getUserID()) score.setScores(score.getScores()+ bet.getScore());
+                if((score.getUser().getId() == bet.getUserID()) && !(bet.getScore() == -1)) score.setScores(score.getScores()+ bet.getScore());
             }
         }
+        //Sort Leaderboard by totalScore
         List<Score> list = scoreList.stream().sorted((x,y) -> y.getScores() - x.getScores()).collect(Collectors.toList());
 
         for(Score score:list) {
@@ -241,13 +218,13 @@ public class BettingRoundController {
 
     @PutMapping("/changeAlias")
     public ResponseEntity<?> changeAlias(@RequestParam("userID")Long userID, @RequestParam("bettingroundID")Long bettingroundID, @RequestParam("alias")String alias ) {
+        if(alias.equals("undefined")) return new ResponseEntity<>(HttpStatus.OK);
         BettingRound betR = repo.getById(bettingroundID);
         List<Alias> aliasList = betR.getAliasList();
         if(!aliasList.isEmpty()){
         for(Alias userAlias : aliasList) {
             if(userAlias.getUserID() == userID) {
                 userAlias.setAlias(alias);
-                aliasList.add(userAlias);
                 repo.save(betR);
                 return  new ResponseEntity<>(HttpStatus.OK);
             }
@@ -333,8 +310,11 @@ public class BettingRoundController {
             }
             //If nothing was changed before add a new Bet to Bettinground
             if(!changed) {
-                newBets.add(new Bets(oldBet.getBets(), oldBet.getUserID(), oldBet.getLeagueData()));
+                Bets newBet = new Bets(oldBet.getBets(), oldBet.getUserID(), oldBet.getLeagueData());
+                toRound.getBetsList().add(newBet);
+
             }
+            System.out.println(oldBet.getBets());
         }
         repo.save(toRound);
         repo.save(fromRound);

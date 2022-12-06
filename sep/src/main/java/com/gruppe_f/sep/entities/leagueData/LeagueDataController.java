@@ -1,8 +1,6 @@
 package com.gruppe_f.sep.entities.leagueData;
 
 import com.gruppe_f.sep.date.DateRepository;
-import com.gruppe_f.sep.date.SystemDate;
-import com.gruppe_f.sep.entities.liga.Liga;
 import com.gruppe_f.sep.entities.liga.LigaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.gruppe_f.sep.businesslogic.GenerellLogic.compareDates;
+import static com.gruppe_f.sep.businesslogic.GenerellLogisch.compareDates;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
