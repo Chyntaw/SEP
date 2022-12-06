@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {User} from "../../../models/roles/user/user";
 import {FriendListService} from "../../../services/friend-list.service";
 
-
-
 @Component({
   selector: 'app-friend-list',
   templateUrl: './friend-list.component.html',
@@ -16,7 +14,10 @@ export class FriendListComponent implements OnInit {
   pendingFriends: User[] | any;
   pendingRequestedFriends: User[] | any;
 
-  retrievedImage: any;
+  retrievedImagesFriends: string[] | any = [];
+  retrievedImagesOfPendingFriends: string[] | any = [];
+  retrievedImageOfSendedFriends: string[] | any = [];
+
   base64Data: any;
   retrieveResonse: any;
 
@@ -24,54 +25,68 @@ export class FriendListComponent implements OnInit {
 
   ngOnInit() {
     this.showFriendList();
-    //this.getFriendImages();
     this.getUser();
+    this.showPendingFriendList(this.user.eMail);
+    this.showSendedFriendRequest(this.user.eMail);
   }
 
-  getImage(eMail: string){
-//    const eMail = sessionStorage.getItem('eMail')
-    if(eMail){
-      this.friendListService.getImagesromFriend(eMail).subscribe(res=>{
-        if(res != null){
-          this.retrieveResonse = res;
-          this.base64Data = this.retrieveResonse.picByte;
-          this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
-        }
-        else{
-          this.retrievedImage = false;
-        }
-      })
-    }
+  getImageForPendingFriends(eMail: string){
+    this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
+      if(res != null || res != undefined){
+        this.retrieveResonse = res;
+        this.base64Data = this.retrieveResonse.picByte;
+        this.retrievedImagesOfPendingFriends.push('data:image/jpeg;base64,' + this.base64Data)
+      }
+    })
   }
 
+  showPendingFriendList(email: string){
+    this.friendListService.showPendingFriends(email).subscribe(data=>{
+      this.pendingFriends = data;
+      for(let friends of this.pendingFriends){
+        this.getImageForPendingFriends(friends.eMail)
+      }
+    });
+  }
 
   showFriendList() {
     const email:string | null = sessionStorage.getItem('eMail');
 
     if(email){
       this.friendListService.showFriends(email).subscribe(data=>{
-        console.log(data)
           this.friends = data;
+          for(let friends of this.friends){
+            this.getImageForFriends(friends.eMail)
+        }
       })
     }
   }
-
-
-
-  showPendingFriendList(email: string){
-    this.friendListService.showPendingFriends(email).subscribe(data=>{
-      this.pendingFriends = data;
-      console.log(data)
-    });
+  getImageForFriends(eMail: string){
+    this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
+      if(res != null || res != undefined){
+        this.retrieveResonse = res;
+        this.base64Data = this.retrieveResonse.picByte;
+        this.retrievedImagesFriends.push('data:image/jpeg;base64,' + this.base64Data)
+      }
+    })
   }
 
   showSendedFriendRequest(email: string){
     this.friendListService.showPendingFriendRequests(email).subscribe(data=>{
       this.pendingRequestedFriends = data;
-
-   //   console.log('data:image/jpeg;base64,' + this.pendingRequestedFriends[0].image.picByte)
-
+      for(let friends of this.pendingRequestedFriends){
+        this.getImageForSendedFriends(friends.eMail)
+      }
     });
+  }
+  getImageForSendedFriends(eMail: string){
+    this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
+      if(res != null || res != undefined){
+        this.retrieveResonse = res;
+        this.base64Data = this.retrieveResonse.picByte;
+        this.retrievedImageOfSendedFriends.push('data:image/jpeg;base64,' + this.base64Data)
+      }
+    })
   }
 
   acceptFriend(friendEmail: string){

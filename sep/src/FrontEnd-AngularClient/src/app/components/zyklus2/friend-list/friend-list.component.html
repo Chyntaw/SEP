@@ -17,19 +17,21 @@
             </thead>
             <!-- Freundesliste Anzeigen Body-->
             <tbody>
-            <tr *ngFor="let users of friends">
+            <tr *ngFor="let users of friends, let i = index">
               <td>{{ users.firstName }}</td>
               <td>{{ users.lastName }}</td>
-              <!--    <td>
-                     <div class="container row">
-                      <div class="col-md-12">
-
-                        <div *ngIf=retrievedImage>
-                         <img [src]="retrievedImage" height="100" width="100">
-                        </div>
-                      </div>
+              <td>
+                <div class="container row">
+                  <div class="col-md-12">
+                    <div *ngIf=this.retrievedImagesFriends[i]>
+                      <img [src]="this.retrievedImagesFriends[i]" width="100" height="100">
                     </div>
-                  </td>-->
+                    <div *ngIf=!this.retrievedImageOfSendedFriends[i]>
+                      <h1>Kein Bild vorhanden</h1>
+                    </div>
+                  </div>
+                </div>
+              </td>
               <td><button  (click) = "removeFriend(users.eMail)" class='btn btn-info'>Löschen</button></td>
             </tr>
             </tbody>
@@ -43,7 +45,7 @@
       <div class="login-form">
         <div class="card my-5">
           <div class="card-body">
-            <button  class="myButton" (click)="showPendingFriendList(this.user.eMail)">Zeige Freundschaftsanfragen</button>
+            <h1>Empfangene Freundschaftsanfragen</h1>
             <div class="form-group">
             </div>
             <table class="table table-bordered table-striped">
@@ -57,18 +59,22 @@
               </thead>
               <!-- Freundesliste Anzeigen Body-->
               <tbody>
-              <tr *ngFor="let pendingUsers of pendingFriends">
+              <tr *ngFor="let pendingUsers of pendingFriends, let i = index">
                 <td>{{ pendingUsers.firstName }}</td>
                 <td>{{ pendingUsers.lastName }}</td>
-                <!--   <td>
-                     <div class="container row">
-                       <div class="col-md-12">
-                         <div *ngIf=retrievedImage>
-                           <img [src]="retrievedImage">
-                         </div>
-                       </div>
-                   </div>
-                   </td>    -->
+                <td>
+                  <div class="container row">
+                    <div class="col-md-12">
+                      <div *ngIf=this.retrievedImagesOfPendingFriends[i]>
+                        <img [src]="this.retrievedImagesOfPendingFriends[i]" width="100" height="100">
+                      </div>
+                      <div *ngIf=!this.retrievedImageOfSendedFriends[i]>
+                        <h1>Kein Bild vorhanden</h1>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+
                 <td><button  (click) = "acceptFriend(pendingUsers.eMail)" class='btn btn-info'>Accept</button></td>
                 <td><button  (click) = "declineFriend(pendingUsers.eMail)" class='btn btn-info'>Decline</button></td>
 
@@ -82,7 +88,7 @@
       <div class="login-form">
         <div class="card my-5">
           <div class="card-body">
-            <button  class="myButton" (click)="showSendedFriendRequest(this.user.eMail)">Zeige Geschickte Freundschaftsanfragen</button>
+            <h1>Gesendete Freundschaftsanfragen</h1>
             <div class="form-group">
             </div>
             <table class="table table-bordered table-striped">
@@ -96,18 +102,21 @@
               </thead>
               <!-- Freundesliste Anzeigen Body-->
               <tbody>
-              <tr *ngFor="let pendingRequestesUsers of pendingRequestedFriends">
+              <tr *ngFor="let pendingRequestesUsers of pendingRequestedFriends, let i = index">
                 <td>{{ pendingRequestesUsers.firstName }}</td>
                 <td>{{ pendingRequestesUsers.lastName }}</td>
-                <!--     <td>
-                       <div class="container row">
-                         <div class="col-md-12">
-                           <div *ngIf=retrievedImage>
-                             <img [src]="retrievedImage">
-                           </div>
-                         </div>
-                     </div>
-                     </td>-->
+                <td>
+                  <div class="container row">
+                    <div class="col-md-12">
+                      <div *ngIf=this.retrievedImageOfSendedFriends[i]>
+                        <img [src]="this.retrievedImageOfSendedFriends[i]" width="100" height="100">
+                      </div>
+                      <div *ngIf=!this.retrievedImageOfSendedFriends[i]>
+                        <h1>Kein Bild vorhanden</h1>
+                      </div>
+                    </div>
+                  </div>
+                </td>
                 <td><button (click) = "declineFriend(pendingRequestesUsers.eMail)" class='btn btn-info'>Remove</button></td>
 
               </tbody>

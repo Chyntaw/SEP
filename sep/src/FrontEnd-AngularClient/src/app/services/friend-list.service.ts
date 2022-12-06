@@ -62,7 +62,7 @@ export class FriendListService {
 
   }
 
-  getImagesromFriend(eMail: string) {
+  getImagesFromFriend(eMail: string) {
     return this.http.get(`${this.databaseURL+'/user/'+eMail+'/image'}`)
   }
 
