@@ -5,6 +5,8 @@ import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
 import com.gruppe_f.sep.entities.BettingRound.BettingRoundRepository;
 import com.gruppe_f.sep.entities.bets.Bets;
+import com.gruppe_f.sep.entities.friends.Friend;
+import com.gruppe_f.sep.entities.friends.FriendRepository;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
 import com.gruppe_f.sep.entities.liga.Liga;
@@ -34,7 +36,7 @@ public class SepGruppeFApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(UserRepository repository, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo) {
+	CommandLineRunner init(UserRepository repository, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo, FriendRepository friendRepository) {
 		return args -> {
 			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@gmx.ru", "passWORT!", "ADMIN"));
 			repository.save(new User("Test","Hodenburg","02.02.1000", "t@t.de", "test", "Basic"));
@@ -67,6 +69,8 @@ public class SepGruppeFApplication {
 			}
 			ligarepo.save(testLiga);
 
+			Friend friend = new Friend(repository.findUserByeMail("lmao@gmx.ru"), repository.findUserByeMail("xD@yahoo.org"), false);
+			friendRepository.save(friend);
 		};
 	}
 

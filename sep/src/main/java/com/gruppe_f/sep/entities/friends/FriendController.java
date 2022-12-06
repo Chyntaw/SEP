@@ -120,11 +120,11 @@ public class FriendController {
     @GetMapping("/user/inviteFriend/{currentEmail}/{friendEmail}/{bettingroundid}")
     public ResponseEntity<?>sendTipprundenInvite(@PathVariable("currentEmail") String currentUserEmail,
                                                  @PathVariable("friendEmail") String friendEmail,
-                                                 @PathVariable("{bettingroundid}") Long id){
+                                                 @PathVariable("bettingroundid") Long id){
 
         mailSenderService.sendEmail(friendEmail,
                 currentUserEmail + "möchte Sie zur Tipprunde: " + " einladen.",
-                "http://localhost:4200/tipprunden-uebersicht/");
+                "http://localhost:4200/tipprunden-uebersicht/" + id);
 
 
         return new ResponseEntity<>(HttpStatus.OK);

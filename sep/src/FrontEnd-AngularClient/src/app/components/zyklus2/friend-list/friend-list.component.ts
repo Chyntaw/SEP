@@ -30,6 +30,41 @@ export class FriendListComponent implements OnInit {
     this.showSendedFriendRequest(this.user.eMail);
   }
 
+  showFriendList() {
+    const email:string | null = sessionStorage.getItem('eMail');
+
+    if(email){
+      this.friendListService.showFriends(email).subscribe(data=>{
+          this.friends = data;
+          for(let friends of this.friends){
+           if(friends.image != null){
+             this.getImageForFriends(friends.eMail)
+           }
+        }
+      })
+    }
+  }
+
+  getImageForFriends(eMail: string){
+    this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
+      if(res != null || res != undefined){
+        this.retrieveResonse = res;
+        this.base64Data = this.retrieveResonse.picByte;
+        this.retrievedImagesFriends.push('data:image/jpeg;base64,' + this.base64Data)
+      }
+    })
+  }
+  showPendingFriendList(email: string){
+    this.friendListService.showPendingFriends(email).subscribe(data=>{
+      this.pendingFriends = data;
+      for(let friends of this.pendingFriends){
+        if(friends.image != null){
+          this.getImageForPendingFriends(friends.eMail)
+        }
+      }
+    });
+  }
+
   getImageForPendingFriends(eMail: string){
     this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
       if(res != null || res != undefined){
@@ -40,42 +75,13 @@ export class FriendListComponent implements OnInit {
     })
   }
 
-  showPendingFriendList(email: string){
-    this.friendListService.showPendingFriends(email).subscribe(data=>{
-      this.pendingFriends = data;
-      for(let friends of this.pendingFriends){
-        this.getImageForPendingFriends(friends.eMail)
-      }
-    });
-  }
-
-  showFriendList() {
-    const email:string | null = sessionStorage.getItem('eMail');
-
-    if(email){
-      this.friendListService.showFriends(email).subscribe(data=>{
-          this.friends = data;
-          for(let friends of this.friends){
-            this.getImageForFriends(friends.eMail)
-        }
-      })
-    }
-  }
-  getImageForFriends(eMail: string){
-    this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
-      if(res != null || res != undefined){
-        this.retrieveResonse = res;
-        this.base64Data = this.retrieveResonse.picByte;
-        this.retrievedImagesFriends.push('data:image/jpeg;base64,' + this.base64Data)
-      }
-    })
-  }
-
   showSendedFriendRequest(email: string){
     this.friendListService.showPendingFriendRequests(email).subscribe(data=>{
       this.pendingRequestedFriends = data;
       for(let friends of this.pendingRequestedFriends){
-        this.getImageForSendedFriends(friends.eMail)
+        if(friends.image != null){
+          this.getImageForSendedFriends(friends.eMail)
+        }
       }
     });
   }

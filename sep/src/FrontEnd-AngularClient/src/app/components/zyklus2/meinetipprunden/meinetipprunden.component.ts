@@ -6,6 +6,8 @@ import {BettingRound} from "../../../models/betting-round";
 import {Bets} from "../../../models/bets";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
 import {Score} from "../../../models/score";
+import {FriendListService} from "../../../services/friend-list.service";
+import {User} from "../../../models/roles/user/user";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -27,11 +29,20 @@ export class MeinetipprundenComponent implements OnInit {
   leaderboard!:Score[] | any;
 
 
-  constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder) { }
+  selectedFriend: string | undefined;
+  allUser: User[] | any;
+  ArrayWithTiproundsOwnerIDS : Number[] = [];
+  CurrentUserID!:number;
+
+
+  constructor(private tipprundenservice:TipprundenserviceService, private showleaguedataservice:ShowleagueserviceService, private fb:FormBuilder, private friendListService: FriendListService) { }
 
   ngOnInit(): void {
    this.ArrayFüllen()
     this.zeigeMeineTipprunden()
+    this.findAllUser()
+    this.CurrentUserID=Number(sessionStorage.getItem("id"))
+    this.getOwnedTipprunden()
 
 
   }
@@ -51,6 +62,22 @@ export class MeinetipprundenComponent implements OnInit {
   FormControlReset(){
     this.TippAbgabeForm.controls.tippAbgabe.setValue(null)
 }
+
+
+  getOwnedTipprunden(){
+    this.tipprundenservice.getAllPublicTipprunden().subscribe((res=>{
+      for(var value of res){
+        this.ArrayWithTiproundsOwnerIDS.push(value.ownerID);
+      }
+    }))
+    let userid = Number(sessionStorage.getItem('id'))
+    this.tipprundenservice.getAllPrivateTipproundsByEmail(userid).subscribe(res => {
+      for(var value of res){
+        this.ArrayWithTiproundsOwnerIDS.push(res.ownerID)
+      }
+    })
+  }
+
 
   getTippRundenByLigaID(bettingroundID:number) {
     this.tipprundenservice.getTipprundeByLigaID(bettingroundID, this.userid).subscribe(res => {
@@ -141,5 +168,23 @@ export class MeinetipprundenComponent implements OnInit {
       console.log(this.leaderboard)
     })
 
-}
+  }
+
+  onSelected(selectedFriendEmail: string){
+    this.selectedFriend = selectedFriendEmail;
+  }
+
+  tipprundeEinladen(bettingroundid:number){
+    const userEmail = sessionStorage.getItem("eMail")
+    if(userEmail && this.selectedFriend){
+      this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedFriend).subscribe()
+    }
+  }
+
+  findAllUser(){
+    this.friendListService.findAllUser().subscribe(res=>{
+      this.allUser = res;
+    })
+  }
+
 }

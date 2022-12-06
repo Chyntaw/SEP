@@ -68,8 +68,12 @@ export class FriendListService {
 
 
   tipprundeEinladen(bettingroundid:number, currentEmail: string, friendEmail: string):Observable<any>{
-    console.log(currentEmail + friendEmail)
+    console.log(currentEmail + " " + friendEmail + " " + bettingroundid)
     return this.http.get(`${this.databaseURL+'/user/inviteFriend/'+currentEmail+'/'+friendEmail+'/'+bettingroundid}`)
+  }
+
+  findAllUser() {
+    return this.http.get(`${this.databaseURL+'/user/findall'}`)
   }
 }
 

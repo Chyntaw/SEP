@@ -29,6 +29,8 @@ export class TipprundenuebersichtComponent implements OnInit {
   alias!:string;
   password:string="";
 
+  allUser: User[] | any;
+
 
 
   constructor(private tipprundenService:TipprundenserviceService, private friendListService: FriendListService) { }
@@ -38,7 +40,15 @@ export class TipprundenuebersichtComponent implements OnInit {
     this.zeigePrivateTipprunden();
     this.CurrentUserID=Number(sessionStorage.getItem("id"))
     this.searchFriends();
+    this.findAllUser();
   }
+
+  findAllUser(){
+    this.friendListService.findAllUser().subscribe(res=>{
+      this.allUser = res;
+    })
+  }
+
 
   zeigeTipprunden(){
     this.tipprundenService.getAllPublicTipprunden().subscribe(res=>{
@@ -101,7 +111,6 @@ export class TipprundenuebersichtComponent implements OnInit {
 
     if(email){
       this.friendListService.showFriends(email).subscribe(data=>{
-        console.log(data)
         this.friends = data;
       })
     }
