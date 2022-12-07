@@ -51,6 +51,7 @@
               <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id)">Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
               <button class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID"(click)="tipprundeEinladen(mytippround.id)">Einladen</button>
+              <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal3" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Alias erstellen/ändern</button>
             </td>
             <td [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID">
               <select #friend (change)="onSelected(friend.value)">
@@ -166,6 +167,37 @@
 
         <!-- Footer-->
         <div class="modal-footer" >
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- PopUp fürs Erstellen/Ändern eines Alias  -->
+<div class="modal" id="myModal3">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  #joinTipprunde="ngForm">
+        <!-- Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align: center">Alias erstellen oder ändern</h4>
+        </div>
+
+        <!-- Body-->
+        <div class="modal-body" >
+          <div>
+            <label for="name">Alias Name</label>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="alias" required>
+          </div>
+        </div>
+
+        <!-- Footer-->
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" [disabled]="joinTipprunde.invalid" (click)="AddAlias(this.tipRundenID)">Speichern</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
         </div>
       </form>
