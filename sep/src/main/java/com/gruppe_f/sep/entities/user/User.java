@@ -46,7 +46,7 @@ public class User implements Serializable {
 
     private String code;           //Eingegebene OTP
 
-    protected User() {}
+    public User() {}
 
     public User(String firstName, String lastName, String birthDate, String eMail, String password, String role) {
         this.firstName = firstName;

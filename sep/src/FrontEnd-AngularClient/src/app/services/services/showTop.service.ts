@@ -3,6 +3,7 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {Liga} from "../../models/liga";
 import {Leaguedata} from "../../models/leaguedata";
+import {User} from "../../models/roles/user/user";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ShowTopService {
   constructor(private http: HttpClient) { }
 
   getTopUser() {
-
+    return this.http.get<User[]>(this.baseUrl + "/bets/topUser")
   }
 
   getTopTeams() : Observable<Leaguedata[]>{

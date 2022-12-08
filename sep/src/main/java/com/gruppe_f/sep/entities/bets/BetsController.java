@@ -1,7 +1,17 @@
 package com.gruppe_f.sep.entities.bets;
 
 import com.gruppe_f.sep.businesslogic.GenerellLogisch;
+import com.gruppe_f.sep.date.DateRepository;
+import com.gruppe_f.sep.date.SystemDate;
+import com.gruppe_f.sep.entities.BettingRound.BettingRound;
+import com.gruppe_f.sep.entities.BettingRound.BettingRoundRepository;
+import com.gruppe_f.sep.entities.alias.Alias;
+import com.gruppe_f.sep.entities.alias.AliasRepository;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
+import com.gruppe_f.sep.entities.liga.Liga;
+import com.gruppe_f.sep.entities.liga.LigaRepository;
+import com.gruppe_f.sep.entities.user.User;
+import com.gruppe_f.sep.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,33 +25,138 @@ import java.util.stream.Stream;
 @RequestMapping("/bets/")
 public class BetsController {
     private BetsRepository betsrepo;
+    private LigaRepository ligaRepository;
+    private AliasRepository aliasRepository;
+    private UserRepository userRepository;
+    private DateRepository dateRepository;
+    private BettingRoundRepository bettingRoundRepository;
+
 
 
     @Autowired
-    public BetsController (BetsRepository betsrepo){
+    public BetsController (BetsRepository betsrepo,
+                           LigaRepository ligaRepository,
+                           AliasRepository aliasRepository,
+                           UserRepository userRepository,
+                           DateRepository dateRepository,
+                           BettingRoundRepository bettingRoundRepository){
         this.betsrepo = betsrepo;
+        this.ligaRepository = ligaRepository;
+        this.aliasRepository = aliasRepository;
+        this.userRepository = userRepository;
+        this.bettingRoundRepository = bettingRoundRepository;
+        this.dateRepository = dateRepository;
+    }
+
+    @GetMapping("topUser")
+    public ResponseEntity<?> getTopUser() {
+        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
+        for(BettingRound bettingRound : bettingRounds) {
+            GenerellLogisch.calculateScore(
+                    dateRepository.findAll().get(0).getLocalDate(), bettingRound);
+        }
+        List<Bets> allBets = betsrepo.findAll();
+        List<Liga> allLeagues = ligaRepository.findAll();
+        Map<String, List<User>> topUsers = new TreeMap<>();
+
+        for(Liga liga : allLeagues) {
+            List<User> topUser = calculateTopUsers(allBets, liga.getId());
+            topUsers.put(liga.getName(), topUser);
+        }
+
+        return new ResponseEntity<>(topUsers, HttpStatus.OK);
     }
 
 
     @GetMapping("topTeams")
     public ResponseEntity<?> getTopTeams() {
+        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
+        for(BettingRound bettingRound : bettingRounds) {
+            GenerellLogisch.calculateScore(
+                    dateRepository.findAll().get(0).getLocalDate(), bettingRound);
+        }
         List<Bets> allBets = betsrepo.findAll();
-        List<LeagueData> topTeams = calculateTopTeams(allBets);
+        List<Liga> allLeagues = ligaRepository.findAll();
+        // A List of Key Value pairs
+        // Key is League name
+        // Value is List of Points of each team
+        Map<String, List<LeagueData>>  fullMap = new TreeMap<>();
+        for(Liga liga : allLeagues) {
+            List<LeagueData> topTeams = calculateTopTeams(allBets, liga.getId());
+            fullMap.put(liga.getName(), topTeams);
 
-        return new ResponseEntity<>(topTeams, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(fullMap, HttpStatus.OK);
+    }
+
+
+    // input is list of all existent bets
+    // output is calculated result
+    private List<User> calculateTopUsers(List<Bets> allBets, Long ligaID) {
+        Map<String, Integer> result = new HashMap<String, Integer>();
+
+        // -----CALCULATION-----
+        Map<Long, Integer> temp = new HashMap<>();
+        // go through all bets for overall calculation
+        for(Bets bet : allBets) {
+            // if bet is not from current liga, just skip
+            if(bet.getLeagueData().getLigaID() != ligaID) continue;
+
+            if(temp.containsKey(bet.getUserID())) {
+                int help = temp.get(bet.getUserID());
+                temp.replace(bet.getUserID(), help+bet.getScore());
+            }
+            else {
+                temp.put(bet.getUserID(), bet.getScore());
+            }
+        }
+
+        // -----ORDERING-----
+        // order Map by Value and delete all under top 3
+        // with help by user Brian Goetz at https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values
+        Stream<Map.Entry<Long,Integer>> sorted =
+                temp.entrySet().stream()
+                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
+
+
+        List<User> finalList = new ArrayList<>();
+        for(Object x : sorted.toList()) {
+            User user = new User();
+            // get firstname of user
+            user.setFirstName(userRepository.findUserById(
+                    Long.parseLong(x.toString().split("=")[0])).getFirstName());
+            user.setCode(x.toString().split("=")[1]);
+
+            List<Alias> aliases = aliasRepository.findAll();
+            // get alias TODO: not working
+            /*
+            for(Alias alias : aliases) {
+                if(alias.getUserID().toString().equals(user.getCode())){
+                    user.setFirstName(alias.getAlias());
+                }
+            }
+            */
+            finalList.add(user);
+            if(finalList.size() >= 3) break;
+        }
+
+
+        return finalList;
     }
 
     // input is league_data rep and list of all existent bets
     // output is calculated result
 
-    private List<LeagueData> calculateTopTeams(List<Bets> allBets) {
+    private List<LeagueData> calculateTopTeams(List<Bets> allBets, Long ligaID) {
         Map<String, Integer> result = new HashMap<String, Integer>();
 
         // go through all bets for overall calculation
         for(Bets bet : allBets) {
 
-            int firstWins = GenerellLogisch.FirstIsWinner(bet.getLeagueData());
+            // if bet is not from current liga, just skip
+            if(bet.getLeagueData().getLigaID() != ligaID) continue;
             // points are accounted to winner or in draw to both
+            int firstWins = GenerellLogisch.FirstIsWinner(bet.getLeagueData());
             switch(firstWins) {
                 case 1:
                     result = newResult(result, bet.getLeagueData().getPlayer1(), bet.getScore());
@@ -56,7 +171,6 @@ public class BetsController {
             }
         }
 
-        System.out.println(result.toString());
 
         // order Map by Value and delete all under top 3
         // with help by user Brian Goetz at https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values

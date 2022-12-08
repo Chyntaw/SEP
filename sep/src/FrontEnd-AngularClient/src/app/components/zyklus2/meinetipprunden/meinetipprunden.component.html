@@ -111,7 +111,7 @@
                     </form>
                   </td>
                   <td>{{ Bets[index] }}</td>
-                  <td><button class="btn btn-info">Tipphilfe</button></td>
+                  <td><button class="btn btn-info" (click)="getTipHelp(matchDayDaten[index].player1, matchDayDaten[index].player2, matchDayDaten[index].id)">Tipphilfe</button></td>
                   <td><button type="submit" class="btn btn-success"  (click)="placeBet(matchDayDaten[index].id, index)" [disabled]="passedGame[index]" >Speichern</button></td>
                 </tr>
                 </tbody>

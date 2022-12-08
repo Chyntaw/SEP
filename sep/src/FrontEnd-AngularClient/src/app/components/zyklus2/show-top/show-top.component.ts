@@ -9,47 +9,67 @@ import {User} from "../../../models/roles/user/user";
   templateUrl: './show-top.component.html',
   styleUrls: ['./show-top.component.css']
 })
+
 export class ShowTopComponent implements OnInit {
 
-  topBets: Array<User> = new Array<User>()
-  topTeams: Leaguedata | any;
+  kvUser: {[key: string]: Array<User>} = {}
+  kvTeam: {[key: string]: Array<Leaguedata>} = {}
 
 
   constructor(private showTopService: ShowTopService) { }
 
   ngOnInit(): void {
     this.getTopUser()
-    console.log(this.topBets)
     this.getTopTeam()
   }
 
   getTopUser() {
-    let newUser1 = new User()
-    newUser1.id = "1"
-    newUser1.firstName = "A"
-    newUser1.lastName = "a"
+    this.showTopService.getTopUser().subscribe(data => {
+      console.log(data)
+      let liganame = ""
+      let x = this.kvUser
+      console.log(data)
+      data.forEach(function (liga)  {
 
-    let newUser2 = new User()
-    newUser2.id = "2"
-    newUser2.firstName = "B"
-    newUser2.lastName = "b"
+        let liganame = String(Object.keys(liga)[0])
+        let currentUsers:User[] = new Array()
+        Object.values(liga)[0].forEach(function(MatchdayData: any)  {
+          let currentUser = new User
+          currentUser.firstName = String(Object.values(MatchdayData)[2])
+          currentUser.code = String(Object.values(MatchdayData)[4])
+          currentUsers.push(currentUser)
 
-    let newUser3 = new User()
-    newUser3.id = "3"
-    newUser3.firstName = "C"
-    newUser3.lastName = "c"
-
-    this.topBets.push(newUser1)
-    this.topBets.push(newUser2)
-    this.topBets.push(newUser3)
+        })
+        x[liganame] = currentUsers
+      })
+      this.kvUser = x
+      console.log(this.kvUser)
+    })
   }
 
   getTopTeam() {
     this.showTopService.getTopTeams().subscribe(data => {
-      this.topTeams = <Leaguedata[]>data
-      console.log(this.topTeams)
+      let liganame = ""
+      let x = this.kvTeam
+      console.log(data)/*
+      data.forEach(function (liga)  {
 
+        let liganame = String(Object.keys(liga)[0])
+        let currentTeams:Leaguedata[] = new Array()
+        Object.values(liga)[0].forEach(function(MatchdayData: any)  {
+          let currentTeam = new Leaguedata()
+          currentTeam.player1 = String(Object.values(MatchdayData)[2])
+          currentTeam.result = String(Object.values(MatchdayData)[4])
+          currentTeams.push(currentTeam)
+
+        })
+        x[liganame] = currentTeams
+      })
+      this.kvTeam = x
+      console.log(this.kvTeam)*/
     })
   }
+
+
 
 }
