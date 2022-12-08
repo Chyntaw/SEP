@@ -64,6 +64,7 @@
         </table>
       </div>
     </div>
+    <button routerLink="/dashboard" class="btnSubmit">Zurück</button>
   </div>
 
 </div>
@@ -157,6 +158,11 @@
                 <tr *ngFor="let x of leaderboard, let index = index">
                   <td>{{ x.user.firstName}}</td>
                   <td>{{ x.scores }}</td>
+                  <td>
+                    <xbutton class="btn btn-info" routerLink="/getUser" data-bs-dismiss="modal" (click)="setSessionStorageForUser(x.user.eMail)">
+                      Profil anzeigen
+                    </xbutton>
+                  </td>
                 </tr>
                 </tbody>
               </table>

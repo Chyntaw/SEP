@@ -48,10 +48,10 @@ public class FriendService {
         }
     }
 
-    public boolean isPending(String currentUserEmail, String freindUserEmail){
+    public boolean isPending(String currentUserEmail, String friendUserEmail){
 
         User currentUser = userRepository.findUserByeMail(currentUserEmail);
-        User friendUser = userRepository.findUserByeMail(freindUserEmail);
+        User friendUser = userRepository.findUserByeMail(friendUserEmail);
 
         Friend friend;
 
@@ -127,14 +127,24 @@ public class FriendService {
         for (Friend friend : friendsByFirstUser) {
             if(friend.isPending()){
                 if(friend.getSendedFrom() != currentUser){
-                    friendUsers.add(userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                    if(userRepository.findUserByeMail(friend.getSecondUser().geteMail()).getImage() == null){
+                        friendUsers.add(friendUsers.size() , userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                    }
+                    else{
+                        friendUsers.add(0, userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                    }
                 }
             }
         }
         for (Friend friend : friendsBySecondUser) {
             if(friend.isPending()){
                 if(friend.getSendedFrom() != currentUser){
-                    friendUsers.add(userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                    if(userRepository.findUserByeMail(friend.getFirstUser().geteMail()).getImage() == null){
+                        friendUsers.add(friendUsers.size(), userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                    }
+                    else{
+                        friendUsers.add(0, userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                    }
                 }
             }
         }
@@ -149,14 +159,24 @@ public class FriendService {
         for (Friend friend : friendsByFirstUser) {
             if(friend.isPending()){
                 if(friend.getSendedFrom() == currentUser){
-                    friendUsers.add(userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                    if(userRepository.findUserByeMail(friend.getSecondUser().geteMail()).getImage() == null){
+                        friendUsers.add(friendUsers.size() , userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                    }
+                    else{
+                        friendUsers.add(0, userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                    }
                 }
             }
         }
         for (Friend friend : friendsBySecondUser) {
             if(friend.isPending()){
                 if(friend.getSendedFrom() == currentUser){
-                    friendUsers.add(userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                    if(userRepository.findUserByeMail(friend.getFirstUser().geteMail()).getImage() == null){
+                        friendUsers.add(friendUsers.size(), userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                    }
+                    else{
+                        friendUsers.add(0, userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                    }
                 }
             }
         }
@@ -170,12 +190,22 @@ public class FriendService {
 
         for (Friend friend : friendsByFirstUser) {
             if(!friend.isPending()){
-                friendUsers.add(userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                if(userRepository.findUserByeMail(friend.getSecondUser().geteMail()).getImage() == null){
+                    friendUsers.add(friendUsers.size() , userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                }
+                else{
+                    friendUsers.add(0, userRepository.findUserByeMail(friend.getSecondUser().geteMail()));
+                }
             }
         }
         for (Friend friend : friendsBySecondUser) {
             if(!friend.isPending()){
-                friendUsers.add(userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                if(userRepository.findUserByeMail(friend.getFirstUser().geteMail()).getImage() == null){
+                    friendUsers.add(friendUsers.size(), userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                }
+                else{
+                    friendUsers.add(0, userRepository.findUserByeMail(friend.getFirstUser().geteMail()));
+                }
             }
         }
         return friendUsers;

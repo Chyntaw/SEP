@@ -1,5 +1,7 @@
 package com.gruppe_f.sep;
 
+import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
+import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
@@ -36,7 +38,7 @@ public class SepGruppeFApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(UserRepository repository, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo, FriendRepository friendRepository) {
+	CommandLineRunner init(UserRepository repository, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo, FriendRepository friendRepository, ImageRepository imageRepository) {
 		return args -> {
 			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@gmx.ru", "passWORT!", "ADMIN"));
 			repository.save(new User("Test","Hodenburg","02.02.1000", "t@t.de", "test", "Basic"));
@@ -44,6 +46,8 @@ public class SepGruppeFApplication {
 			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
 			repository.save(new User("Peter","Parker","02.02.2002", "rofl@yahoo.de", "mirdochwayne", "ADMIN"));
 			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
+			repository.save(new User("Can","Kalafat","24.04.1997", "can.kalafat@outlook.de", "1", "BASIC"));
+
 			repo.save(new SystemDate("2020-05-14"));
 
 
@@ -69,8 +73,11 @@ public class SepGruppeFApplication {
 			}
 			ligarepo.save(testLiga);
 
-			Friend friend = new Friend(repository.findUserByeMail("lmao@gmx.ru"), repository.findUserByeMail("xD@yahoo.org"), false);
-			friendRepository.save(friend);
+
+			byte[] test = new byte[0];
+			ImageModel imageModel = new ImageModel("StandardBild", "image/jpeg", test);
+			imageRepository.save(imageModel);
+
 		};
 	}
 

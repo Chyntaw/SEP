@@ -196,6 +196,10 @@ export class MeinetipprundenComponent implements OnInit {
     })
 
   }
+
+  setSessionStorageForUser(eMail:string){
+    sessionStorage.setItem("eMailSearchProfile", eMail)
+  }
   getDisabled(date:string[]) {
     this.tipprundenservice.getDisabled(date).subscribe(res => {
       this.passedGame = res;

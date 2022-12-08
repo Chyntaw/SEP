@@ -3,6 +3,8 @@ package com.gruppe_f.sep.entities.user;
 
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
+import com.gruppe_f.sep.entities.friends.FriendRepository;
+import com.gruppe_f.sep.entities.friends.FriendService;
 import com.gruppe_f.sep.mail.MailSenderService;
 import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
@@ -12,8 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.text.html.Option;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.DataFormatException;
@@ -27,14 +31,17 @@ public class UserController {
     private final UserService service;
     private final ImageRepository imageRepository;
 
+    private final FriendService friendService;
+
 
     @Autowired
     MailSenderService mailSenderService;
 
     @Autowired
-    public UserController(UserService service, ImageRepository imageRepository) {
+    public UserController(UserService service, ImageRepository imageRepository, FriendService friendService) {
         this.service = service;
         this.imageRepository = imageRepository;
+        this.friendService = friendService;
     }
 
     @GetMapping("/user/findall")
@@ -140,17 +147,60 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+/*
+    @GetMapping("/user/{eMail}/imagesForPendingFriends")
+    public ArrayList<ImageModel> getImagesForPendingFriends(@PathVariable("eMail") String currentEmail){
 
+        User currentUser = service.findUserByeMail(currentEmail);
+
+        List<User> friends = friendService.getPendingFriends(currentUser);
+
+        ArrayList<ImageModel> retrievedImages = new ArrayList<ImageModel>();
+        ImageModel imageModel;
+
+
+        for(User userDatabase: friends){
+            if(userDatabase.getImage() == null){
+                Optional<ImageModel> retrievedImage= imageRepository.findByName("StandardBild");
+                imageModel = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
+                        decompressBytes(retrievedImage.get().getPicByte()));
+                retrievedImages.add(imageModel);
+            }
+            else{
+                Optional<ImageModel> retrievedImage= imageRepository.findByName(userDatabase.getImage().getName());
+                imageModel = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
+                        decompressBytes(retrievedImage.get().getPicByte()));
+                retrievedImages.add(imageModel);
+
+            }
+        }
+        return retrievedImages;
+    }
+
+
+ */
     @GetMapping("/user/{eMail}/image")
     public ImageModel getImage(@PathVariable("eMail") String currentEmail){
 
         User currentUser = service.findUserByeMail(currentEmail);
 
-        final Optional<ImageModel> retrievedImage = imageRepository.findByName(currentUser.getImage().getName());
-        ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
-                decompressBytes(retrievedImage.get().getPicByte()));
-
-        return img;
+        if(currentUser.getImage() == null){
+            System.out.println("kein Bild");
+            final Optional<ImageModel> retrievedImage = imageRepository.findByName("StandardBild");
+            System.out.println("1");
+            ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType());
+            System.out.println("2");
+            System.out.println(img.getName() + " "+ img.getType());
+            return img;
+        }
+        else{
+            System.out.println("Bild");
+            final Optional<ImageModel> retrievedImage = imageRepository.findByName(currentUser.getImage().getName());
+            ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
+                    decompressBytes(retrievedImage.get().getPicByte()));
+            System.out.println(img.getName() + " "+ img.getType());
+            return img;
+        }
     }
 
 

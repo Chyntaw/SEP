@@ -30,10 +30,11 @@ public class Friend {
     public Friend() {
     }
 
-    public Friend(User user, User user2, boolean b) {
+    public Friend(User user, User user2, boolean b, User user3) {
         this.firstUser = user;
         this.secondUser = user2;
         this.pending = b;
+        this.sendedFrom = user3;
     }
     public User getSendedFrom() {
         return sendedFrom;

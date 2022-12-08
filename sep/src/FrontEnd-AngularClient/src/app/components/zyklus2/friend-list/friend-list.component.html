@@ -23,12 +23,12 @@
               <td>
                 <div class="container row">
                   <div class="col-md-12">
-                    <div *ngIf="!equals(this.retrievedImagesFriends[i], this.keinBildVorhanden); else noPicture">
-                      <img [src]="this.retrievedImagesFriends[i]" width="100" height="100">
+                    <div *ngIf="equals(users.image, this.keinBildVorhanden); else hasPicture">
+                      <h1>Kein Bild vorhanden</h1>
                     </div>
                     <div>
-                      <ng-template #noPicture>
-                        <h1>Kein Bild vorhanden</h1>
+                      <ng-template #hasPicture >
+                        <img [src]="this.retrievedImagesFriends[i]" width="100" height="100">
                       </ng-template>
                     </div>
                   </div>
@@ -63,16 +63,16 @@
               <tbody>
               <tr *ngFor="let pendingUsers of pendingFriends, let i = index">
                 <td>{{ pendingUsers.firstName }}</td>
-                <td>{{ pendingUsers.lastName }}</td>
+                <td>{{ pendingUsers.eMail }}</td>
                 <td>
                   <div class="container row">
                     <div class="col-md-12">
-                      <div *ngIf="!equals(this.retrievedImagesOfPendingFriends[i], this.keinBildVorhanden); else noPicture">
-                        <img [src]="this.retrievedImagesOfPendingFriends[i]" width="100" height="100">
+                      <div *ngIf="equals(pendingUsers.image, this.keinBildVorhanden); else hasPicture">
+                        <h1>Kein Bild vorhanden</h1>
                       </div>
                       <div>
-                        <ng-template #noPicture>
-                          <h1>Kein Bild vorhanden</h1>
+                        <ng-template #hasPicture >
+                          <img [src]="this.retrievedImagesOfPendingFriends[i]" width="100" height="100">
                         </ng-template>
                       </div>
                     </div>
@@ -112,12 +112,12 @@
                 <td>
                   <div class="container row">
                     <div class="col-md-12">
-                      <div *ngIf="!equals(this.retrievedImageOfSendedFriends[i], this.keinBildVorhanden); else noPicture">
-                        <img [src]="this.retrievedImageOfSendedFriends[i]" width="100" height="100">
+                      <div *ngIf="equals(pendingRequestesUsers.image, this.keinBildVorhanden); else hasPicture">
+                        <h1>Kein Bild vorhanden</h1>
                       </div>
                       <div>
-                        <ng-template #noPicture>
-                          <h1>Kein Bild vorhanden</h1>
+                        <ng-template #hasPicture >
+                          <img [src]="this.retrievedImageOfSendedFriends[i]" width="100" height="100">
                         </ng-template>
                       </div>
                     </div>

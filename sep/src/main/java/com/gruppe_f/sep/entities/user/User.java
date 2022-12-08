@@ -85,7 +85,8 @@ public class User implements Serializable {
                 ", birthDate=" + birthDate +
                 ", eMail='" + eMail + '\'' +
                 ", password='" + password + '\'' +
-                ", role='"+ role+
+                ", role='"+ role+ '\'' +
+                ", bild='" + image+
                 "'}";
     }
 
