@@ -1,31 +1,20 @@
 package com.gruppe_f.sep.entities.user;
 
 
-import com.gruppe_f.sep.businesslogic.FileUploadUtil;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
 import com.gruppe_f.sep.mail.MailSenderService;
-import dev.samstevens.totp.code.CodeGenerator;
-import dev.samstevens.totp.code.CodeVerifier;
-import dev.samstevens.totp.code.DefaultCodeGenerator;
-import dev.samstevens.totp.code.DefaultCodeVerifier;
 import dev.samstevens.totp.secret.DefaultSecretGenerator;
 import dev.samstevens.totp.secret.SecretGenerator;
-import dev.samstevens.totp.time.SystemTimeProvider;
-import dev.samstevens.totp.time.TimeProvider;
-import org.hibernate.engine.jdbc.spi.ConnectionObserverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -126,8 +115,7 @@ public class UserController {
 
         String user_mail = userData.geteMail();
 
-        TimeProvider timeProvider = new SystemTimeProvider();
-        CodeGenerator codeGenerator = new DefaultCodeGenerator();
+
 
         User user = service.findUserByeMail(user_mail);
 

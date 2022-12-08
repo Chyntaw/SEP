@@ -28,7 +28,9 @@ export class UserProfileComponent implements OnInit{
     this.getUserService.getUser(this.user.eMail).subscribe(res=>{
       this.userToShow = res
     })
-    this.getImage()
+    if(this.userToShow.image != null){
+      this.getImage()
+    }
   }
 
   getImage(){
@@ -53,5 +55,11 @@ export class UserProfileComponent implements OnInit{
 
 
   ngOnInit() {
+    let eMail = sessionStorage.getItem("eMailSearchProfile")
+    if(eMail){
+      this.user.eMail = eMail
+      this.getUser()
+      sessionStorage.removeItem("eMailSearchProfile")
+    }
   }
 }
