@@ -24,7 +24,7 @@ public class TipHelper {
 
     // inputs are the two current players
     // return element is possible result
-    public String tipHelp(String player1, String player2, Long id) {
+    public String tipHelp(int id) {
 
         // get all data from database
         SystemDate systemDate = dateRepository.findAll().get(0);
@@ -33,6 +33,10 @@ public class TipHelper {
         // create lists for calculation
         List<LeagueData> toCalculateList1 = new ArrayList<>();
         List<LeagueData> toCalculateList2 = new ArrayList<>();
+
+        // get players
+        String player1 = leagueDataRepository.findByid(id).getPlayer1();
+        String player2 = leagueDataRepository.findByid(id).getPlayer2();
 
         // sort list by date for correct tiphelp
         // help by harshtuna at https://stackoverflow.com/questions/28543602/how-to-sort-an-array-by-a-particular-value

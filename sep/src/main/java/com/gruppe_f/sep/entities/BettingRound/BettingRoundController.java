@@ -161,14 +161,12 @@ public class BettingRoundController {
 
 
     @PostMapping("getTipHelp")
-    public ResponseEntity<?> getTipHelpByTeams(@RequestParam("player1") String player1,
-                                               @RequestParam("player2") String player2,
-                                               @RequestParam("id") Long id) {
+    public ResponseEntity<?> getTipHelpByTeams(@RequestParam("id") int id) {
 
         TipHelper tipHelper = new TipHelper(dateRepo, leagueDataRepo);
 
         LeagueData leagueData = new LeagueData();
-        leagueData.setResult(tipHelper.tipHelp(player1, player2, id));
+        leagueData.setResult(tipHelper.tipHelp(id));
 
         return new ResponseEntity<>(leagueData, HttpStatus.OK);
     }

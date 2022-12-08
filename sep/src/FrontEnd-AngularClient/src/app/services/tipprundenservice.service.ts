@@ -53,10 +53,8 @@ export class TipprundenserviceService {
   }
 
 
-  getTipHelpByTeams(player1: string, player2: string, id: number) {
+  getTipHelpByTeams(id: number) {
     const formData: FormData = new FormData();
-    formData.append("player1", player1)
-    formData.append("player2", player2)
     formData.append("id", String(id))
     return this.http.post(`${this.baseUrl}/getTipHelp`, formData)
   }
