@@ -20,6 +20,9 @@ export class FriendListComponent implements OnInit {
 
   base64Data: any;
   retrieveResonse: any;
+  keinBildVorhanden: string = "Kein Bild vorhanden";
+
+  number:number = 0;
 
   constructor(private friendListService: FriendListService) { }
 
@@ -37,29 +40,44 @@ export class FriendListComponent implements OnInit {
       this.friendListService.showFriends(email).subscribe(data=>{
           this.friends = data;
           for(let friends of this.friends){
-           if(friends.image != null){
-             this.getImageForFriends(friends.eMail)
-           }
+            if(friends.image != null || friends.image != undefined){
+              this.getImageForFriends(friends.eMail)
+            }
+            else{
+              this.setKeinBildForFriends()
+            }
         }
       })
     }
   }
 
   getImageForFriends(eMail: string){
-    this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
-      if(res != null || res != undefined){
-        this.retrieveResonse = res;
-        this.base64Data = this.retrieveResonse.picByte;
-        this.retrievedImagesFriends.push('data:image/jpeg;base64,' + this.base64Data)
-      }
+      this.friendListService.getImagesFromFriend(eMail).subscribe(res=>{
+        if(res != null || res != undefined){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          this.retrievedImagesFriends.push('data:image/jpeg;base64,' + this.base64Data)
+        }
+      })
+  }
+
+  setKeinBildForFriends(){
+    this.friendListService.keinBildVorhanden().subscribe(data=>{
+      this.retrievedImagesFriends.push("Kein Bild vorhanden")
     })
   }
+
+
+
   showPendingFriendList(email: string){
     this.friendListService.showPendingFriends(email).subscribe(data=>{
       this.pendingFriends = data;
       for(let friends of this.pendingFriends){
         if(friends.image != null){
           this.getImageForPendingFriends(friends.eMail)
+        }
+        else{
+          this.setKeinBildForPendingFriends()
         }
       }
     });
@@ -75,12 +93,23 @@ export class FriendListComponent implements OnInit {
     })
   }
 
+  setKeinBildForPendingFriends(){
+    this.friendListService.keinBildVorhanden().subscribe(data=>{
+      this.retrievedImagesOfPendingFriends.push("Kein Bild vorhanden")
+    })
+  }
+
+
   showSendedFriendRequest(email: string){
     this.friendListService.showPendingFriendRequests(email).subscribe(data=>{
       this.pendingRequestedFriends = data;
+
       for(let friends of this.pendingRequestedFriends){
         if(friends.image != null){
           this.getImageForSendedFriends(friends.eMail)
+        }
+        else{
+          this.setKeinBildForSendedFriends()
         }
       }
     });
@@ -94,6 +123,13 @@ export class FriendListComponent implements OnInit {
       }
     })
   }
+
+  setKeinBildForSendedFriends(){
+    this.friendListService.keinBildVorhanden().subscribe(data=>{
+      this.retrievedImageOfSendedFriends.push("Kein Bild vorhanden")
+    })
+  }
+
 
   acceptFriend(friendEmail: string){
     const currentEmail: string | null = sessionStorage.getItem('eMail');
@@ -130,4 +166,12 @@ export class FriendListComponent implements OnInit {
   }
 
 
+  equals(string1: any, string2: any) {
+    return string1 == string2
+  }
+
+
+  platzHalterGegenAsynchronität(){
+
+  }
 }

@@ -75,5 +75,10 @@ export class FriendListService {
   findAllUser() {
     return this.http.get(`${this.databaseURL+'/user/findall'}`)
   }
+
+
+  keinBildVorhanden(){
+    return this.http.get(`${this.databaseURL+'/user/keinBildVorhanden'}`)
+  }
 }
 

@@ -23,11 +23,13 @@
               <td>
                 <div class="container row">
                   <div class="col-md-12">
-                    <div *ngIf=this.retrievedImagesFriends[i]>
+                    <div *ngIf="!equals(this.retrievedImagesFriends[i], this.keinBildVorhanden); else noPicture">
                       <img [src]="this.retrievedImagesFriends[i]" width="100" height="100">
                     </div>
-                    <div *ngIf=!this.retrievedImageOfSendedFriends[i]>
-                      <h1>Kein Bild vorhanden</h1>
+                    <div>
+                      <ng-template #noPicture>
+                        <h1>Kein Bild vorhanden</h1>
+                      </ng-template>
                     </div>
                   </div>
                 </div>
@@ -65,11 +67,13 @@
                 <td>
                   <div class="container row">
                     <div class="col-md-12">
-                      <div *ngIf=this.retrievedImagesOfPendingFriends[i]>
+                      <div *ngIf="!equals(this.retrievedImagesOfPendingFriends[i], this.keinBildVorhanden); else noPicture">
                         <img [src]="this.retrievedImagesOfPendingFriends[i]" width="100" height="100">
                       </div>
-                      <div *ngIf=!this.retrievedImageOfSendedFriends[i]>
-                        <h1>Kein Bild vorhanden</h1>
+                      <div>
+                        <ng-template #noPicture>
+                          <h1>Kein Bild vorhanden</h1>
+                        </ng-template>
                       </div>
                     </div>
                   </div>
@@ -108,11 +112,13 @@
                 <td>
                   <div class="container row">
                     <div class="col-md-12">
-                      <div *ngIf=this.retrievedImageOfSendedFriends[i]>
+                      <div *ngIf="!equals(this.retrievedImageOfSendedFriends[i], this.keinBildVorhanden); else noPicture">
                         <img [src]="this.retrievedImageOfSendedFriends[i]" width="100" height="100">
                       </div>
-                      <div *ngIf=!this.retrievedImageOfSendedFriends[i]>
-                        <h1>Kein Bild vorhanden</h1>
+                      <div>
+                        <ng-template #noPicture>
+                          <h1>Kein Bild vorhanden</h1>
+                        </ng-template>
                       </div>
                     </div>
                   </div>

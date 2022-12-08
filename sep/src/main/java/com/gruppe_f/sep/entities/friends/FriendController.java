@@ -130,6 +130,13 @@ public class FriendController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/user/keinBildVorhanden")
+    public ResponseEntity<?>keinBildVorhanden(){
+        String keinBild = "Kein Bild vorhanden";
+        System.out.println(keinBild);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     // uncompress the image bytes before returning it to the angular application
     public static byte[] decompressBytes(byte[] data) {
