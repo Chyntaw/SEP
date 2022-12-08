@@ -165,16 +165,16 @@ public class TipHelper {
         return result;
     }
 
-    // inputs are result array and the toCalculateList with fewer entries
-    private int[] differenceDeleter(int[] result) {
+    // inputs are result array
+    public int[] differenceDeleter(int[] result) {
 
-        // just double values if only one match exists
+        // just double values if only one match exists since other player has 2 matches
         if(result[2] == 1) {
             result[0] *= 2;
             result[1] *= 2;
         }
 
-        // multiply with 1.5 but make sure an int is saved for the two values
+        // multiply with 1.5 but make sure an int is saved for the two values since other player has 3 matches
         if(result[2] == 2) {
             result[0] = (int) ((float)result[0] * 1.5);
             result[1] = (int) ((float)result[1] * 1.5);

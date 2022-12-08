@@ -28,8 +28,8 @@ public class FriendServiceTest {
     @Test
     @DisplayName("Test should pass, if FriendRequest is sended")
     void shouldSendFriendReqeust(){
-        Friend friend = new Friend(userRepository.findUserById(1L), userRepository.findUserById(2L), true);
-        friendRepository.save(friend);
+        //Friend friend = new Friend(userRepository.findUserById(1L), userRepository.findUserById(2L), true);
+        //friendRepository.save(friend);
         Assertions.assertNotNull(friendRepository.findByFirstUserAndSecondUser(userRepository.findUserById(1L), userRepository.findUserById(2L)));
     }
 }
