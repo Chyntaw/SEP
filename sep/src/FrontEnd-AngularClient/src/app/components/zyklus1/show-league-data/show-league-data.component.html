@@ -17,12 +17,12 @@
           </thead>
           <!-- Liga Anzeigen Body -->
           <tbody>
-          <tr *ngFor="let ligens of ligen">
+          <tr *ngFor="let ligens of ligen, let i = index">
             <td>{{ ligens.id }}</td>
             <td>{{ ligens.name }}</td>
             <div class="form-group">
               <button  class="btnLiga" (click)="zeigeLigaDaten(ligens.id)">Zeige die Ligadaten</button>
-              <button  class="btnLiga" (click)="sichereId(ligens.id)" [hidden]="!this.zeigeTippRundenErstellen"  data-bs-toggle="modal" data-bs-target="#myModal2">Tipprunde erstellen</button>
+              <button  class="btnLiga" (click)="sichereId(ligens.id)" [hidden]="!this.zeigeTippRundenErstellen" *ngIf="!passedLiga[i]" data-bs-toggle="modal" data-bs-target="#myModal2">Tipprunde erstellen</button>
             </div>
           </tr>
           </tbody>

@@ -118,5 +118,11 @@ export class TipprundenserviceService {
     return this.http.put(`${this.baseUrl}/changeAlias`,formData)
   }
 
+  getDisabled(date:string[]) {
+    const data: FormData = new FormData();
+    data.append("date", String(date));
+    console.log(data)
+    return this.http.post(`${this.baseUrl}/getDisabled`, data);
+  }
 }
 

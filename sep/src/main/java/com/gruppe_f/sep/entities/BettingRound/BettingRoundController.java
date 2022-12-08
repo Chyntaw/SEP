@@ -144,13 +144,13 @@ public class BettingRoundController {
         for(Bets bet: betsList) {
             //Check if user already placed Bet on this Game
             if(bet.getUserID() == userid && bet.getLeagueData().getId() == leagueDataid) {
-                if(newBet == null) betsList.remove(bet);
+                if(newBet.equals("undefined")) betsList.remove(bet);
                 else bet.setBets(newBet);
                 //getLeagueDataByDate(bettingRound.getLigaID());
                 return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
             }
         }
-        if(newBet != null) {
+        if(newBet != null && !newBet.equals("undefined")) {
             LeagueData data = leagueDataRepo.findByid(leagueDataid);
             betsList.add(new Bets(newBet, userid, data));
         }
@@ -363,4 +363,16 @@ public class BettingRoundController {
         return new ResponseEntity<>(returnList, HttpStatus.OK);
 
     }*/
+   @PostMapping("/getDisabled")
+    public ResponseEntity<?> getDisabled(@RequestParam(required = false, name = "date") String[] gameDate) {
+
+        String currDate =  dateRepo.findAll().get(0).getLocalDate();
+        boolean[] isDisabled = new boolean[gameDate.length];
+
+        for(int i = 0; i < gameDate.length; i++) {
+            if(compareDates(gameDate[i], currDate) >= 0) {isDisabled[i] = false;}
+            else {isDisabled[i] = true;}
+        }
+        return new ResponseEntity<>(isDisabled, HttpStatus.OK);
+    }
 }

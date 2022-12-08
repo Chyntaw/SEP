@@ -31,6 +31,10 @@ export class ShowleagueserviceService {
     return this.http.get(`${this.databaseURL+'leagueData/getByMatchday/'+ligaID+'/'+matchDayID}`)
   }
 
+  getDisabledButtons() {
+    return this.http.get(`${this.databaseURL+"liga/buttondisabler"}`)
+  }
+
 
 
   get id(): number {

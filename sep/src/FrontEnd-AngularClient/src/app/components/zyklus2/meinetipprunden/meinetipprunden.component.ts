@@ -18,16 +18,17 @@ export class MeinetipprundenComponent implements OnInit {
 
   userid = Number(sessionStorage.getItem('id'));
   mytiprounds: BettingRound[] | any;
-  matchDayCount: Array<number> = new Array(34);
-  matchDayDaten: Leaguedata[] | any;
+  matchDayCount:Array<number> = new Array(34);
+  matchDayDaten:Leaguedata[] | any;
   Bets: String[] | any;
-  _ligaID!: number;
+  _ligaID!:number;
   tipRundenID!: number;
-  newBet: Bets = new Bets();
+  newBet:Bets = new Bets();
   selectedBettingRoundID: number | any;
   myTippRundenByLigaID: BettingRound[] | any;
   leaderboard!: Score[] | any;
   alias!: string;
+  passedGame!:boolean[] | any;
   selectedFriend: string | undefined;
   allUser: User[] | any;
   ArrayWithTiproundsOwnerIDS: Number[] = [];
@@ -106,22 +107,24 @@ export class MeinetipprundenComponent implements OnInit {
     this._ligaID = ligaID;
     this.tipRundenID = tippRundenid;
   }
+  MatchDayDaten(matchDayID:number){
+    this.showleaguedataservice.getAllMatchDayDaten(this._ligaID,matchDayID).subscribe(res=>{
 
-  MatchDayDaten(matchDayID: number) {
-    this.showleaguedataservice.getAllMatchDayDaten(this._ligaID, matchDayID).subscribe(res => {
-      this.matchDayDaten = res;
-      let arr1: Number[] = [];
-      for (var val of this.matchDayDaten) {
+      this.matchDayDaten=res;
+      let arr1 : Number[] = [];
+      let dateArr: string[] = [];
+      for(var val of this.matchDayDaten) {
         arr1.push(val.id);
+        dateArr.push(val.date);
       }
-      console.log(arr1);
+      console.log(dateArr);
+      this.getDisabled(dateArr);
       this.getBets(this.userid, arr1, this.tipRundenID)
     })
   }
 
   getBets(userID: number, leagueDataIDs: Number[], bettingRoundID: number) {
     this.tipprundenservice.getBetsByLeagueDataID(userID, leagueDataIDs, bettingRoundID).subscribe(res => {
-      console.log(res)
       this.Bets = res;
     })
   }
@@ -193,4 +196,11 @@ export class MeinetipprundenComponent implements OnInit {
     })
 
   }
+  getDisabled(date:string[]) {
+    this.tipprundenservice.getDisabled(date).subscribe(res => {
+      this.passedGame = res;
+      console.log(res);
+    });
+  }
+
 }

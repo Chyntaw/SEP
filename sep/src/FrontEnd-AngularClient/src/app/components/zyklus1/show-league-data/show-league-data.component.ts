@@ -25,6 +25,7 @@ export class ShowLeagueDataComponent implements OnInit {
   zeigeTippRundenErstellen:boolean=true;
   ligaid!:number;
   betRound:BettingRound = new BettingRound();
+  passedLiga:boolean[] | any;
 
 
   constructor(private showleagueservice: ShowleagueserviceService,
@@ -59,6 +60,13 @@ export class ShowLeagueDataComponent implements OnInit {
   zeigeLigen() {
     this.showleagueservice.findAll().subscribe(res => {
       this.ligen = res
+      this.disableButtons();
+    })
+  }
+
+  disableButtons() {
+    this.showleagueservice.getDisabledButtons().subscribe(res => {
+      this.passedLiga = res;
     })
   }
 

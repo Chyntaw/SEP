@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.liga;
 
+import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.businesslogic.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.gruppe_f.sep.businesslogic.CSV_Reader.csv_read;
 import static com.gruppe_f.sep.businesslogic.FileUploadUtil.convertMultiPartToFile;
+import static com.gruppe_f.sep.businesslogic.GenerellLogisch.compareDates;
 import static java.util.Map.entry;
 
 @RestController
@@ -28,9 +31,11 @@ public class LigaService {
 
 
     private final LigaRepository ligaRepo;
+    private final DateRepository dateRepo;
     @Autowired
-    public LigaService(LigaRepository ligaRepo) {
+    public LigaService(LigaRepository ligaRepo, DateRepository dateRepo) {
         this.ligaRepo = ligaRepo;
+        this.dateRepo = dateRepo;
     }
 
     public Liga addLiga(Liga liga){
@@ -45,6 +50,24 @@ public class LigaService {
             liga.setLeagueData(null);
         }
         return new ResponseEntity<>(leagueList, HttpStatus.OK);
+    }
+
+    @GetMapping("/liga/buttondisabler")
+    public ResponseEntity<?> getDisabledButtons() {
+
+        List<Liga> ligaList = ligaRepo.findAll();
+        Boolean[] shouldButtonBeDisabled = new Boolean[ligaList.size()];
+        String currDate = dateRepo.findAll().get(0).getLocalDate();
+
+        int i = 0;
+        for(Liga liga: ligaList) {
+            List<LeagueData> dataList = liga.getLeagueData().stream().sorted((x,y) -> compareDates(x.getDate(), y.getDate())).collect(Collectors.toList());
+            String lastOcurringDate = dataList.get(dataList.size()-1).getDate();
+            if(compareDates(lastOcurringDate, currDate) >= 0) {shouldButtonBeDisabled[i] = false;}
+            else {shouldButtonBeDisabled[i] = true;}
+            i++;
+        }
+        return new ResponseEntity<>(shouldButtonBeDisabled, HttpStatus.OK);
     }
 
     public Liga updateLiga(Liga liga){
