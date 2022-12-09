@@ -21,18 +21,15 @@
               <td>{{ users.firstName }}</td>
               <td>{{ users.lastName }}</td>
               <td>
-                <div class="container row">
-                  <div class="col-md-12">
-                    <div *ngIf="equals(users.image, this.keinBildVorhanden); else hasPicture">
-                      <h1>Kein Bild vorhanden</h1>
-                    </div>
-                    <div>
-                      <ng-template #hasPicture >
-                        <img [src]="this.retrievedImagesFriends[i]" width="100" height="100">
-                      </ng-template>
-                    </div>
+                <button class='btn btn-info' (click)="showImageFriends(users.eMail)" onclick="this.hidden=true">Show Image</button>
+                <div *ngIf="users.profilePictureName">
+                  <div *ngIf="!equals(users.profilePictureName, this.keinBildVorhanden); else hasNoPicture">
+                    <img [src]="users.profilePictureName" width="100" height="100">
                   </div>
                 </div>
+                <ng-template #hasNoPicture>
+                  <h1>Kein Bild vorhanden</h1>
+                </ng-template>
               </td>
               <td><button  (click) = "removeFriend(users.eMail)" class='btn btn-info'>Löschen</button></td>
             </tr>
@@ -63,8 +60,19 @@
               <tbody>
               <tr *ngFor="let pendingUsers of pendingFriends, let i = index">
                 <td>{{ pendingUsers.firstName }}</td>
-                <td>{{ pendingUsers.eMail }}</td>
+                <td>{{ pendingUsers.lastName }}</td>
                 <td>
+                  <button class='btn btn-info' (click)="showImagePendingFriends(pendingUsers.eMail)" onclick="this.hidden=true">Show Image</button>
+                  <div *ngIf="pendingUsers.profilePictureName">
+                    <div *ngIf="!equals(pendingUsers.profilePictureName, this.keinBildVorhanden); else hasNoPicture">
+                      <img [src]="pendingUsers.profilePictureName" width="100" height="100">
+                    </div>
+                  </div>
+                  <ng-template #hasNoPicture>
+                    <h1>Kein Bild vorhanden</h1>
+                  </ng-template>
+
+                  <!--
                   <div class="container row">
                     <div class="col-md-12">
                       <div *ngIf="equals(pendingUsers.image, this.keinBildVorhanden); else hasPicture">
@@ -77,6 +85,7 @@
                       </div>
                     </div>
                   </div>
+                  -->
                 </td>
 
                 <td><button  (click) = "acceptFriend(pendingUsers.eMail)" class='btn btn-info'>Accept</button></td>
@@ -110,18 +119,15 @@
                 <td>{{ pendingRequestesUsers.firstName }}</td>
                 <td>{{ pendingRequestesUsers.lastName }}</td>
                 <td>
-                  <div class="container row">
-                    <div class="col-md-12">
-                      <div *ngIf="equals(pendingRequestesUsers.image, this.keinBildVorhanden); else hasPicture">
-                        <h1>Kein Bild vorhanden</h1>
-                      </div>
-                      <div>
-                        <ng-template #hasPicture >
-                          <img [src]="this.retrievedImageOfSendedFriends[i]" width="100" height="100">
-                        </ng-template>
-                      </div>
+                  <button class='btn btn-info' (click)="showImageRequestedFriends(pendingRequestesUsers.eMail)" onclick="this.hidden=true">Show Image</button>
+                  <div *ngIf="pendingRequestesUsers.profilePictureName">
+                    <div *ngIf="!equals(pendingRequestesUsers.profilePictureName, this.keinBildVorhanden); else hasNoPicture">
+                      <img [src]="pendingRequestesUsers.profilePictureName" width="100" height="100">
                     </div>
                   </div>
+                  <ng-template #hasNoPicture>
+                    <h1>Kein Bild vorhanden</h1>
+                  </ng-template>
                 </td>
                 <td><button (click) = "declineFriend(pendingRequestesUsers.eMail)" class='btn btn-info'>Remove</button></td>
 

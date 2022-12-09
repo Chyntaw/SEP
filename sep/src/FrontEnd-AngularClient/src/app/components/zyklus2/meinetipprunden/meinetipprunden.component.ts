@@ -29,10 +29,12 @@ export class MeinetipprundenComponent implements OnInit {
   leaderboard!: Score[] | any;
   alias!: string;
   passedGame!:boolean[] | any;
+  selectedUser: string | undefined;
   selectedFriend: string | undefined;
   allUser: User[] | any;
   ArrayWithTiproundsOwnerIDS: Number[] = [];
   CurrentUserID!: number;
+  allFriends:User[]|any;
 
 
   constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService, private fb: FormBuilder, private friendListService: FriendListService) {
@@ -42,6 +44,7 @@ export class MeinetipprundenComponent implements OnInit {
     this.ArrayFüllen()
     this.zeigeMeineTipprunden()
     this.findAllUser()
+    this.findAllFriends()
     this.CurrentUserID = Number(sessionStorage.getItem("id"))
     this.getOwnedTipprunden()
 
@@ -172,14 +175,26 @@ export class MeinetipprundenComponent implements OnInit {
 
   }
 
-  onSelected(selectedFriendEmail: string) {
+  onSelectedUser(selectedUserEmail: string) {
+    this.selectedUser = selectedUserEmail;
+  }
+
+  onSelectedFriend(selectedFriendEmail: string) {
     this.selectedFriend = selectedFriendEmail;
+
   }
 
   tipprundeEinladen(bettingroundid: number) {
     const userEmail = sessionStorage.getItem("eMail")
-    if (userEmail && this.selectedFriend) {
-      this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedFriend).subscribe()
+    if (userEmail && this.selectedUser) {
+      this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedUser).subscribe()
+    }
+  }
+
+  teileTipps(bettingroundid: number){
+    const userEmail = sessionStorage.getItem("eMail")
+    if(userEmail && this.selectedFriend){
+      this.friendListService.teileTips(bettingroundid, userEmail, this.selectedFriend).subscribe()
     }
   }
 
@@ -188,7 +203,14 @@ export class MeinetipprundenComponent implements OnInit {
       this.allUser = res;
     })
   }
-
+  findAllFriends() {
+    let currentEmail = sessionStorage.getItem("eMail")
+    if(currentEmail){
+      this.friendListService.showFriends(currentEmail).subscribe(res => {
+        this.allFriends = res;
+      })
+    }
+  }
   AddAlias(bettingroundid: number) {
 
     this.tipprundenservice.addAlias(this.alias, this.CurrentUserID, bettingroundid).subscribe(res => {

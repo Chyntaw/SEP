@@ -232,12 +232,21 @@ public class BettingRoundController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/shareBets/{userID}/{bettingroundID}/{friendID}")
-    public ResponseEntity<?> shareBets(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID, @PathVariable("friendID")Long friendID) {
-        BettingRound bettingRound = repo.findById(bettingroundID).get();
+    //    return this.http.get(`${this.databaseURL+'/shareBets/'+currentEmail+'/'+bettingroundid+'/'+friendEmail}`)
+    @GetMapping("/shareBets/{currentEmail}/{bettingroundid}/{friendEmail}")
+    public ResponseEntity<?> shareBets(@PathVariable("currentEmail")String currentEmail,
+                                       @PathVariable("bettingroundid")Long bettingroundid,
+                                       @PathVariable("friendEmail")String friendEmail) {
+
+        BettingRound bettingRound = repo.findById(bettingroundid).get();
         List<Bets> betsList = bettingRound.getBetsList();
-        User user = userRepo.findById(userID).get();
-        User mailRecipient = userRepo.findById(friendID).get();
+
+        User user = userRepo.findUserByeMail(currentEmail);
+
+        User mailRecipient = userRepo.findUserByeMail(friendEmail);
+
+        Long userID = user.getId();
+        Long friendID = mailRecipient.getId();
 
         if(!betsList.isEmpty()) {
 

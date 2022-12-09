@@ -51,12 +51,18 @@
               <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id)">Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
               <button class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID"(click)="tipprundeEinladen(mytippround.id)">Einladen</button>
-              <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal3" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Alias erstellen/ändern</button>
+              <button class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal3" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Alias erstellen/ändern</button>
+              <button class="btnLiga" data-bs-toggle="modal" (click)="teileTipps(mytippround.id)">Teile Tipps</button>
             </td>
             <td [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID">
-              <select #friend (change)="onSelected(friend.value)">
-                <option value="" disabled selected>select a friend</option>
+              <select #user (change)="onSelectedUser(user.value)">
+                <option disabled selected>Select a User to Invite</option>
                 <option *ngFor="let showAllUser of allUser" [value]="showAllUser.eMail">{{showAllUser.eMail}}</option>
+              </select>
+
+              <select #friend (change)="onSelectedFriend(friend.value)">
+                <option disabled selected>Select a Friend to Share Tipps</option>
+                <option *ngFor="let showAllFriends of allFriends" [value]="showAllFriends.eMail">{{showAllFriends.eMail}}</option>
               </select>
             </td>
           </tr>

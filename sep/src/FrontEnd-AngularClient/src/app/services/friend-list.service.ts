@@ -65,6 +65,7 @@ export class FriendListService {
   getImagesForPendingFriends(eMail: string) {
     return this.http.get(`${this.databaseURL+'/user/'+eMail+'/imagesForPendingFriends'}`)
   }
+
   getImages(eMail: string) {
     return this.http.get(`${this.databaseURL+'/user/'+eMail+'/image'}`)
   }
@@ -74,6 +75,12 @@ export class FriendListService {
     return this.http.get(`${this.databaseURL+'/user/inviteFriend/'+currentEmail+'/'+friendEmail+'/'+bettingroundid}`)
   }
 
+  teileTips(bettingroundid: number, currentEmail: string, friendEmail: string) {
+    return this.http.get(`${this.databaseURL+'/bettingRound/shareBets/'+currentEmail+'/'+bettingroundid+'/'+friendEmail}`)
+  }
+  //shareBets/{userID}/{bettingroundID}/{friendID}
+
+
   findAllUser() {
     return this.http.get(`${this.databaseURL+'/user/findall'}`)
   }
@@ -82,5 +89,7 @@ export class FriendListService {
   keinBildVorhanden(){
     return this.http.get(`${this.databaseURL+'/user/keinBildVorhanden'}`)
   }
+
+
 }
 

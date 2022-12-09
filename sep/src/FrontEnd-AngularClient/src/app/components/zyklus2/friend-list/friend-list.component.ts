@@ -14,9 +14,6 @@ export class FriendListComponent implements OnInit {
   pendingFriends: User[] | any;
   pendingRequestedFriends: User[] | any;
 
-  retrievedImagesFriends: string[] | any = [];
-  retrievedImagesOfPendingFriends: string[] | any = [];
-  retrievedImageOfSendedFriends: string[] | any = [];
 
   base64Data: any;
   retrieveResonse: any;
@@ -36,81 +33,61 @@ export class FriendListComponent implements OnInit {
 
   showFriendList() {
     const email: string | null = sessionStorage.getItem('eMail');
-
     if (email) {
       this.friendListService.showFriends(email).subscribe(data => {
         this.friends = data;
-        for (let friends of this.friends) {
-
-          if (friends.image != null) {
-            this.getImageForFriends(friends.eMail)
-          } else {
-            friends.image = "data:image/jpeg;base64,null"
-          }
-        }
       });
     }
   }
-
-  getImageForFriends(eMail: string){
-      this.friendListService.getImagesForPendingFriends(eMail).subscribe(res=>{
-        this.retrieveResonse = res;
-        this.base64Data = this.retrieveResonse.picByte;
-        this.retrievedImagesFriends.push('data:image/jpeg;base64,' + this.base64Data)
-      })
-  }
-
-
 
 
   showPendingFriendList(email: string){
     this.friendListService.showPendingFriends(email).subscribe(data => {
       this.pendingFriends = data;
-      for (let friends of this.pendingFriends) {
-
-       if(friends.image != null){
-         this.getImageForPendingFriends(friends.eMail)
-       }
-       else{
-         friends.image = "data:image/jpeg;base64,null"
-       }
-      }
     });
   }
-
-  getImageForPendingFriends(eMail: string){
-    this.friendListService.getImages(eMail).subscribe(res=>{
-      this.retrieveResonse = res;
-      this.base64Data = this.retrieveResonse.picByte;
-      this.retrievedImagesOfPendingFriends.push('data:image/jpeg;base64,' + this.base64Data)
-    })
-  }
-
 
 
   showSendedFriendRequest(email: string){
     this.friendListService.showPendingFriendRequests(email).subscribe(data=>{
       this.pendingRequestedFriends = data;
-      for (let friends of this.pendingRequestedFriends) {
-
-        if(friends.image != null){
-          this.getImageForSendedFriends(friends.eMail)
-        }
-        else{
-          friends.image = "data:image/jpeg;base64,null"
-        }
-      }
     });
   }
 
-  getImageForSendedFriends(eMail: string){
-    this.friendListService.getImagesForPendingFriends(eMail).subscribe(res=>{
-      this.retrieveResonse = res;
-      this.base64Data = this.retrieveResonse.picByte;
-      this.retrievedImageOfSendedFriends.push('data:image/jpeg;base64,' + this.base64Data)
+  showImageFriends(eMail: string){
+    this.friendListService.getImages(eMail).subscribe(res=>{
+      for(let friends of this.friends){
+        if(friends.eMail == eMail){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          friends.profilePictureName = 'data:image/jpeg;base64,' + this.base64Data
+        }
+      }
     })
   }
 
+  showImagePendingFriends(eMail: string){
+    this.friendListService.getImages(eMail).subscribe(res=>{
+      for(let friends of this.pendingFriends){
+        if(friends.eMail == eMail){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          friends.profilePictureName = 'data:image/jpeg;base64,' + this.base64Data
+        }
+      }
+    })
+  }
+  showImageRequestedFriends(eMail: string){
+    this.friendListService.getImages(eMail).subscribe(res=>{
+      for(let friends of this.pendingRequestedFriends){
+        if(friends.eMail == eMail){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          friends.profilePictureName = 'data:image/jpeg;base64,' + this.base64Data
+        }
+      }
+    })
+  }
 
   acceptFriend(friendEmail: string){
     const currentEmail: string | null = sessionStorage.getItem('eMail');
@@ -150,6 +127,9 @@ export class FriendListComponent implements OnInit {
   equals(string1: any, string2: any) {
     return string1 == string2
   }
+
+
+
 
 
 }
