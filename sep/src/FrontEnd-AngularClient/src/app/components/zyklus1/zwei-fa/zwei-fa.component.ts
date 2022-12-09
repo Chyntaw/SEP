@@ -38,7 +38,6 @@ export class ZweiFaComponent implements OnInit {
       else {
         this.dashboardRouter.navigate(['/dashboard'])
       }
-      alert("Code korrekt")
     }, error => alert("Code nicht korrekt"));
   }
 

@@ -46,8 +46,6 @@ userLogin() {
     //sessionStorage.setItem("6", jsondata['profilePicture']) TODO: PB speichern in sessionStorage
     this.zwei_faRouter.navigate(['/zwei-fa'])
 
-   alert("Login ist korrekt")
-
 
   },error=>alert("Bitte überprüfen Sie Ihre Eingaben!"));
 
