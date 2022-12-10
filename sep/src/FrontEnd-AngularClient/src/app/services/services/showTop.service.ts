@@ -9,15 +9,19 @@ import {User} from "../../models/roles/user/user";
   providedIn: 'root'
 })
 export class ShowTopService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://localhost:8080/bets/';
 
   constructor(private http: HttpClient) { }
 
-  getTopUser() {
-    return this.http.get<User[]>(this.baseUrl + "/bets/topUser")
+  getAllLeagues() {
+    return this.http.get<Liga[]>(this.baseUrl + "leagues")
   }
 
-  getTopTeams() : Observable<Leaguedata[]>{
-    return this.http.get<Leaguedata[]>(this.baseUrl + "/bets/topTeams")
+  getTopUser(id: number) {
+    return this.http.get<User[]>(this.baseUrl + "topUser/" + String(id))
+  }
+
+  getTopTeams(id: number) : Observable<Leaguedata[]>{
+    return this.http.get<Leaguedata[]>(this.baseUrl + "topTeams/" + String(id))
   }
 }

@@ -4,42 +4,56 @@
       <div class="form-group">
       </div>
     </div>
-    <!-- Mannschaften -->
-<!--
-    <h4 style="color: #FFFFFF">Top Mannschaften</h4>
-    <div *ngFor="let liga of kvTeam | keyvalue">
-      <h5 style="color: #FFFFFF">{{liga.key}}</h5>
-    <table class="table table-bordered table-striped" style="background-color:#FFFFFF;">
-      <thead>
-      <tr>
-        <th scope="col" >Mannschaft</th>
-        <th scope="col">Punkte</th>
-      </tr>
-      </thead>
-      <tbody *ngFor="let ldata of liga.value">
-      <tr >
-        <td>{{ldata}}</td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>
+
+    <!-- Header-->
+    <div class="modal-header">
+      <h4 class="modal-title" style="text-align: center">Tipps abgeben</h4>
     </div>
--->
-    <h4 style="color: #FFFFFF">Top Nutzer</h4>
-          <table class="table table-bordered table-striped" style="background-color:#FFFFFF;">
-            <thead>
-            <tr>
-              <th scope="col" >Vorname</th>
-              <th scope="col">Nachname</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-            </tr>
-            </tbody>
-          </table>
+
+    <!-- Body -->
+    <div class="modal-body" >
+      <select class="dropdown">
+        <option class="dropdown-item"
+                *ngFor="let league of leagues"
+                (click)="[getTopTeam(league.id), getTopUser(league.id)]">Liga: {{league.name}}</option>
+      </select>
+      <br>
+      <br>
+
+      <br>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col" style="color: #FFFFFF">Mannschaft</th>
+          <th scope="col" style="color: #FFFFFF">Punkte</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let leagueData of leagueDatas">
+          <th style="color: #FFFFFF">{{leagueData.player1}}</th>
+          <th style="color: #FFFFFF">{{leagueData.result}}</th>
+        </tr>
+        </tbody>
+      </table>
+      <br>
+      <br>
+      <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col" style="color: #FFFFFF">Nutzer</th>
+          <th scope="col" style="color: #FFFFFF">Punkte</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users">
+          <th style="color: #FFFFFF">{{user.firstName}}</th>
+          <th style="color: #FFFFFF">{{user.code}}</th>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
+
     <button routerLink="/dashboard" class="btnSubmit">Zurück</button>
   </div>
 </div>

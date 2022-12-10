@@ -48,45 +48,35 @@ public class BetsController {
         this.dateRepository = dateRepository;
     }
 
-    @GetMapping("topUser")
-    public ResponseEntity<?> getTopUser() {
+    @GetMapping("leagues")
+    public ResponseEntity<?> getAllLeagues() {
+        // Calculation of scores
         List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
+
         for(BettingRound bettingRound : bettingRounds) {
             GenerellLogisch.calculateScore(
                     dateRepository.findAll().get(0).getLocalDate(), bettingRound);
         }
-        List<Bets> allBets = betsrepo.findAll();
-        List<Liga> allLeagues = ligaRepository.findAll();
-        Map<String, List<User>> topUsers = new TreeMap<>();
 
-        for(Liga liga : allLeagues) {
-            List<User> topUser = calculateTopUsers(allBets, liga.getId());
-            topUsers.put(liga.getName(), topUser);
-        }
+        // return all leagues
+        return new ResponseEntity<>(ligaRepository.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("topUser/{id}")
+    public ResponseEntity<?> getTopUser(@PathVariable("id") Long id) {
+
+        List<Bets> allBets = betsrepo.findAll();
+        List<User> topUsers = calculateTopUsers(allBets, id);
 
         return new ResponseEntity<>(topUsers, HttpStatus.OK);
     }
 
 
-    @GetMapping("topTeams")
-    public ResponseEntity<?> getTopTeams() {
-        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
-        for(BettingRound bettingRound : bettingRounds) {
-            GenerellLogisch.calculateScore(
-                    dateRepository.findAll().get(0).getLocalDate(), bettingRound);
-        }
+    @GetMapping("topTeams/{id}")
+    public ResponseEntity<?> getTopTeams(@PathVariable("id") Long id) {
         List<Bets> allBets = betsrepo.findAll();
-        List<Liga> allLeagues = ligaRepository.findAll();
-        // A List of Key Value pairs
-        // Key is League name
-        // Value is List of Points of each team
-        Map<String, List<LeagueData>>  fullMap = new TreeMap<>();
-        for(Liga liga : allLeagues) {
-            List<LeagueData> topTeams = calculateTopTeams(allBets, liga.getId());
-            fullMap.put(liga.getName(), topTeams);
-
-        }
-        return new ResponseEntity<>(fullMap, HttpStatus.OK);
+        List<LeagueData> topTeams = calculateTopTeams(allBets, id);
+        return new ResponseEntity<>(topTeams, HttpStatus.OK);
     }
 
 
