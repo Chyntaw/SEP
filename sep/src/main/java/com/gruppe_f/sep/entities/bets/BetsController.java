@@ -83,55 +83,77 @@ public class BetsController {
     // input is list of all existent bets
     // output is calculated result
     private List<User> calculateTopUsers(List<Bets> allBets, Long ligaID) {
-        Map<String, Integer> result = new HashMap<String, Integer>();
+        Map<Long, Integer> result2 = new HashMap<>();
 
-        // -----CALCULATION-----
-        Map<Long, Integer> temp = new HashMap<>();
-        // go through all bets for overall calculation
-        for(Bets bet : allBets) {
-            // if bet is not from current liga, just skip
-            if(bet.getLeagueData().getLigaID() != ligaID) continue;
+        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
 
-            if(temp.containsKey(bet.getUserID())) {
-                int help = temp.get(bet.getUserID());
-                temp.replace(bet.getUserID(), help+bet.getScore());
-            }
-            else {
-                temp.put(bet.getUserID(), bet.getScore());
-            }
-        }
+        for(BettingRound bettingRound : bettingRounds) {
+            // skip bettingRound if not from current league
+            if(!bettingRound.getLigaID().equals(ligaID)) continue;
+            Map<Long, Integer> temp2 = new HashMap<>();
+            List<Bets> bets = bettingRound.getBetsList();
+            for(Bets bet : bets) {
+                // add score to map
+                if(temp2.containsKey(bet.getUserID())) {
 
-        // -----ORDERING-----
-        // order Map by Value and delete all under top 3
-        // with help by user Brian Goetz at https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values
-        Stream<Map.Entry<Long,Integer>> sorted =
-                temp.entrySet().stream()
-                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
-
-
-        List<User> finalList = new ArrayList<>();
-        for(Object x : sorted.toList()) {
-            User user = new User();
-            // get firstname of user
-            user.setFirstName(userRepository.findUserById(
-                    Long.parseLong(x.toString().split("=")[0])).getFirstName());
-            user.setCode(x.toString().split("=")[1]);
-
-            List<Alias> aliases = aliasRepository.findAll();
-            // get alias TODO: not working
-            /*
-            for(Alias alias : aliases) {
-                if(alias.getUserID().toString().equals(user.getCode())){
-                    user.setFirstName(alias.getAlias());
+                    int help = temp2.get(bet.getUserID());
+                    temp2.replace(bet.getUserID(), help+bet.getScore());
+                }
+                else {
+                    temp2.put(bet.getUserID(), bet.getScore());
                 }
             }
-            */
-            finalList.add(user);
-            if(finalList.size() >= 3) break;
+
+            // iterate over temp map and replace or add value to whole map
+            for(Map.Entry<Long, Integer> entry : temp2.entrySet()) {
+                if(result2.containsKey(entry.getKey())) {
+                    // if value from current list is higher than last value, replace it
+                    if(entry.getValue() > result2.get(entry.getKey())) {
+                        result2.replace(entry.getKey(), entry.getValue());
+                    }
+
+                }
+                else {
+                    result2.put(entry.getKey(), entry.getValue());
+                }
+            }
         }
 
+        // now ready with calculation
+        // order Map by Value and delete all under top 3
+        // with help by user Brian Goetz at https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values
+        Stream<Map.Entry<Long,Integer>> sorted2 =
+                result2.entrySet().stream()
+                        .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
 
-        return finalList;
+        List<User> top3Users = new ArrayList<>();
+        for(Object x : sorted2.toList()) {
+            User user = new User();
+            // set name
+            List<Alias> aliases = aliasRepository.findAll();
+            String userID = x.toString().split("=")[0];
+            // if alias exists in aliases
+            boolean aliasExists = false;
+            for(Alias alias : aliases) {
+                if(String.valueOf(alias.getUserID()).equals(userID)) {
+                    user.setFirstName(alias.getAlias());
+                    aliasExists = true;
+                    break;
+                }
+            }
+            // if alias does not exist set real name
+            if(!aliasExists) {
+                user.setFirstName(userRepository.findUserById(
+                        Long.parseLong(userID)
+                ).getFirstName());
+            }
+            // set value
+            user.setCode(x.toString().split("=")[1]);
+            top3Users.add(user);
+            if(top3Users.size() >= 3) break;
+        }
+
+        return top3Users;
     }
 
     // input is league_data rep and list of all existent bets
