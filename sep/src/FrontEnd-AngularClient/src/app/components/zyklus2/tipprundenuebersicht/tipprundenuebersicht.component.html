@@ -65,7 +65,7 @@
           <tbody>
           <tr *ngFor="let x of privateTiprounds | filter:searchInput2, let index=index">
             <td>{{x.name}}</td>
-            <td><button  class="btnLiga"   [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID">Beitreten</button>
+            <td><button  class="btnLiga"  [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID"  class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(x.id); GetCurrTippRound(x.id)">Beitreten</button>
           </tr>
           </tbody>
         </table>
