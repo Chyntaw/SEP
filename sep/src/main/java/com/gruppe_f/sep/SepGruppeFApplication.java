@@ -48,7 +48,7 @@ public class SepGruppeFApplication {
 			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
 			repository.save(new User("Can","Kalafat","24.04.1997", "can.kalafat@outlook.de", "1", "BASIC"));
 
-			repo.save(new SystemDate("2020-05-14"));
+			repo.save(new SystemDate("1000-05-14"));
 
 
 			Liga testLiga = new Liga("Nationalistische Nationalliga", null);

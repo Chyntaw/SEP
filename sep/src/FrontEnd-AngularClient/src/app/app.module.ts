@@ -26,6 +26,7 @@ import {Ng2SearchPipeModule} from "ng2-search-filter";
 import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profile.component";
 import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
 import { ShowTopComponent } from './components/zyklus2/show-top/show-top.component';
+import { MyProfileComponent } from './components/zyklus2/myProfile/my-profile/my-profile.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { ShowTopComponent } from './components/zyklus2/show-top/show-top.compone
     MeinetipprundenComponent,
 
     MeinetipprundenComponent,
-    ShowTopComponent
+    ShowTopComponent,
+    MyProfileComponent
 
   ],
   imports: [

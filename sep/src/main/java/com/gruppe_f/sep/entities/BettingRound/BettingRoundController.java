@@ -9,6 +9,7 @@ import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
 import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.scores.Score;
+import com.gruppe_f.sep.entities.table.TableEntry;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
 import com.gruppe_f.sep.mail.MailSenderService;
@@ -381,5 +382,22 @@ public class BettingRoundController {
             else {isDisabled[i] = true;}
         }
         return new ResponseEntity<>(isDisabled, HttpStatus.OK);
+    }
+
+    @GetMapping("/getUserBettingTable/{userID}/{bettingroundID}")
+    public ResponseEntity<?> getUserBettingTable(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID) {
+
+       Long ligaID = repo.findById(bettingroundID).get().getLigaID();
+
+       List<LeagueData> leagueDataList = ligaRepo.findLigaByid(ligaID).getLeagueData();
+
+        System.out.println(leagueDataList.size());
+
+       List<Bets> betsList = repo.findById(bettingroundID).get().getBetsList().stream()
+               .filter(x -> x.getUserID() == userID).collect(Collectors.toList());
+
+       List<TableEntry> table = calculateTable(leagueDataList);
+
+       return new ResponseEntity<>(table, HttpStatus.OK);
     }
 }

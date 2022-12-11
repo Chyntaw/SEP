@@ -1,0 +1,95 @@
+<p>my-profile works!</p>
+<body>
+
+<div class="header">
+  <h1>My Website</h1>
+  <p>Resize the browser window to see the effect.</p>
+</div>
+
+<div class="topnav">
+  <a href="#">Link</a>
+  <a href="#">Link</a>
+  <a href="#">Link</a>
+  <a href="#" style="float:right">Link</a>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <h2>Meine Tipptabelle</h2>
+      <div class="float-start">
+        <h4>Tablle auf Basis meiner Tipps anzeigen</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Tipprunde wählen</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let tipprunde of mytiprounds" [value]="tipprunde.name" (click)="getTippRundenByLigaID(tipprunde.id)">
+              {{tipprunde.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div> <table *ngIf="myTipTable" class="myTippTable">
+        <thead>
+        <th>Team</th>
+        <th>Spiele</th>
+        <th>Siege</th>
+        <th>Unentschieden</th>
+        <th>Niederlage</th>
+        <th>Tore</th>
+        <th>Differenz</th>
+        <th>Punkte</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let entry of myTipTable">
+          <td>{{entry.team}}</td>
+          <td>{{entry.anzahlSpiele}}</td>
+          <td>{{entry.siege}}</td>
+          <td>{{entry.unentschieden}}</td>
+          <td>{{entry.verloren}}</td>
+          <td>{{entry.toreGeschossen+":"+entry.toreKassiert}}</td>
+          <td>{{entry.toreGeschossen-entry.toreKassiert}}</td>
+          <td>{{entry.punkte}}</td>
+        </tr>
+        </tbody>
+      </table></div>
+      <p>Some text..</p>
+      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+    </div>
+    <div class="card">
+      <h2>Balkendiagramm</h2>
+      <h5>Title description, Sep 2, 2017</h5>
+      <div class="fakeimg" style="height:200px;">COMING SOON</div>
+      <p>Some text..</p>
+      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
+    </div>
+  </div>
+  <div class="rightcolumn">
+    <div class="usercard">
+      <h2>About Me</h2>
+      <div *ngIf="this.retrievedImage" ><img [src]="this.retrievedImage"></div>
+      <div *ngIf="!this.retrievedImage" ><img src="../../../../../assets/blankProfilePic.png"></div>
+      <p>{{this.me.firstName+" "+ this.me.lastName}}</p>
+      <p>{{this.me.eMail}}</p>
+      <p>{{this.me.birthDate}}</p>
+    </div>
+    <div class="card">
+      <h3>My Friends</h3>
+      <table><tbody>
+      <tr *ngFor="let x of friends">
+        <td class="friendElement">{{x.firstName+" "+x.lastName}}</td>
+      </tr>
+      <div *ngIf="friends.length==0"><p>Du hast keine Freunde, du Otto</p></div>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <h3>Follow Me</h3>
+      <p>Some text..</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <h2>Footer</h2>
+</div>
+
+</body>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute, ParamMap} from "@angular/router";
+import {Liga} from "../../../models/liga";
+
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -8,9 +10,19 @@ import {Router} from "@angular/router";
 })
 export class AdminDashboardComponent implements OnInit {
 
-  constructor(private router:Router) { }
+  id:String | any;
+  liga: Liga[] | any;
+
+  constructor(private router:Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe(params => {
+      this.liga = params["id"]
+    })
+
+    console.log(this.liga[0].name)
+
     if(!sessionStorage.getItem("eMail")) {
       this.router.navigate(['login'])
       alert("Bitte melden Sie sich zunächst an.")

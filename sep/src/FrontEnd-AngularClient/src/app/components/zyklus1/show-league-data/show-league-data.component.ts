@@ -154,9 +154,10 @@ export class ShowLeagueDataComponent implements OnInit {
 
 
   checkRole(){
+
     let user_Role = sessionStorage.getItem('role')
     if(user_Role == "ADMIN") {
-      this.dashboardRouter.navigate(['/admin-dashboard'])
+      this.dashboardRouter.navigate(['/admin-dashboard'], {queryParams: {id: this.ligen}})
     }
     else {
       this.dashboardRouter.navigate(['/dashboard'])

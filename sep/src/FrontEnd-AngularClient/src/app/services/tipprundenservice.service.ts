@@ -122,5 +122,9 @@ export class TipprundenserviceService {
     console.log(data)
     return this.http.post(`${this.baseUrl}/getDisabled`, data);
   }
+
+  getUserBettingTable(bettingroundID:number, userID:number) {
+    return this.http.get(`${this.baseUrl}/getUserBettingTable/`+userID+'/'+bettingroundID);
+  }
 }
 
