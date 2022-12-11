@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -30,6 +31,8 @@ public class BetsController {
     private UserRepository userRepository;
     private DateRepository dateRepository;
     private BettingRoundRepository bettingRoundRepository;
+    private List<BettingRound> bettingRoundList = new ArrayList<>();
+    private List<Bets> betsList = new ArrayList<>();
 
 
 
@@ -50,14 +53,15 @@ public class BetsController {
 
     @GetMapping("leagues")
     public ResponseEntity<?> getAllLeagues() {
+
         // Calculation of scores
-        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
-
-        for(BettingRound bettingRound : bettingRounds) {
-            GenerellLogisch.calculateScore(
+        this.bettingRoundList = bettingRoundRepository.findAll();
+        this.betsList = new ArrayList<>();
+        for(BettingRound bettingRound : this.bettingRoundList) {
+             bettingRound = GenerellLogisch.calculateScore(
                     dateRepository.findAll().get(0).getLocalDate(), bettingRound);
+             this.betsList = Stream.concat(this.betsList.stream(), bettingRound.getBetsList().stream()).toList();
         }
-
         // return all leagues
         return new ResponseEntity<>(ligaRepository.findAll(), HttpStatus.OK);
     }
@@ -65,8 +69,7 @@ public class BetsController {
     @GetMapping("topUser/{id}")
     public ResponseEntity<?> getTopUser(@PathVariable("id") Long id) {
 
-        List<Bets> allBets = betsrepo.findAll();
-        List<User> topUsers = calculateTopUsers(allBets, id);
+        List<User> topUsers = calculateTopUsers(id);
 
         return new ResponseEntity<>(topUsers, HttpStatus.OK);
     }
@@ -74,38 +77,40 @@ public class BetsController {
 
     @GetMapping("topTeams/{id}")
     public ResponseEntity<?> getTopTeams(@PathVariable("id") Long id) {
-        List<Bets> allBets = betsrepo.findAll();
-        List<LeagueData> topTeams = calculateTopTeams(allBets, id);
+        List<LeagueData> topTeams = calculateTopTeams(this.betsList, id);
         return new ResponseEntity<>(topTeams, HttpStatus.OK);
     }
 
 
     // input is list of all existent bets
     // output is calculated result
-    private List<User> calculateTopUsers(List<Bets> allBets, Long ligaID) {
-        Map<Long, Integer> result2 = new HashMap<>();
+    private List<User> calculateTopUsers(Long ligaID) {
+        Map<List<Long>, Integer> result2 = new HashMap<>();
 
-        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
 
-        for(BettingRound bettingRound : bettingRounds) {
+        for(BettingRound bettingRound : this.bettingRoundList) {
             // skip bettingRound if not from current league
             if(!bettingRound.getLigaID().equals(ligaID)) continue;
-            Map<Long, Integer> temp2 = new HashMap<>();
+            Map<List<Long>, Integer> temp2 = new HashMap<>();
             List<Bets> bets = bettingRound.getBetsList();
             for(Bets bet : bets) {
                 // add score to map
-                if(temp2.containsKey(bet.getUserID())) {
 
-                    int help = temp2.get(bet.getUserID());
-                    temp2.replace(bet.getUserID(), help+bet.getScore());
+                List<Long> keyList = new ArrayList<>();
+                keyList.add(bet.getUserID());
+                keyList.add(bettingRound.getId());
+
+                if(temp2.containsKey(keyList)) {
+                    int help = temp2.get(keyList);
+                    temp2.replace(keyList, help+bet.getScore());
                 }
                 else {
-                    temp2.put(bet.getUserID(), bet.getScore());
+                    temp2.put(keyList, bet.getScore());
                 }
             }
 
             // iterate over temp map and replace or add value to whole map
-            for(Map.Entry<Long, Integer> entry : temp2.entrySet()) {
+            for(Map.Entry<List<Long>, Integer> entry : temp2.entrySet()) {
                 if(result2.containsKey(entry.getKey())) {
                     // if value from current list is higher than last value, replace it
                     if(entry.getValue() > result2.get(entry.getKey())) {
@@ -122,12 +127,43 @@ public class BetsController {
         // now ready with calculation
         // order Map by Value and delete all under top 3
         // with help by user Brian Goetz at https://stackoverflow.com/questions/109383/sort-a-mapkey-value-by-values
-        Stream<Map.Entry<Long,Integer>> sorted2 =
+        Stream<Map.Entry<List<Long>,Integer>> sorted2 =
                 result2.entrySet().stream()
                         .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()));
 
         List<User> top3Users = new ArrayList<>();
+        for(Map.Entry<List<Long>, Integer> x : sorted2.toList()) {
+            Long[] keys = x.getKey().toArray(new Long[2]);
+            User user = new User();
+
+            // set name
+            List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
+            for(BettingRound bettingRound : bettingRounds) {
+                if(!bettingRound.getId().equals(keys[1])) continue;
+
+                List<Alias> aliases = bettingRound.getAliasList();
+                boolean aliasExists = false;
+                for(Alias alias : aliases) {
+                    if(String.valueOf(alias.getUserID()).equals(keys[0])) {
+                        user.setFirstName(alias.getAlias());
+                        aliasExists = true;
+                        break;
+                    }
+                }
+                if(!aliasExists) {
+                    user.setFirstName(userRepository.findUserById(keys[0]).getFirstName());
+                }
+            }
+
+            // set score
+            user.setCode(String.valueOf(x.getValue()));
+            top3Users.add(user);
+            if(top3Users.size() >= 3) break;
+        }
+        /*
         for(Object x : sorted2.toList()) {
+            System.out.println(x.toString());
+
             User user = new User();
             // set name
             List<Alias> aliases = aliasRepository.findAll();
@@ -152,7 +188,7 @@ public class BetsController {
             top3Users.add(user);
             if(top3Users.size() >= 3) break;
         }
-
+*/
         return top3Users;
     }
 
