@@ -17,6 +17,9 @@ import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.
 
 import {ShowTopComponent} from "./components/zyklus2/show-top/show-top.component";
 import {MyProfileComponent} from "./components/zyklus2/myProfile/my-profile/my-profile.component";
+import {
+  EinladungsUebersichtComponent
+} from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
 
 const MeineRouten : Routes = [
   {path:'login', component: LoginComponent},
@@ -34,6 +37,8 @@ const MeineRouten : Routes = [
   {path: 'friend-list', component: FriendListComponent},
   {path: 'showTop', component: ShowTopComponent},
   {path: 'my-Profile', component: MyProfileComponent},
+  {path: 'einladungs-uebersicht/:id', component: EinladungsUebersichtComponent},
+
 
 
   {path: '',   redirectTo: '/login', pathMatch: 'full'}

@@ -35,7 +35,10 @@ export class ShowleagueserviceService {
     return this.http.get(`${this.databaseURL+"liga/buttondisabler"}`)
   }
 
-
+  public findLigaByID(ligaID:number): Observable<Liga>
+  {
+    return this.http.get<Liga>(`${this.databaseURL+"leagueData/findLigaByID/"+ligaID}`)
+  }
 
   get id(): number {
     return this._id;

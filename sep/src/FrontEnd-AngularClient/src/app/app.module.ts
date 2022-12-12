@@ -27,6 +27,7 @@ import {UserProfileComponent} from "./components/zyklus2/user-profile/user-profi
 import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.component";
 import { ShowTopComponent } from './components/zyklus2/show-top/show-top.component';
 import { MyProfileComponent } from './components/zyklus2/myProfile/my-profile/my-profile.component';
+import {EinladungsUebersichtComponent} from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
 
 
 @NgModule({
@@ -47,10 +48,10 @@ import { MyProfileComponent } from './components/zyklus2/myProfile/my-profile/my
     UserProfileComponent,
     FriendListComponent,
     MeinetipprundenComponent,
-
     MeinetipprundenComponent,
     ShowTopComponent,
-    MyProfileComponent
+    MyProfileComponent,
+    EinladungsUebersichtComponent
 
   ],
   imports: [

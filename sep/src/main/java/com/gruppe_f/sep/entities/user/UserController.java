@@ -115,6 +115,19 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+    @PostMapping("/user/loginInvite")
+    public ResponseEntity<?> loginUser2(@RequestParam("eMail") String eMail,
+                                        @RequestParam("password") String password) {
+
+        User user = service.findUserByeMail(eMail);
+        if(user.getPassword().equals(password)) {
+
+            User userToUpdate = service.getReferenceById(user.getId());
+            service.save(userToUpdate);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 
     @PostMapping("/user/2FA")
     public ResponseEntity<?> zweiFaUser(@RequestBody User userData){
@@ -147,6 +160,22 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+
+    @GetMapping("/user/getUserbyID/{userid}")
+    public ResponseEntity<?> getUserByID(@PathVariable("userid") Long userid){
+            List<User> userList = service.findAllUsers();
+       for(User userDatbase: userList){
+           if(userDatbase.getId()==userid){
+               return new ResponseEntity<>(userDatbase,HttpStatus.OK);
+           }
+       }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+
+
+
+
 /*
     @GetMapping("/user/{eMail}/imagesForPendingFriends")
     public ArrayList<ImageModel> getImagesForPendingFriends(@PathVariable("eMail") String currentEmail){

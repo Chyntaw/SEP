@@ -1,0 +1,151 @@
+`<div
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Login</h4>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+            <input [(ngModel)]="user.eMail" id="email" name="email"  type="email" class="form-control" placeholder="E-Mail"/>
+          </div>
+          <p></p>
+          <div class="form-group">
+            <input id="password" name="password" [(ngModel)]="user.password"  type="password" class="form-control" placeholder="Passwort" value="" />
+          </div>
+          <p></p>
+          <div class="form-group">
+            <button type="submit"  class="btn btn-success" (click)="userLogin()">Login</button>
+          </div>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<body>
+<div class="topnav">
+  <a routerLink="/dashboard">Dashboard</a>
+  <a style="float: right" (click)="logout()">Ausloggen</a>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <h2>Meine Tipptabelle</h2>
+      <div class="float-start">
+        <h4>Zu folgender Tipprunde wurdest Du eingeladen:</h4>
+      </div>
+      <div> <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <th>Tipprunden Name</th>
+        <th>Liga Name</th>
+        <th>Aktion</th>
+        </thead>
+        <tbody>
+        <tr>
+         <td>{{currBettingRound.name}}</td>
+          <td>{{currLiga.name}}</td>
+          <td><button class="btn btn-success"  data-bs-toggle="modal" data-bs-target="#myModal">Beitreten</button></td>
+
+        </tr>
+        </tbody>
+      </table></div>
+
+    </div>
+    <div class="card">
+      <div class="row">
+        <div class="leftcolumn">
+            <h2>Teilnehmer der Tipprunde</h2>
+            <div> <table class="table table-bordered table-striped">
+              <thead class="thead-dark">
+              <th>Name, Vorname</th>
+              <th>E-Mail</th>
+              <th>Geburtsdatum</th>
+              </thead>
+              <tbody>
+              <tr *ngFor="let x of participants, let index=index">
+                <td>{{x.lastName}}, {{x.firstName}}</td>
+                <td>{{x.eMail}}</td>
+                <td>{{x.birthDate}}</td>
+
+              </tr>
+              </tbody>
+            </table></div>
+        </div>
+      </div>
+  </div>
+    </div>
+
+
+
+  <div class="rightcolumn">
+    <div class="usercard">
+
+      <h2>Owner der Tipprunde</h2>
+      <div *ngIf="this.retrievedImage" ><img [src]="this.retrievedImage"></div>
+      <div *ngIf="!this.retrievedImage" ><img src="../../../../assets/blankProfilePic.png"></div>
+      <p>Name: {{Owner.lastName}}, {{Owner.firstName}} </p>
+      <p>E-Mail: {{Owner.eMail}}</p>
+
+    </div>
+    <div class="card">
+      <h3>Aktuelles Leaderboard</h3>
+       <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+        <th>Name, Vorname</th>
+        <th>Punkte</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let x of leaderboard, let index=index">
+          <td>{{x.user.lastName}}, {{x.user.firstName}}</td>
+          <td>{{x.scores}}</td>
+        </tr><tbody>
+
+      <div ></div>
+      </tbody></table>
+
+</div>
+  </div>
+</div>
+
+
+<div class="footer">
+  <h2>Footer</h2>
+</div>
+
+</body>
+<!-- PopUp fürs Beitreten einer Tipprunde -->
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form  #joinTipprunde="ngForm">
+        <!-- Header-->
+        <div class="modal-header">
+          <h4 class="modal-title" style="text-align: center">Tipprunde Beitreten</h4>
+        </div>
+
+        <!-- Body-->
+        <div class="modal-body" >
+          <div>
+            <label for="name">Alias Name (optional)</label>
+            <input type="text" class="form-control" id="name" name="name" [(ngModel)]="alias">
+          </div>
+        </div>
+
+        <!-- Footer-->
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success" (click)="tipprundeBeitreten()">Tipprunde beitreten</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</div>

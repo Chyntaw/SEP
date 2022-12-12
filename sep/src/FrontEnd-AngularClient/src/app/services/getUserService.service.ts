@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import {User} from "../models/roles/user/user";
 
 
 @Injectable({
@@ -32,5 +33,9 @@ export class GetUserServiceService{
 
   getImage(eMail: string) {
     return this.httpClient.get(`${this.databaseURL+'/user/'+eMail+'/image'}`)
+  }
+  getUserByID(userid:number):Observable<any>{
+    console.log(userid)
+    return this.httpClient.get(`${this.databaseURL+"/user/getUserbyID/"+userid}`)
   }
 }

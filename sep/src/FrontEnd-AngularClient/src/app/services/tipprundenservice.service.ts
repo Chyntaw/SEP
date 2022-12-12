@@ -115,7 +115,10 @@ export class TipprundenserviceService {
 
     return this.http.put(`${this.baseUrl}/changeAlias`,formData)
   }
-
+  getMachDateBoolean(gameDate:string):Observable<boolean>{
+  console.log(gameDate)
+    return this.http.get<boolean>(`${this.baseUrl}/getDisabled/`+gameDate)
+  }
   getDisabled(date:string[]) {
     const data: FormData = new FormData();
     data.append("date", String(date));

@@ -1,6 +1,7 @@
 package com.gruppe_f.sep.entities.leagueData;
 
 import com.gruppe_f.sep.date.DateRepository;
+import com.gruppe_f.sep.entities.liga.Liga;
 import com.gruppe_f.sep.entities.liga.LigaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -89,5 +90,11 @@ public class LeagueDataController {
             if(!matchDaylist.contains(game.getMatchDay())) matchDaylist.add(game.getMatchDay());
 
         return  new ResponseEntity<>(matchDaylist, HttpStatus.OK);
+    }
+
+    @GetMapping("/findLigaByID/{ligaID}")
+    public ResponseEntity<?> getData(@PathVariable("ligaID") Long ligaID) {
+        Liga liga = ligaRepo.findLigaByid(ligaID);
+        return new ResponseEntity<>(liga, HttpStatus.OK);
     }
 }

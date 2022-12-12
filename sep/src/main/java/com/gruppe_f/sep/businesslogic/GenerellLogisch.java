@@ -29,6 +29,8 @@ public class GenerellLogisch {
         Date leftDate = new Date(dateleft[0], dateleft[1], dateleft[2]);
         Date rightDate = new Date(dateright[0], dateright[1], dateright[2]);
 
+
+
         return leftDate.compareTo(rightDate);
     }
 

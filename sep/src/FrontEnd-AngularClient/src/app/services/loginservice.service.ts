@@ -12,9 +12,19 @@ export class LoginserviceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  loginUser(user:User):Observable<object>{
+  loginUser(user:User):Observable<any>{
     console.log(user)
     return this.httpClient.post(`${this.databaseURL}`, user);
+
+
+  }
+  loginUser2(eMail:string,password:string):Observable<any>{
+
+    const formData =new FormData();
+    formData.append('eMail',eMail)
+    formData.append('password',password)
+    console.log(formData)
+    return this.httpClient.post(`${this.databaseURL}Invite`, formData);
 
 
   }

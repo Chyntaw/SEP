@@ -13,7 +13,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     if(!sessionStorage.getItem("eMail")) {
       this.router.navigate(['login'])
-      alert("Bitte melden Sie sich zunächst an.")
+      alert("Bitte melden Sie sich zunächst an. Und öffnen dann erst den Link")
     }
   }
 

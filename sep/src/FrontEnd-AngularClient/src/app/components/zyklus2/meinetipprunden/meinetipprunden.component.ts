@@ -218,6 +218,12 @@ export class MeinetipprundenComponent implements OnInit {
     })
 
   }
+  getMachDateBoolean(matchDate:string){
+    console.log(matchDate)
+    this.tipprundenservice.getMachDateBoolean(matchDate).subscribe(res=>{
+        console.log(res)
+    })
+  }
 
   setSessionStorageForUser(eMail:string){
     sessionStorage.setItem("eMailSearchProfile", eMail)

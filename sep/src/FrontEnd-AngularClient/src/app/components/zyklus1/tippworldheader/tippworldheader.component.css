@@ -1,12 +1,5 @@
-.title{
-
-}
-.header
-{
-  align: left;
-
-
-}
-.TippWorld{
-  margin-top: 20px;
+.header {
+  padding: 30px;
+  text-align: center;
+  background: white;
 }
