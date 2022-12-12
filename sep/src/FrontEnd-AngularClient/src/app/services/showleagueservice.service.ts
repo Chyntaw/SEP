@@ -39,6 +39,10 @@ export class ShowleagueserviceService {
   {
     return this.http.get<Liga>(`${this.databaseURL+"leagueData/findLigaByID/"+ligaID}`)
   }
+  getLigaName(id:number){
+
+    return this.http.get(`${this.databaseURL+"liga/name/"+id}`)
+  }
 
   get id(): number {
     return this._id;

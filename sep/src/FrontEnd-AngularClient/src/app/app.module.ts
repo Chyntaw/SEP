@@ -28,7 +28,7 @@ import {FriendListComponent} from "./components/zyklus2/friend-list/friend-list.
 import { ShowTopComponent } from './components/zyklus2/show-top/show-top.component';
 import { MyProfileComponent } from './components/zyklus2/myProfile/my-profile/my-profile.component';
 import {EinladungsUebersichtComponent} from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
-
+import {MatTableModule} from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -67,6 +67,7 @@ import {EinladungsUebersichtComponent} from "./components/zyklus2/einladungs-ueb
     MatFormFieldModule,
     MatSelectModule,
     Ng2SearchPipeModule,
+    MatTableModule
 
   ],
   providers: [],
