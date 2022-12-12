@@ -1,71 +1,168 @@
 
-<div class="login-container">
-  <div class="login-form">
-    <div class="form-group">
-      <div class="form-group">
-        <h3>Ligenübersicht</h3>
-      </div>
-    </div>
-    <div class="card my-5">
-      <div class="card-body">
-        <table class="table table-bordered table-striped">
+<body>
+
+<div class="header">
+  <h1>Ligenübersicht</h1>
+</div>
+
+<div class="topnav">
+  <a></a>
+  <a></a>
+  <a href="#"></a>
+  <a href="#" style="float:right"></a>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <h2>Ligen</h2>
+      <div class="float-start">
+        <table class="myTippTable">
           <thead class="thead-dark">
           <tr>
-            <th scope="col">LigaID</th>
             <th scope="col">Liga Name</th>
+            <th>Jahr</th>
           </tr>
           </thead>
           <!-- Liga Anzeigen Body -->
           <tbody>
           <tr *ngFor="let ligens of ligen, let i = index">
-            <td>{{ ligens.id }}</td>
+
             <td>{{ ligens.name }}</td>
-            <div class="form-group">
-              <button  class="btnLiga" (click)="zeigeLigaDaten(ligens.id)">Zeige die Ligadaten</button>
-              <button  class="btnLiga" (click)="sichereId(ligens.id)" [hidden]="!this.zeigeTippRundenErstellen" *ngIf="!passedLiga[i]" data-bs-toggle="modal" data-bs-target="#myModal2">Tipprunde erstellen</button>
-            </div>
+            <td>{{ligens.leagueData[0].date.substring(0,4)}}</td>
+            <td class="form-group" align="center">
+              <button class="button improvedButton" (click)="zeigeLigaDaten(ligens.id)">Spiele</button>
+            </td>
+            <td class="form-group" align="center">
+              <button  class="button improvedButton" [hidden]="!this.zeigeTippRundenErstellen" data-bs-toggle="modal" data-bs-target="#myModal2">Tabelle</button>
+            </td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!--Tabelle für die Ligadaten -->
-    <div class="login-form">
-      <div class="card my-5">
-        <div class="card-body">
-          <table class="table table-bordered table-striped">
-            <thead class="thead-dark">
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Datum</th>
-              <th scope="col">Spieltag</th>
-              <th scope="col">Team 1</th>
-              <th scope="col">Team 2</th>
-              <th scope="col">Ergebnis</th>
-              <th scope="col" [hidden]="zeigeAktion" >Aktion</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let leaguedata of data">
-              <td>{{ leaguedata.id }}</td>
-              <td>{{ leaguedata.date }}</td>
-              <td>{{ leaguedata.matchDay }}</td>
-              <td>{{ leaguedata.player1 }}</td>
-              <td>{{ leaguedata.player2 }}</td>
-              <td>{{ leaguedata.result }}</td>
-              <td><button [hidden]="zeigeAktion" (click)="updateLeagueData(leaguedata.id)" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal">Update</button></td>
-            </tr>
-            </tbody>
-          </table>
+    <div class="card">
+      <h2>Liga Daten</h2>
+      <h5>Übersicht über Manschaften, Spiele und Ergebnisse</h5>
+      <div class="">
+        <div class="">
+          <div class="card-body">
+            <table *ngIf="data" class="myTippTable">
+              <thead class="thead-dark">
+              <tr>
+                <th scope="col">Datum</th>
+                <th scope="col">Spieltag</th>
+                <th scope="col">Team 1</th>
+                <th scope="col">Team 2</th>
+                <th scope="col">Ergebnis</th>
+                <th scope="col" [hidden]="zeigeAktion" >Aktion</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let leaguedata of data">
+                <td>{{ leaguedata.date }}</td>
+                <td>{{ leaguedata.matchDay }}</td>
+                <td>{{ leaguedata.player1 }}</td>
+                <td>{{ leaguedata.player2 }}</td>
+                <td>{{ leaguedata.result }}</td>
+                <td><button [hidden]="zeigeAktion" (click)="updateLeagueData(leaguedata.id)" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal">Update</button></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="form-group">
+          <button (click)="checkRole()" class="btnSubmit">Zurück</button>
         </div>
       </div>
-      <div class="form-group">
-        <button (click)="checkRole()" class="btnSubmit">Zurück</button>
       </div>
+  </div>
+  <div class="rightcolumn">
+    <div class="usercard">
+      <h2>Systemdatum</h2>
+      <div><p>{{this.aktuellesDatum.localDate}}</p></div>
+    </div>
+    <div class="card">
+      <h2>Meine Tipprunden</h2>
+      <table *ngIf="mytiprounds.length >=1" class="myTippTable">
+        <thead>
+        <th>Tipprunde</th>
+       <th>Liganame</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let x of mytiprounds, let i = index">
+          <td text-align="center">{{x.name}}</td>
+          <td>{{ligaNamen[i]}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>Tipprunde erstellen</h3>
+      <h3 *ngIf="ligenFuerTipprunde.length == 0">Alle Ligen liegen in der Vergangenheit!</h3>
+      <mat-form-field appearance="fill">
+        <mat-label>Liga wählen</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let x of ligenFuerTipprunde"  [value]="x.name" (click)="sichereId(x.id)">
+           {{x.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <form *ngIf="ligaid" #addTipprunde="ngForm" (ngSubmit)="erstelleTipprunde(this.ligaid)">
+
+
+        <!-- Body-->
+        <div class="modal-body" >
+          <div>
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" name="name"[(ngModel)]="betRound.name" required>
+          </div>
+          <div >
+            <label for="richtigesErgebnis">Punkte für richtiges Ergebnis</label>
+            <input type="number" class="form-control"  (keypress)="validateNo($event)"  id="richtigesErgebnis" name="richtigesErgebnis"[(ngModel)]="betRound.corrScorePoints" required>
+          </div>
+          <div >
+            <label for="richtigeTordifferenz">Punkte für richtige Tordifferenz</label>
+            <input type="number" class="form-control"  (keypress)="validateNo($event)"  id="richtigeTordifferenz" name="richtigeTordifferenz"[(ngModel)]="betRound.corrGoalPoints" required>
+          </div>
+          <div >
+            <label for="richtigerGewinner">Punkte für richtigen Gewinner</label>
+            <input type="number" class="form-control"  (keypress)="validateNo($event)"  id="richtigerGewinner" name="richtigerGewinner"[(ngModel)]="betRound.corrWinnerPoints" required>
+          </div>
+
+          <div>
+            <label for="passwordTipprunde">Passwort (optional)</label>
+            <input type="password" class="form-control"  id="passwordTipprunde" name="passwordTipprunde"[(ngModel)]="betRound.passwordTipprunde">
+          </div>
+
+          <div class="checkbox">
+            <label>
+              <input
+                type="checkbox"
+                [checked]="betRound.isPrivate"
+                (change)="betRound.isPrivate = !betRound.isPrivate"/> Privat
+            </label>
+          </div>
+
+        </div>
+
+        <!-- Footer-->
+        <div class="modal-footer" >
+          <button type="submit" class="btn btn-success" [disabled]="!addTipprunde.valid">Tipprunde erstellen</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>
+
+<div class="footer">
+
+</div>
+
+</body>
+
 
 
 <!-- PopUp fürs Updaten/Bearbeiten der Ligadaten -->
@@ -109,62 +206,6 @@
         <!-- Footer -->
         <div class="modal-footer" >
           <button type="submit" class="btn btn-success">Update</button>
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
-        </div>
-      </form>
-    </div>
-
-  </div>
-</div>
-
-<!-- PopUp fürs Erstellen einer Tipprunde -->
-<div class="modal" id="myModal2">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form  #addTipprunde="ngForm" (ngSubmit)="erstelleTipprunde(this.ligaid)">
-        <!-- Header-->
-        <div class="modal-header">
-          <h4 class="modal-title" style="text-align: center">Tipprunde erstellen</h4>
-        </div>
-
-        <!-- Body-->
-        <div class="modal-body" >
-          <div>
-            <label for="name">Name</label>
-            <input type="text" class="form-control" id="name" name="name"[(ngModel)]="betRound.name" required>
-          </div>
-          <div >
-            <label for="richtigesErgebnis">Punkte für richtiges Ergebnis</label>
-            <input type="number" class="form-control"  (keypress)="validateNo($event)"  id="richtigesErgebnis" name="richtigesErgebnis"[(ngModel)]="betRound.corrScorePoints" required>
-          </div>
-          <div >
-            <label for="richtigeTordifferenz">Punkte für richtige Tordifferenz</label>
-            <input type="number" class="form-control"  (keypress)="validateNo($event)"  id="richtigeTordifferenz" name="richtigeTordifferenz"[(ngModel)]="betRound.corrGoalPoints" required>
-          </div>
-          <div >
-            <label for="richtigerGewinner">Punkte für richtigen Gewinner</label>
-            <input type="number" class="form-control"  (keypress)="validateNo($event)"  id="richtigerGewinner" name="richtigerGewinner"[(ngModel)]="betRound.corrWinnerPoints" required>
-          </div>
-
-          <div>
-            <label for="passwordTipprunde">Passwort (optional)</label>
-            <input type="password" class="form-control"  id="passwordTipprunde" name="passwordTipprunde"[(ngModel)]="betRound.passwordTipprunde">
-          </div>
-
-          <div class="checkbox">
-            <label>
-              <input
-                type="checkbox"
-                [checked]="betRound.isPrivate"
-                (change)="betRound.isPrivate = !betRound.isPrivate"/>Tipprunde privat stellen
-            </label>
-          </div>
-
-        </div>
-
-        <!-- Footer-->
-        <div class="modal-footer" >
-          <button type="submit" class="btn btn-success" [disabled]="!addTipprunde.valid">Tipprunde erstellen</button>
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Schließen</button>
         </div>
       </form>

@@ -1,3 +1,4 @@
+
 <div class="table1">
 <div class="login-container">
   <div class="login-form">
@@ -15,6 +16,7 @@
           <thead class="thead-dark">
           <tr>
             <th ng scope="col">Tipprunden Name</th>
+            <th>Teilnehmer</th>
             <th scope="col">Aktion</th>
           </tr>
           </thead>
@@ -22,6 +24,7 @@
           <tbody>
           <tr *ngFor="let tippround of tiprounds  | filter:searchInput, let index = index">
             <td>{{ tippround.name}}</td>
+            <td>{{tippround.participants.length}}</td>
             <td><button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]==this.CurrentUserID" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(tippround.id); GetCurrTippRound(tippround.id)">Beitreten</button>
            <!--     <button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]!=this.CurrentUserID" (click)="tipprundeEinladen(tippround.id)">Einladen</button></td>
             <td>
@@ -58,6 +61,7 @@
           <thead class="thead-dark">
           <tr >
             <th scope="col">Tipprunden Name</th>
+            <th>Teilnehmer</th>
             <th scope="col">Aktion</th>
           </tr>
           </thead>
@@ -65,6 +69,7 @@
           <tbody>
           <tr *ngFor="let x of privateTiprounds | filter:searchInput2, let index=index">
             <td>{{x.name}}</td>
+            <td>{{x.participants.length}}</td>
             <td><button  class="btnLiga"  [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID"  class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(x.id); GetCurrTippRound(x.id)">Beitreten</button>
           </tr>
           </tbody>

@@ -9,6 +9,8 @@ import {Router} from "@angular/router";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
 import {BettingRound} from "../../../models/betting-round";
 import {error} from "@angular/compiler-cli/src/transformers/util";
+import {SystemDatum} from "../../../models/SystemDatum";
+import {ChangeDateServiceService} from "../../../services/changeDateService.service";
 
 @Component({
   selector: 'app-show-league-data',
@@ -18,33 +20,47 @@ import {error} from "@angular/compiler-cli/src/transformers/util";
 export class ShowLeagueDataComponent implements OnInit {
 
   ligen: Liga [] | any;
+  ligenFuerTipprunde: Liga[] | any;
   data: Leaguedata[] | any;
-  leaguedatalist: Leaguedata[] | any ;
-  leaguedata : Leaguedata=new Leaguedata();
-  zeigeAktion:boolean = false;
-  zeigeTippRundenErstellen:boolean=true;
-  ligaid!:number;
-  betRound:BettingRound = new BettingRound();
-  passedLiga:boolean[] | any;
+  leaguedatalist: Leaguedata[] | any;
+  leaguedata: Leaguedata = new Leaguedata();
+  zeigeAktion: boolean = false;
+  zeigeTippRundenErstellen: boolean = true;
+  ligaid!: number;
+  betRound: BettingRound = new BettingRound();
+  passedLiga: boolean[] | any;
+  aktuellesDatum: SystemDatum | any;
+  mytiprounds: BettingRound[] | any;
+  ligaNamen: string[] = [];
+  tempLiga: Liga[] | any;
+
+
+
 
 
   constructor(private showleagueservice: ShowleagueserviceService,
-              private http:HttpClient,
-              private updateleaguedataservice:UpdateleaguedataService,
-              private dashboardRouter:Router,
-              private tipprundenService: TipprundenserviceService) {
+              private http: HttpClient,
+              private updateleaguedataservice: UpdateleaguedataService,
+              private dashboardRouter: Router,
+              private tipprundenService: TipprundenserviceService,
+              private changeDateService: ChangeDateServiceService,
+              private tipprundenservice: TipprundenserviceService) {
   }
 
   ngOnInit(): void {
+    this.getDatum();
+    this.zeigeMeineTipprunden();
     this.zeigeLigen();
-    let user_role = sessionStorage.getItem("role")
-    if(user_role=='BASIC'){
-      this.zeigeAktion=true;}
 
-    if(user_role==sessionStorage.getItem("role"))
-    if(user_role=='ADMIN'){
-      this.zeigeTippRundenErstellen=false;
+    let user_role = sessionStorage.getItem("role")
+    if (user_role == 'BASIC') {
+      this.zeigeAktion = true;
     }
+
+    if (user_role == sessionStorage.getItem("role"))
+      if (user_role == 'ADMIN') {
+        this.zeigeTippRundenErstellen = false;
+      }
     let nuller: Leaguedata = {
       id: 0,
       matchDay: 0,
@@ -53,7 +69,7 @@ export class ShowLeagueDataComponent implements OnInit {
       result: '',
       date: ''
     }
-    this.leaguedatalist=nuller; //Sonst undefined
+    this.leaguedatalist = nuller; //Sonst undefined
 
   }
 
@@ -62,37 +78,39 @@ export class ShowLeagueDataComponent implements OnInit {
       this.ligen = res
       this.disableButtons();
     })
+
   }
 
   disableButtons() {
     this.showleagueservice.getDisabledButtons().subscribe(res => {
-      this.passedLiga = res;
+      this.ligenFuerTipprunde = res;
+      console.log(this.ligenFuerTipprunde)
     })
   }
 
-  zeigeLigaDaten(id:number) {
+  zeigeLigaDaten(id: number) {
     this.showleagueservice.getAll(id).subscribe(res => {
       this.data = res
     })
   }
 
 //Formgroup erstellen mit passenden FormControls
-  LeagueDataupdateform=new FormGroup({
-    id:new FormControl(),
-    matchDay:new FormControl(),
-    player1:new FormControl(),
-    player2:new FormControl(),
-    result:new FormControl(),
-    date:new FormControl(),
+  LeagueDataupdateform = new FormGroup({
+    id: new FormControl(),
+    matchDay: new FormControl(),
+    player1: new FormControl(),
+    player2: new FormControl(),
+    result: new FormControl(),
+    date: new FormControl(),
 
   });
 
-  updateLeagueData(id: number){
+  updateLeagueData(id: number) {
     this.updateleaguedataservice.getLeagueData(id)
       .subscribe(
         data => {
 
-          this.leaguedatalist=data
+          this.leaguedatalist = data
 
         },
         error => alert('Keine entsprechenden Daten vorhanden'));
@@ -114,37 +132,42 @@ export class ShowLeagueDataComponent implements OnInit {
     console.log(this.leaguedata)
 
     //Das erstellte Objekt fürs Updaten ans Backend übergeben
-    this.updateleaguedataservice.updateLeagueData(this.leaguedata.id,this.leaguedata).subscribe(
+    this.updateleaguedataservice.updateLeagueData(this.leaguedata.id, this.leaguedata).subscribe(
       data => {
 
         alert('Update erfolgreich')
 
       },
-      error =>alert("Update war nicht erfolgreich"))
+      error => alert("Update war nicht erfolgreich"))
   }
 
 //aktuelle Daten aus der Updateform/Modal bekommen
-  get LeagueDataId(){
+  get LeagueDataId() {
     return this.LeagueDataupdateform.get("id");
   }
-  get LeagueDataMatchday(){
+
+  get LeagueDataMatchday() {
     return this.LeagueDataupdateform.get('matchDay');
   }
-  get LeagueDataDate(){
+
+  get LeagueDataDate() {
     return this.LeagueDataupdateform.get('date');
   }
-  get LeagueDataPlayer1(){
+
+  get LeagueDataPlayer1() {
     return this.LeagueDataupdateform.get('player1');
   }
-  get LeagueDataPlayer2(){
+
+  get LeagueDataPlayer2() {
     return this.LeagueDataupdateform.get('player2');
   }
-  get LeagueDataResult(){
+
+  get LeagueDataResult() {
     return this.LeagueDataupdateform.get('result');
   }
 
 //Methode validateNo aus Fremdcode: Link siehe unten¹
-  validateNo(e:any): boolean {
+  validateNo(e: any): boolean {
     const charCode = e.which ? e.which : e.keyCode;
     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
       return false
@@ -153,43 +176,67 @@ export class ShowLeagueDataComponent implements OnInit {
   }
 
 
-  checkRole(){
+  checkRole() {
 
     let user_Role = sessionStorage.getItem('role')
-    if(user_Role == "ADMIN") {
+    if (user_Role == "ADMIN") {
       this.dashboardRouter.navigate(['/admin-dashboard'], {queryParams: {id: this.ligen}})
-    }
-    else {
+    } else {
       this.dashboardRouter.navigate(['/dashboard'])
     }
   }
 
-  //Tipprunden
-  sichereId(id:number){
 
-    this.ligaid=id;
+  //Tipprunden
+  sichereId(id: number) {
+
+    this.ligaid = id;
     console.log(this.ligaid)
 
   }
-  erstelleTipprunde(id:number){
+
+  erstelleTipprunde(id: number) {
 
 
-    let ownerID = Number( sessionStorage.getItem('id'))
+    let ownerID = Number(sessionStorage.getItem('id'))
     console.log(ownerID)
-    this.betRound.ligaID=id;
-    this.tipprundenService.createTipprunde(id, ownerID, this.betRound.name,this.betRound.isPrivate, this.betRound.corrScorePoints, this.betRound.corrGoalPoints, this.betRound.corrWinnerPoints, this.betRound.passwordTipprunde)
-      .subscribe(res=>{
+    this.betRound.ligaID = id;
+    this.tipprundenService.createTipprunde(id, ownerID, this.betRound.name, this.betRound.isPrivate, this.betRound.corrScorePoints, this.betRound.corrGoalPoints, this.betRound.corrWinnerPoints, this.betRound.passwordTipprunde)
+      .subscribe(res => {
           alert("Tipprunde erstellt")
           console.log(res)
 
-        },error =>alert("Tipprunde konnte nicht erstellt werden")
-      )}
+        }, error => alert("Tipprunde konnte nicht erstellt werden")
+      )
+  }
+
+  getDatum(): void {
+    this.changeDateService.getDate().subscribe(res => {
+      this.aktuellesDatum = res
+    })
+  }
+
+  zeigeMeineTipprunden() {
+    this.tipprundenservice.getRoundsbyUserID(Number(sessionStorage.getItem("id"))).subscribe(res => {
+      this.mytiprounds = res;
+      this.getNames();
+    })
 
 
+  }
+
+  getNames() {
+    if (this.mytiprounds) {
+      for (let x of this.mytiprounds) {
+        this.showleagueservice.getLigaName(x.ligaID).subscribe(res => {
+          this.tempLiga = res;
+          this.ligaNamen.push(this.tempLiga.name);
+        })
+      }
+    }
 
 
-
-
+  }
 }
 
 //Links: ¹https://stackoverflow.com/questions/41465542/angular2-input-field-to-accept-only-numbers

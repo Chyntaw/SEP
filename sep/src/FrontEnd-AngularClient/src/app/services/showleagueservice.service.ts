@@ -35,6 +35,10 @@ export class ShowleagueserviceService {
     return this.http.get(`${this.databaseURL+"liga/buttondisabler"}`)
   }
 
+  getLigaName (id:number) {
+    return this.http.get(`${this.databaseURL+"liga/name/"+id}`)
+  }
+
 
 
   get id(): number {
