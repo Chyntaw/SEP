@@ -6,6 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { transform } from 'typescript';
 import {User} from "../../../models/roles/user/user";
 import {FriendListService} from "../../../services/friend-list.service";
+import {Router} from "@angular/router";
+import {SystemDatum} from "../../../models/SystemDatum";
+import {ChangeDateServiceService} from "../../../services/changeDateService.service";
 
 @Component({
   selector: 'app-tipprundenuebersicht',
@@ -28,14 +31,15 @@ export class TipprundenuebersichtComponent implements OnInit {
   currTippRoundHasPassword!:boolean;
   alias!:string;
   password:string="";
-
+  aktuellesDatum: SystemDatum | any;
   allUser: User[] | any;
 
 
 
-  constructor(private tipprundenService:TipprundenserviceService, private friendListService: FriendListService) { }
+  constructor(private tipprundenService:TipprundenserviceService, private friendListService: FriendListService, private router:Router,private changeDateService: ChangeDateServiceService) { }
 
   ngOnInit(): void {
+    this.getDatum();
     this.zeigeTipprunden();
     this.zeigePrivateTipprunden();
     this.CurrentUserID=Number(sessionStorage.getItem("id"))
@@ -48,7 +52,11 @@ export class TipprundenuebersichtComponent implements OnInit {
       this.allUser = res;
     })
   }
-
+  getDatum(): void {
+    this.changeDateService.getDate().subscribe(res => {
+      this.aktuellesDatum = res
+    })
+  }
 
   zeigeTipprunden(){
     this.tipprundenService.getAllPublicTipprunden().subscribe(res=>{
@@ -138,5 +146,8 @@ export class TipprundenuebersichtComponent implements OnInit {
 
     })
   }
-
+  logout() {
+    sessionStorage.clear()
+    this.router.navigate(['/login'])
+  }
 }

@@ -1,85 +1,92 @@
 
-<div class="table1">
-<div class="login-container">
-  <div class="login-form">
-    <div class="form-group">
-      <div class="form-group">
-        <h3>Öffentliche Tipprunden</h3>
+<body>
+<div class="topnav">
+  <a routerLink="/dashboard">Dashboard</a>
+  <a style="float: right" (click)="logout()">Ausloggen</a>
+</div>
+
+<div class="row">
+  <div class="leftcolumn">
+    <div class="card">
+      <h2>Öffentliche Tipprunden</h2>
+      <div class="float-start">
+        <h4>Hier kannst du verschiedenen Tipprunden aller Nutzer beitreten</h4>
+      </div>
+      <div class="input-group rounded">
+        <input name="searchInput" [(ngModel)]="searchInput" id="searchInput" class="form-control" placeholder="Tipprunden nach Namen filtern" type="search">
+      </div>
+      <div class="card my-5">
+        <div class="card-body">
+          <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+              <th ng scope="col">Tipprunden Name</th>
+              <th>Teilnehmer</th>
+              <th scope="col">Aktion</th>
+            </tr>
+            </thead>
+            <!-- Liga Anzeigen Body -->
+            <tbody>
+            <tr *ngFor="let tippround of tiprounds  | filter:searchInput, let index = index">
+              <td>{{ tippround.name}}</td>
+              <td>{{tippround.participants.length}}</td>
+              <td><button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]==this.CurrentUserID" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(tippround.id); GetCurrTippRound(tippround.id)">Beitreten</button>
+            </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-    <div class="input-group rounded">
-      <input name="searchInput" [(ngModel)]="searchInput" id="searchInput" class="form-control" placeholder="Tipprunden nach Namen filtern" type="search">
-    </div>
-    <div class="card my-5">
-      <div class="card-body">
-        <table class="table table-bordered table-striped">
-          <thead class="thead-dark">
-          <tr>
-            <th ng scope="col">Tipprunden Name</th>
-            <th>Teilnehmer</th>
-            <th scope="col">Aktion</th>
-          </tr>
-          </thead>
-          <!-- Liga Anzeigen Body -->
-          <tbody>
-          <tr *ngFor="let tippround of tiprounds  | filter:searchInput, let index = index">
-            <td>{{ tippround.name}}</td>
-            <td>{{tippround.participants.length}}</td>
-            <td><button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]==this.CurrentUserID" class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(tippround.id); GetCurrTippRound(tippround.id)">Beitreten</button>
-           <!--     <button  class="btnLiga" [hidden]="this.ArrayWithPrivateTiproundsOwnerIDS[index]!=this.CurrentUserID" (click)="tipprundeEinladen(tippround.id)">Einladen</button></td>
-            <td>
-              <label [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID">
-                <select #friend (change)="onSelected(friend.value)">
-                  <option value="" disabled selected>select a friend</option>
-                  <option *ngFor="let showAllUser of allUser" [value]="showAllUser.eMail">{{showAllUser.eMail}}</option>
-                </select>
-              </label>
-            </td>     -->
-          </tr>
-          </tbody>
-        </table>
+    <div class="card">
+      <div class="row">
+        <div class="leftcolumn">
+          <h2>Private Tipprunden</h2>
+          <div class="float-start">
+            <h4>Hier kannst du privaten Tipprunden von Freunden beitreten</h4>
+          </div>
+          <div class="input-group rounded">
+            <input name="searchInput" [(ngModel)]="searchInput2" id="searchInput2" class="form-control rounded" placeholder="Tipprunden nach Namen filtern" type="search">
+          </div>
+          <div class="card my-5">
+            <div class="card-body">
+              <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                <tr >
+                  <th scope="col">Tipprunden Name</th>
+                  <th>Teilnehmer</th>
+                  <th scope="col">Aktion</th>
+                </tr>
+                </thead>
+                <!-- Liga Anzeigen Body -->
+                <tbody>
+                <tr *ngFor="let x of privateTiprounds | filter:searchInput2, let index=index">
+                  <td>{{x.name}}</td>
+                  <td>{{x.participants.length}}</td>
+                  <td><button  class="btnLiga"  [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID"  class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(x.id); GetCurrTippRound(x.id)">Beitreten</button>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+
+
+  <div class="rightcolumn">
+    <div class="usercard">
+      <h2>Systemdatum</h2>
+      <div><p>{{this.aktuellesDatum.localDate}}</p>
+
+    </div>
+
   </div>
 </div>
 
-<div class="table2">
-<div class="login-container">
-  <div class="login-form">
-    <div class="form-group">
-      <div class="form-group">
-        <h3>Private Tipprunden</h3>
-      </div>
-    </div>
-    <div class="input-group rounded">
-      <input name="searchInput" [(ngModel)]="searchInput2" id="searchInput2" class="form-control rounded" placeholder="Tipprunden nach Namen filtern" type="search">
-    </div>
-    <div class="card my-5">
-      <div class="card-body">
-        <table class="table table-bordered table-striped">
-          <thead class="thead-dark">
-          <tr >
-            <th scope="col">Tipprunden Name</th>
-            <th>Teilnehmer</th>
-            <th scope="col">Aktion</th>
-          </tr>
-          </thead>
-          <!-- Liga Anzeigen Body -->
-          <tbody>
-          <tr *ngFor="let x of privateTiprounds | filter:searchInput2, let index=index">
-            <td>{{x.name}}</td>
-            <td>{{x.participants.length}}</td>
-            <td><button  class="btnLiga"  [hidden]="this.ArrayWithTiproundsOwnerIDS[index]==this.CurrentUserID"  class='btn btn-info' data-bs-toggle="modal" data-bs-target="#myModal" (click)="saveTiproundID(x.id); GetCurrTippRound(x.id)">Beitreten</button>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-  <button routerLink="/dashboard" class="btnSubmit">Zurück</button>
-</div>
-</div>
+
+
 
 
 <!-- PopUp fürs Beitreten einer Tipprunde -->
