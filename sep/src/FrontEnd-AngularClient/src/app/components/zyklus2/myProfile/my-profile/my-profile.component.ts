@@ -25,6 +25,7 @@ export class MyProfileComponent implements OnInit {
   mytiprounds: BettingRound | any;
   myTipTable: Table[] | any
 
+
   constructor(private getUserService: GetUserServiceService,
               private friendListService: FriendListService,
               private tipprundenservice: TipprundenserviceService) { }

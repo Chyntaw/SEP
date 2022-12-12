@@ -30,17 +30,21 @@
       </div>
       <div> <table *ngIf="myTipTable" class="myTippTable">
         <thead>
+        <th>Pl.</th>
         <th>Team</th>
         <th>Spiele</th>
-        <th>Siege</th>
-        <th>Unentschieden</th>
-        <th>Niederlage</th>
-        <th>Tore</th>
-        <th>Differenz</th>
+        <th>S</th>
+        <th>U</th>
+        <th>N</th>
+        <th>+/-</th>
+        <th>Diff</th>
         <th>Punkte</th>
         </thead>
         <tbody>
-        <tr *ngFor="let entry of myTipTable">
+        <tr *ngFor="let entry of myTipTable, let i = index">
+          <td *ngIf="i+1 ==1" bgcolor="#6b8e23">{{i+1}}</td>
+          <td *ngIf="i+1 > myTipTable.length-3" bgcolor="#dc143c" >{{i+1}}</td>
+          <td *ngIf="(i+1 != 1) &&!(i+1 > myTipTable.length-3)">{{i+1}}</td>
           <td>{{entry.team}}</td>
           <td>{{entry.anzahlSpiele}}</td>
           <td>{{entry.siege}}</td>
@@ -52,9 +56,8 @@
         </tr>
         </tbody>
       </table></div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
     </div>
+
     <div class="card">
       <h2>Balkendiagramm</h2>
       <h5>Title description, Sep 2, 2017</h5>
