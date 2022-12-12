@@ -22,6 +22,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.gruppe_f.sep.businesslogic.GenerellLogisch.*;
+import static com.gruppe_f.sep.entities.table.TableEntryService.calculateTable;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")

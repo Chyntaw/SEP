@@ -45,29 +45,21 @@ public class LigaService {
 
     @GetMapping("/liga/findAll")
     public ResponseEntity<List<Liga>> findAll(){
-        List<Liga> leagueList = ligaRepo.findAll();
-        for(Liga liga:leagueList) {
-            liga.setLeagueData(null);
-        }
+
+        List<Liga> leagueList = ligaRepo.findAll().stream().sorted((x,y) -> compareDates(x.getLeagueData().get(0).getDate(), y.getLeagueData().get(0).getDate())).collect(Collectors.toList());
+
         return new ResponseEntity<>(leagueList, HttpStatus.OK);
     }
 
     @GetMapping("/liga/buttondisabler")
     public ResponseEntity<?> getDisabledButtons() {
-
-        List<Liga> ligaList = ligaRepo.findAll();
-        Boolean[] shouldButtonBeDisabled = new Boolean[ligaList.size()];
         String currDate = dateRepo.findAll().get(0).getLocalDate();
 
-        int i = 0;
-        for(Liga liga: ligaList) {
-            List<LeagueData> dataList = liga.getLeagueData().stream().sorted((x,y) -> compareDates(x.getDate(), y.getDate())).collect(Collectors.toList());
-            String lastOcurringDate = dataList.get(dataList.size()-1).getDate();
-            if(compareDates(lastOcurringDate, currDate) >= 0) {shouldButtonBeDisabled[i] = false;}
-            else {shouldButtonBeDisabled[i] = true;}
-            i++;
-        }
-        return new ResponseEntity<>(shouldButtonBeDisabled, HttpStatus.OK);
+        List<Liga> ligaList = ligaRepo.findAll().stream()
+                .filter(x -> compareDates(x.getLeagueData().get(x.getLeagueData().size()-1).getDate(), currDate) >= 0).collect(Collectors.toList());
+
+
+        return new ResponseEntity<>(ligaList, HttpStatus.OK);
     }
 
     public Liga updateLiga(Liga liga){
@@ -128,5 +120,11 @@ public class LigaService {
             }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/liga/name/{id}")
+    public ResponseEntity<?> getLigaName(@PathVariable("id")Long id) {
+        Liga liga = ligaRepo.findLigaByid(id);
+        return new ResponseEntity<>(liga, HttpStatus.OK);
     }
 }
