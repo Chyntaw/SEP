@@ -15,18 +15,24 @@ import {Router} from "@angular/router";
 })
 export class MyProfileComponent implements OnInit {
 
-  me: User | any;
+  me: User = new User();
   retrievedImage: string | any;
-  base64Data: string | any;
+
   logo: any
   existsImage:boolean = false;
   friends: User [] | any;
+  pendingFriends: User[] | any;
+  pendingRequestedFriends: User[] | any;
+
   userToShow!: User | any
-  retrieveResonse: string | any;
   mytiprounds: BettingRound | any;
   myTipTable: Table[] | any
 
   searchUserMail: User = new User();
+
+  retrieveResonse: any;
+  base64Data: any;
+  keinBildVorhanden: string = "data:image/jpeg;base64,null";
 
 
   constructor(private getUserService: GetUserServiceService,
@@ -38,18 +44,28 @@ export class MyProfileComponent implements OnInit {
     this.getUser()
     this.showFriendList()
     this.zeigeMeineTipprunden()
+
+    this.showPendingFriendList(this.me.eMail);
+    this.showSendedFriendRequest(this.me.eMail);
   }
 
   getUser(): void{
+
+    this.me.firstName = String(sessionStorage.getItem("firstName"))
+    this.me.lastName = String(sessionStorage.getItem("lastName"))
+    this.me.eMail = String(sessionStorage.getItem("eMail"))
+    this.getImage()
+
+    /*habs erstmal rausgenommen sonst klappt die freundesliste nicht wegen der tollen asynchronität :D
     this.getUserService.getUser(String(sessionStorage.getItem("eMail"))).subscribe(res=>{
       this.me = res
       this.getImage();
     })
-    }
+     */
+  }
 
   getImage(){
     this.getUserService.getImage(this.me.eMail).subscribe(res=>{
-      console.log(res);
       this.retrieveResonse = res;
       if(this.retrieveResonse.picByte != null) {
       this.base64Data = this.retrieveResonse.picByte;
@@ -61,17 +77,66 @@ export class MyProfileComponent implements OnInit {
     const email = sessionStorage.getItem('eMail');
     if (email) {
       this.friendListService.showFriends(email).subscribe(data => {
-        console.log(data)
         this.friends = data;
-        console.log(this.friends)
       });
     }
   }
 
+
+  showPendingFriendList(email: string){
+    this.friendListService.showPendingFriends(email).subscribe(data => {
+      this.pendingFriends = data;
+    });
+  }
+
+  showSendedFriendRequest(email: string){
+    this.friendListService.showPendingFriendRequests(email).subscribe(data=>{
+      this.pendingRequestedFriends = data;
+    });
+  }
+
+
+  showImageFriends(eMail: string){
+    this.friendListService.getImages(eMail).subscribe(res=>{
+      for(let friends of this.friends){
+        if(friends.eMail == eMail){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          friends.profilePictureName = 'data:image/jpeg;base64,' + this.base64Data
+        }
+      }
+    })
+  }
+  showImagePendingFriends(eMail: string){
+    this.friendListService.getImages(eMail).subscribe(res=>{
+      for(let friends of this.pendingFriends){
+        if(friends.eMail == eMail){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          friends.profilePictureName = 'data:image/jpeg;base64,' + this.base64Data
+        }
+      }
+    })
+  }
+  showImageRequestedFriends(eMail: string){
+    this.friendListService.getImages(eMail).subscribe(res=>{
+      for(let friends of this.pendingRequestedFriends){
+        if(friends.eMail == eMail){
+          this.retrieveResonse = res;
+          this.base64Data = this.retrieveResonse.picByte;
+          friends.profilePictureName = 'data:image/jpeg;base64,' + this.base64Data
+        }
+      }
+    })
+  }
+
+
+
+
+
   zeigeMeineTipprunden() {
     this.tipprundenservice.getRoundsbyUserID(Number(sessionStorage.getItem("id"))).subscribe(res => {
       this.mytiprounds = res;
-      console.log(this.mytiprounds)
     })
   }
   getTippRundenByLigaID(bettingroundID: number) {
@@ -82,7 +147,35 @@ export class MyProfileComponent implements OnInit {
   }
 
   showProfile(){
-    console.log(this.searchUserMail.eMail)
     this.router.navigate(['/getUser'], {queryParams: {eMail: this.searchUserMail.eMail}})
+  }
+
+
+
+  acceptFriend(friendEmail: string){
+    const currentEmail: string | null = sessionStorage.getItem('eMail');
+    if(currentEmail){
+      this.friendListService.acceptFriend(currentEmail, friendEmail).subscribe(res=>{
+      });
+    }
+  }
+
+  declineFriend(friendEmail: string){
+    const currentEmail: string | null = sessionStorage.getItem('eMail');
+    if(currentEmail){
+      this.friendListService.declineFriend(currentEmail, friendEmail).subscribe();
+    }
+  }
+
+  removeFriend(friendEmail: string) {
+    const currentEmail: string | null = sessionStorage.getItem('eMail')
+
+    if(currentEmail){
+      this.friendListService.removeFriend(currentEmail, friendEmail).subscribe();
+    }
+  }
+
+  equals(string1: any, string2: any) {
+    return string1 == string2
   }
 }
