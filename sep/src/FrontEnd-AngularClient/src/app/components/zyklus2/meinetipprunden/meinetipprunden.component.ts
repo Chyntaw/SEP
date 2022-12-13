@@ -71,15 +71,10 @@ export class MeinetipprundenComponent implements OnInit {
   }
 
   getOwnedTipprunden() {
-    this.tipprundenservice.getAllPublicTipprunden().subscribe((res => {
-      for (var value of res) {
-        this.ArrayWithTiproundsOwnerIDS.push(value.ownerID);
-      }
-    }))
     let userid = Number(sessionStorage.getItem('id'))
-    this.tipprundenservice.getAllPrivateTipproundsByEmail(userid).subscribe(res => {
-      for (var value of res) {
-        this.ArrayWithTiproundsOwnerIDS.push(res.ownerID)
+    this.tipprundenservice.getOwnedTipprunden(userid).subscribe(res=>{
+      for(var value of res){
+        this.ArrayWithTiproundsOwnerIDS.push(value.ownerID)
       }
     })
   }

@@ -106,7 +106,9 @@ export class TipprundenserviceService {
 
     return this.http.get(`${this.baseUrl}/getAllPrivateRounds/`+userid)
   }
-
+  getOwnedTipprunden(userid: number):Observable<any> {
+    return this.http.get(`${this.baseUrl}/getAllOwnedRounds/`+userid);
+  }
   addAlias(alias:string, userID:number,bettingroundID:number){
     const formData: FormData = new FormData();
     formData.append("bettingroundID",String(bettingroundID));
@@ -129,5 +131,7 @@ export class TipprundenserviceService {
   getUserBettingTable(bettingroundID:number, userID:number) {
     return this.http.get(`${this.baseUrl}/getUserBettingTable/`+userID+'/'+bettingroundID);
   }
+
+
 }
 
