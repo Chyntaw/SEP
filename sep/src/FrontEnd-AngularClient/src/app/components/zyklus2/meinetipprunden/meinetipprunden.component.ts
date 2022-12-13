@@ -9,6 +9,7 @@ import {Score} from "../../../models/score";
 import {FriendListService} from "../../../services/friend-list.service";
 import {User} from "../../../models/roles/user/user";
 import {ActivatedRoute, Router} from "@angular/router";
+import {UpdateleaguedataService} from "../../../services/updateleaguedata.service";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -19,7 +20,7 @@ export class MeinetipprundenComponent implements OnInit {
 
   userid = Number(sessionStorage.getItem('id'));
   mytiprounds: BettingRound[] | any;
-  matchDayCount:Array<number> = new Array(34);
+  matchDayCount:number [] = new Array;
   matchDayDaten:Leaguedata[] | any;
   Bets: String[] | any;
   _ligaID!:number;
@@ -38,16 +39,19 @@ export class MeinetipprundenComponent implements OnInit {
   allFriends:User[]|any;
 
 
-  constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService, private fb: FormBuilder, private friendListService: FriendListService, private router: Router) {
+  constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService,
+              private fb: FormBuilder, private friendListService: FriendListService, private router: Router,
+              private updateleaguedataservice:UpdateleaguedataService) {
   }
 
   ngOnInit(): void {
-    this.ArrayFüllen()
+
     this.zeigeMeineTipprunden()
     this.findAllUser()
     this.findAllFriends()
     this.CurrentUserID = Number(sessionStorage.getItem("id"))
     this.getOwnedTipprunden()
+
 
 
   }
@@ -229,6 +233,13 @@ export class MeinetipprundenComponent implements OnInit {
       this.passedGame = res;
       console.log(res);
     });
+  }
+  getMatchDays(ligaID:number){
+    this.updateleaguedataservice.getMatchDays(ligaID).subscribe(res=>{
+      console.log(res)
+      this.matchDayCount.length=res.length+1;
+      this.ArrayFüllen()
+    })
   }
 
 }

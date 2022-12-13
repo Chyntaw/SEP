@@ -99,10 +99,15 @@ public class BettingRoundController {
 
     @GetMapping("getAllPublicRounds")
     public ResponseEntity<?>getAllPublicRounds(){
+        List<BettingRound> list = repo.findAll();
+        List<BettingRound> returnlist = new LinkedList<>();
 
-        List<BettingRound> list = repo.findAll().stream().filter(x -> !x.isIsprivate()).collect(Collectors.toList());
-
-        return new ResponseEntity<>(list, HttpStatus.OK);
+        for (BettingRound bettingRound : list) {
+            if(!bettingRound.isIsprivate()){
+                returnlist.add(bettingRound);
+            }
+        }
+        return new ResponseEntity<>(returnlist, HttpStatus.OK);
 
     }
 

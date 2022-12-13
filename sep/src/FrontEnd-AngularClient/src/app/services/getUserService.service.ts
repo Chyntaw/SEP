@@ -13,13 +13,13 @@ export class GetUserServiceService{
   }
 
 
-  getUser(email: string){
+  getUser(email: string):Observable<User>{
 
     const formData: FormData = new FormData();
     formData.append('email', email);
 
 
-    return this.httpClient.post(`${this.databaseURL}/user/getUser`, formData);
+    return this.httpClient.post<User>(`${this.databaseURL}/user/getUser`, formData);
   }
 
   addUser(eMail1: string, eMail2: string) {

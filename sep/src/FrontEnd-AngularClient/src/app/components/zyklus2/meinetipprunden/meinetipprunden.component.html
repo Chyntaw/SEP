@@ -47,7 +47,7 @@
           <tbody>
           <tr *ngFor="let mytippround of mytiprounds, let index = index">
             <td>{{ mytippround.name}}</td>
-            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Tipps abgeben</button>
+            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getMatchDays(mytippround.ligaID)" >Tipps abgeben</button>
               <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id)">Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
               <button class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID"(click)="tipprundeEinladen(mytippround.id)">Einladen</button>
@@ -138,7 +138,7 @@
 </div>
 
 
-<!-- PopUp fürs Abgeben der Tipps -->
+<!-- PopUp fürs Leaderboard-->
 <div class="modal" id="myModal2">
   <div class="modal-dialog">
     <div class="modal-content">

@@ -86,6 +86,7 @@ public class LeagueDataController {
     public ResponseEntity<?> getMatchdays(@PathVariable("ligaID")Long ligaID) {
         List<LeagueData> data = ligaRepo.findLigaByid(ligaID).getLeagueData();
         List<Integer> matchDaylist = new ArrayList<>();
+
         for(LeagueData game: data)
             if(!matchDaylist.contains(game.getMatchDay())) matchDaylist.add(game.getMatchDay());
 
