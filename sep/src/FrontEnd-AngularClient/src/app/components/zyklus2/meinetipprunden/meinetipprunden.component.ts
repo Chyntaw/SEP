@@ -37,6 +37,7 @@ export class MeinetipprundenComponent implements OnInit {
   ArrayWithTiproundsOwnerIDS: Number[] = [];
   CurrentUserID!: number;
   allFriends:User[]|any;
+  currTipprunde:BettingRound=new BettingRound();
 
 
   constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService,
@@ -241,5 +242,9 @@ export class MeinetipprundenComponent implements OnInit {
       this.ArrayFüllen()
     })
   }
-
+  getTipprundeByID(currTipprundeID:number){
+    this.tipprundenservice.getTipproundByID(currTipprundeID).subscribe(res=>{
+       this.currTipprunde=res;
+    })
+  }
 }

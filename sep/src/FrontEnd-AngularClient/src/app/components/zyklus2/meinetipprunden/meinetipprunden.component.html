@@ -47,8 +47,8 @@
           <tbody>
           <tr *ngFor="let mytippround of mytiprounds, let index = index">
             <td>{{ mytippround.name}}</td>
-            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getMatchDays(mytippround.ligaID)" >Tipps abgeben</button>
-              <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id)">Ergebnisse</button>
+            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getMatchDays(mytippround.ligaID); getTipprundeByID(mytippround.id)" >Tipps abgeben</button>
+              <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id); getTipprundeByID(mytippround.id)">Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
               <button class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID"(click)="tipprundeEinladen(mytippround.id)">Einladen</button>
               <button class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal3" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Alias erstellen/ändern</button>
@@ -92,7 +92,11 @@
               <select class="dropdown">
                 <option class="dropdown-item" *ngFor="let x of matchDayCount" (click)="MatchDayDaten(x); FormControlReset()">Spieltag:{{x}} </option>
               </select>
-
+              <div style="float: right">
+                <h4>Punkte für korrektes Ergebnis: {{currTipprunde.corrScorePoints}}</h4>
+              <h4>Punkte für korrekte Tordifferenz: {{currTipprunde.corrGoalPoints}}</h4>
+              <h4>Punkte für korrekten Gewinner: {{currTipprunde.corrWinnerPoints}}</h4>
+            </div>
               <table class="table table-bordered table-striped">
                 <thead class="thead-dark">
                 <tr>
@@ -146,6 +150,11 @@
         <!-- Header-->
         <div class="modal-header">
           <h4 class="modal-title" style="text-align: center">Leaderboard zur Tipprunde {{tipRundenID}}</h4>
+          <div style="float: right">
+            <h4>Punkte für korrektes Ergebnis: {{currTipprunde.corrScorePoints}}</h4>
+            <h4>Punkte für korrekte Tordifferenz: {{currTipprunde.corrGoalPoints}}</h4>
+            <h4>Punkte für korrekten Gewinner: {{currTipprunde.corrWinnerPoints}}</h4>
+          </div>
         </div>
 
         <!-- Body-->
