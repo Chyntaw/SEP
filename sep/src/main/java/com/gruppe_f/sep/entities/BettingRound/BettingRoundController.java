@@ -358,6 +358,16 @@ public class BettingRoundController {
         return new ResponseEntity<>(returnList, HttpStatus.OK);
 
     }
+
+    //getAllOwnedRounds
+    @GetMapping("/getAllOwnedRounds/{userid}")
+    public ResponseEntity<?> getAlleOwnedRounds(@PathVariable Long userid){
+        List<BettingRound> list = repo.findAll().stream()
+                .filter(x -> x.getOwnerID() == userid).collect(Collectors.toList());
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
    /* @GetMapping("/getAllPrivateRoundsFromOwner/{userid}")
     public ResponseEntity<?> getAllPrivateFromOwnerRounds(@PathVariable Long userid) {
         List<BettingRound> list = repo.findAll().stream().filter(x -> x.isIsprivate()).collect(Collectors.toList());

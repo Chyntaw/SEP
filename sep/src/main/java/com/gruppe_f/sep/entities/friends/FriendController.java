@@ -123,8 +123,8 @@ public class FriendController {
                                                  @PathVariable("bettingroundid") Long id){
 
         mailSenderService.sendEmail(friendEmail,
-                currentUserEmail + "möchte Sie zur Tipprunde: " + " einladen.",
-                "http://localhost:4200/tipprunden-uebersicht/" + id);
+                currentUserEmail + " möchte Sie zur Tipprunde: " + " einladen.",
+                "http://localhost:4200/einladungs-uebersicht/" + id);
 
 
         return new ResponseEntity<>(HttpStatus.OK);
