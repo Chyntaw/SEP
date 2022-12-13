@@ -8,6 +8,7 @@ import {TipprundenserviceService} from "../../../services/tipprundenservice.serv
 import {Score} from "../../../models/score";
 import {FriendListService} from "../../../services/friend-list.service";
 import {User} from "../../../models/roles/user/user";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -37,7 +38,7 @@ export class MeinetipprundenComponent implements OnInit {
   allFriends:User[]|any;
 
 
-  constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService, private fb: FormBuilder, private friendListService: FriendListService) {
+  constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService, private fb: FormBuilder, private friendListService: FriendListService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -220,8 +221,8 @@ export class MeinetipprundenComponent implements OnInit {
     })
   }
 
-  setSessionStorageForUser(eMail:string){
-    sessionStorage.setItem("eMailSearchProfile", eMail)
+  showProfile(eMail:string){
+    this.router.navigate(['/getUser'], {queryParams: {eMail: eMail}})
   }
   getDisabled(date:string[]) {
     this.tipprundenservice.getDisabled(date).subscribe(res => {

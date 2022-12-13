@@ -165,9 +165,9 @@
                   <td>{{ x.user.firstName}}</td>
                   <td>{{ x.scores }}</td>
                   <td>
-                    <xbutton class="btn btn-info" routerLink="/getUser" data-bs-dismiss="modal" (click)="setSessionStorageForUser(x.user.eMail)">
+                    <button class="btn btn-info" data-bs-dismiss="modal" (click)="showProfile(x.user.eMail)">
                       Profil anzeigen
-                    </xbutton>
+                    </button>
                   </td>
                 </tr>
                 </tbody>

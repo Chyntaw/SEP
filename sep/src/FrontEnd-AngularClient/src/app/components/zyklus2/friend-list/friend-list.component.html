@@ -72,20 +72,7 @@
                     <img src="../../../../../assets/blankProfilePic.png" width="100" height="100">
                   </ng-template>
 
-                  <!--
-                  <div class="container row">
-                    <div class="col-md-12">
-                      <div *ngIf="equals(pendingUsers.image, this.keinBildVorhanden); else hasPicture">
-                        <h1>Kein Bild vorhanden</h1>
-                      </div>
-                      <div>
-                        <ng-template #hasPicture >
-                          <img [src]="this.retrievedImagesOfPendingFriends[i]" width="100" height="100">
-                        </ng-template>
-                      </div>
-                    </div>
-                  </div>
-                  -->
+
                 </td>
 
                 <td><button  (click) = "acceptFriend(pendingUsers.eMail)" class='btn btn-info'>Accept</button></td>

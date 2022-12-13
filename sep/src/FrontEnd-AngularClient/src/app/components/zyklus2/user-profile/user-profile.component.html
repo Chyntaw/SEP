@@ -25,7 +25,7 @@
       <h3 class="headline-date">Profilepicture:<pre></pre></h3>
       <div class="container row">
         <div class="col-md-12">
-          <div *ngIf=retrievedImage; else hasNoPicture>
+          <div *ngIf="retrievedImage; else hasNoPicture">
             <img [src]="retrievedImage"height="100" width="100">
           </div>
           <ng-template #hasNoPicture>

@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {GetUserServiceService} from "../../../services/getUserService.service";
 import {User} from "../../../models/roles/user/user";
+import {ActivatedRoute} from "@angular/router";
 
 
 
@@ -21,7 +22,7 @@ export class UserProfileComponent implements OnInit{
   retrieveResonse: string | any;
 
 
-  constructor(private getUserService: GetUserServiceService) { }
+  constructor(private getUserService: GetUserServiceService, private route:ActivatedRoute) { }
 
 
   getUser(): void{
@@ -55,11 +56,9 @@ export class UserProfileComponent implements OnInit{
 
 
   ngOnInit() {
-    let eMail = sessionStorage.getItem("eMailSearchProfile")
-    if(eMail){
-      this.user.eMail = eMail
+    this.route.queryParams.subscribe(params=>{
+      this.user.eMail = params["eMail"]
       this.getUser()
-      sessionStorage.removeItem("eMailSearchProfile")
-    }
+    })
   }
 }
