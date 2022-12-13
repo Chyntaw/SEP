@@ -1,45 +1,62 @@
+<body>
+<div class="topnav">
+  <a routerLink="/dashboard">Dashboard</a>
+  <a style="float: right" (click)="logout()">Ausloggen</a>
+</div>
 
-<div class="container login-container">
-  <div class="row">
-    <div class="col-md-6 login-form">
-      <h3 class="headline">Dashboard </h3>
-      <form>
-        <div class="form-group">
-          <button routerLink="/my-Profile" class="btnSubmit">My Profile</button>
-        </div>
-        <div class="form-group">
-          <button routerLink="/show_league" class="btnSubmit" >Ligen Übersicht</button>
-        </div>
-        <div class="form-group">
-          <button routerLink="/tipprunden-uebersicht" class="btnSubmit" >Tipprundenübersicht</button>
-        </div>
-        <div class="form-group">
-          <button routerLink="/meineTipprunden" class="btnSubmit" >Meine Tipprunden</button>
-        </div>
 
-        <div class="form-group">
-          <button routerLink="/friend-list" class="btnSubmit">Freundesliste</button>
-        </div>
+<div class="row">
+  <div class="leftcolumn">
+    <div class="usercard">
+      <h2>Tipprunden & Ligen</h2>
+      <div class="form-group">
+        <button routerLink="/show_league" class="btnSubmit" >Ligen einsehen & Tipprunden erstellen</button>
+      </div>
+      <div class="form-group">
+        <button routerLink="/tipprunden-uebersicht" class="btnSubmit" >Tipprunden finden & beitreten</button>
+      </div>
+      <div class="form-group">
+        <button routerLink="/meineTipprunden" class="btnSubmit" >Meine Tipprunden</button>
+      </div>
+    </div>
 
-        <div class="form-group">
-          <button routerLink="/showTop" class="btnSubmit">Die Besten der Besten</button>
-        </div>
 
-        <div class="form-group">
-          <button routerLink="/getUser" class="btnSubmit">Suchen</button>
-        </div>
-        <form (ngSubmit)="logout()">
+    <div class="usercard">
+
+
+          <h2>Vergleiche</h2>
           <div class="form-group">
-            <button class="btnSubmit">Ausloggen</button>
+            <button routerLink="/showTop" class="btnSubmit">Die Besten der Besten</button>
           </div>
-        </form>
-      </form>
-
-
-
     </div>
   </div>
+
+
+
+  <div class="rightcolumn">
+    <div class="usercard">
+      <h2>Soziales</h2>
+      <div class="form-group">
+        <button routerLink="/my-Profile" class="btnSubmit">Mein Profil</button>
+      </div>
+      <div class="form-group">
+        <button routerLink="/friend-list" class="btnSubmit">Freundesliste</button>
+      </div>
+      <div class="form-group">
+        <button routerLink="/getUser" class="btnSubmit">Freunde hinzufügen</button>
+      </div>
+
+    </div>
+
+  </div>
 </div>
+
+
+<div class="footer">
+  <h2>Footer</h2>
+</div>
+
+</body>
 
 
 
