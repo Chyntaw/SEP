@@ -10,9 +10,13 @@
   <a href="#">Link</a>
   <a href="#">Link</a>
   <a href="#">Link</a>
-  <a href="#" style="float:right">Link</a>
+  <a style="float:right">
+    <input type="text" class="form-control" value="" placeholder="Email" id="email" name="email" [(ngModel)]="searchUserMail.eMail"/>
+  </a>
+  <a (click) = "showProfile()" style="float:right">
+    <button class="btnSubmit">Suchen</button>
+  </a>
 </div>
-
 <div class="row">
   <div class="leftcolumn">
     <div class="card">

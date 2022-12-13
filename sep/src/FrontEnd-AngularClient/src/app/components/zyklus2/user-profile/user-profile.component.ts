@@ -22,6 +22,7 @@ export class UserProfileComponent implements OnInit{
   retrieveResonse: string | any;
 
 
+
   constructor(private getUserService: GetUserServiceService, private route:ActivatedRoute) { }
 
 

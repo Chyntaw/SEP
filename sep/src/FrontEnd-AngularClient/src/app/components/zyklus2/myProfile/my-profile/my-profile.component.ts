@@ -5,6 +5,7 @@ import {FriendListService} from "../../../../services/friend-list.service";
 import {BettingRound} from "../../../../models/betting-round";
 import {TipprundenserviceService} from "../../../../services/tipprundenservice.service";
 import {Table} from "../../../../models/table";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -25,10 +26,13 @@ export class MyProfileComponent implements OnInit {
   mytiprounds: BettingRound | any;
   myTipTable: Table[] | any
 
+  searchUserMail: User = new User();
+
 
   constructor(private getUserService: GetUserServiceService,
               private friendListService: FriendListService,
-              private tipprundenservice: TipprundenserviceService) { }
+              private tipprundenservice: TipprundenserviceService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.getUser()
@@ -77,4 +81,8 @@ export class MyProfileComponent implements OnInit {
     )
   }
 
+  showProfile(){
+    console.log(this.searchUserMail.eMail)
+    this.router.navigate(['/getUser'], {queryParams: {eMail: this.searchUserMail.eMail}})
+  }
 }

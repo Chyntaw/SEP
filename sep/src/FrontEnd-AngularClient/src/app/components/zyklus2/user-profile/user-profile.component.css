@@ -1,82 +1,159 @@
-.headline{
-  margin-top: -150px;
-  margin-bottom: 70px;
-
-
+* {
+  box-sizing: border-box;
 }
 
-.login-container{
-  margin-left: 20%;
-
-  margin-right: 2%;
-  padding-bottom: 10%;
+body {
+  font-family: Arial;
+  padding: 10px;
+  background: #f1f1f1;
 }
 
-.login-form{
-  padding-top: 20%;
-  background:#282726;
-  box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
-  padding-bottom: 30%;
+/* Header/Blog Title */
+.header {
+  padding: 30px;
+  text-align: center;
+  background: white;
+}
+
+.header h1 {
+  font-size: 50px;
+}
+
+/* Style the top navigation bar */
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {
+  float: left;
+  width: 75%;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+
+}
+.center{
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.friendElement{
+  font-weight: bold;
+}
+
+/* Fake image */
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+  font-size: 70px;
   text-align: center;
 }
-.login-form h3{
-  text-align: -moz-center;
-  color:#fff;
-  font-size: 50px;
 
-}
-
-.btnSubmit{
-
+/* Add a card effect for articles */
+.card {
+  background-color: white;
+  padding: 20px;
   margin-top: 20px;
-  margin-bottom: 30px;
-  font-weight: 600;
-  width: 80%;
-  color: #282726;
-  background-color: #fff;
-  border: none;
-  border-radius: 1.5rem;
-  padding:4%;
-  font-size: 30px;
-
-}
-.btnSubmit:focus{
-  outline: none;
-
-
 }
 
+.usercard {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 35px;
+  border-radius: 2%;
+  border-color: black;
+  border-width: 10px;
+}
 
-
-
-.btnKonto{
-  color: #fff;
-  font-weight: 600;
-  font-size: 20px;
-  margin-top:20px;
-
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.myTippTable{
+  font-size: 18px;
+  width: 100%;
 }
 
 
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
 
-.form-control{
-  font-size: 40px;
-}
-.text-danger{
-  font-size: 20px;
-
-}
-.labels{
-  font-size: 20px;
-  color: #fff;
-}
-.label {
-  display: block;
-  font: 1rem 'Fira Sans', sans-serif;
+td {
+  border-bottom: 1px solid #ddd;
 
 }
 
-.input,
-.label {
-  margin: .4rem 0;
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {
+    width: 100%;
+    padding: 0;
+  }
 }
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+  .topnav a {
+    float: none;
+    width: 100%;
+  }
+}
+
+img {
+  border-radius: 30%;
+
+  width: 100%;
+  max-width: 300px;
+  padding: 20px;
+}
+
+p {
+  font-weight: bold;
+}
+
+
+
+/* ADD FRIEND BUTTON IN SCHÖN */
+
+
+
+
+
+

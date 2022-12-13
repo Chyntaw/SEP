@@ -5,6 +5,9 @@
       <h3 class="headline">Dashboard </h3>
       <form>
         <div class="form-group">
+          <button routerLink="/my-Profile" class="btnSubmit">My Profile</button>
+        </div>
+        <div class="form-group">
           <button routerLink="/show_league" class="btnSubmit" >Ligen Übersicht</button>
         </div>
         <div class="form-group">
@@ -13,9 +16,7 @@
         <div class="form-group">
           <button routerLink="/meineTipprunden" class="btnSubmit" >Meine Tipprunden</button>
         </div>
-        <div class="form-group">
-          <button routerLink="/getUser" class="btnSubmit">Profil</button>
-        </div>
+
         <div class="form-group">
           <button routerLink="/friend-list" class="btnSubmit">Freundesliste</button>
         </div>
@@ -23,8 +24,9 @@
         <div class="form-group">
           <button routerLink="/showTop" class="btnSubmit">Die Besten der Besten</button>
         </div>
+
         <div class="form-group">
-          <button routerLink="/my-Profile" class="btnSubmit">My Profile</button>
+          <button routerLink="/getUser" class="btnSubmit">Suchen</button>
         </div>
         <form (ngSubmit)="logout()">
           <div class="form-group">
