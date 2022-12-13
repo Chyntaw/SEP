@@ -121,13 +121,12 @@ export class EinladungsUebersichtComponent implements OnInit {
     })}
   tipprundeBeitreten(){
     let userid = Number(sessionStorage.getItem("id"))
-    if(this.alias=="" || this.alias==null){
+    if(this.alias != null){
     this.tipprundenservice.addAlias(this.alias,userid,this.currBettingRound.id).subscribe(res=>{
 
     })}
 
     this.tipprundenservice.addParticipant(userid,this.currBettingRound.id,this.currBettingRoundPassword).subscribe(res=>{
-
       alert("Beitritt erfolgreich")
 
     },error =>alert("Beitritt nicht erfolgreich"))
