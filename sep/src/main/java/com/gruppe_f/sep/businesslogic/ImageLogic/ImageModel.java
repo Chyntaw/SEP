@@ -13,8 +13,7 @@ public class ImageModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    private String userMail;
 
     @Column(name = "type")
     private String type;
@@ -28,24 +27,24 @@ public class ImageModel {
         super();
     }
 
-    public ImageModel(String name, String type, byte[] picByte) {
-        this.name = name;
+    public ImageModel(String userMail, String type, byte[] picByte) {
+        this.userMail = userMail;
         this.type = type;
         this.picByte = picByte;
     }
 
-    public ImageModel(String name, String type) {
-        this.name = name;
+    public ImageModel(String userMail, String type) {
+        this.userMail = userMail;
         this.type = type;
     }
 
 
     public String getName() {
-        return name;
+        return userMail;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.userMail = name;
     }
 
     public String getType() {

@@ -15,7 +15,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/sepdatabase
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=password
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
 
 
   db:
@@ -27,6 +27,8 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=password
+    volumes:
+      - ./postgres-SEPdata:/var/lib/postgresql/SEPdata
 
   frontend:
     image: 'client:latest'

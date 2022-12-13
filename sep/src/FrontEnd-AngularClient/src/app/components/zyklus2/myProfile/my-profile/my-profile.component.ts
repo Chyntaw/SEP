@@ -31,6 +31,7 @@ export class MyProfileComponent implements OnInit {
   searchUserMail: User = new User();
 
   retrieveResonse: any;
+  friendsPictures: string[] = [];
   base64Data: any;
   keinBildVorhanden: string = "data:image/jpeg;base64,null";
 
@@ -47,6 +48,7 @@ export class MyProfileComponent implements OnInit {
 
     this.showPendingFriendList(this.me.eMail);
     this.showSendedFriendRequest(this.me.eMail);
+
   }
 
   getUser(): void{
@@ -71,6 +73,7 @@ export class MyProfileComponent implements OnInit {
       this.base64Data = this.retrieveResonse.picByte;
       this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
       }
+      console.log(typeof(this.retrievedImage))
   })}
 
   showFriendList() {
@@ -78,6 +81,7 @@ export class MyProfileComponent implements OnInit {
     if (email) {
       this.friendListService.showFriends(email).subscribe(data => {
         this.friends = data;
+        this.getPicsOfFriends()
       });
     }
   }
@@ -93,6 +97,21 @@ export class MyProfileComponent implements OnInit {
     this.friendListService.showPendingFriendRequests(email).subscribe(data=>{
       this.pendingRequestedFriends = data;
     });
+  }
+
+  getPicsOfFriends() {
+    for(let friends of this.friends) {
+      this.friendListService.getImages(friends.eMail).subscribe(pic => {
+        this.retrieveResonse = pic;
+        if(this.retrieveResonse.picByte != null) {
+        this.base64Data = this.retrieveResonse.picByte;
+        this.friendsPictures.push('data:image/jpeg;base64,' + this.base64Data);
+        console.log(this.friendsPictures)
+        } else {
+          this.friendsPictures.push("null");
+        }
+      })
+    }
   }
 
 

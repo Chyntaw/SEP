@@ -59,8 +59,8 @@ public class UserController {
                                         @RequestParam("password") String password,
                                         @RequestParam("role") String role) throws IOException {
 
-        User user;
-        user = new User(firstName, lastName, eMail, password, role);
+
+        User user = new User(firstName, lastName, eMail, password, role);
 
         for(User userDatabase: service.findAllUsers()) {
             if (user.geteMail().equals(userDatabase.geteMail())) {                  //wenn userData Mail(eingegebene Mail) in der Datenbank ist -> Forbidden
@@ -69,11 +69,9 @@ public class UserController {
         }
         if(role.equals("BASIC")){
             if(multipartFile != null){
-                ImageModel img = new ImageModel(multipartFile.getOriginalFilename(),
-                        multipartFile.getContentType(),
+
+                ImageModel img = new ImageModel(eMail, multipartFile.getContentType(),
                         compressBytes(multipartFile.getBytes()));
-
-
 
                 user.setBirthDate(birthDate);
 
@@ -90,7 +88,6 @@ public class UserController {
         }
         else{
             User newUser = service.addUser(user);
-
 
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         }
@@ -131,11 +128,8 @@ public class UserController {
 
     @PostMapping("/user/2FA")
     public ResponseEntity<?> zweiFaUser(@RequestBody User userData){
-        //System.out.println(userData.toString());
 
         String user_mail = userData.geteMail();
-
-
 
         User user = service.findUserByeMail(user_mail);
 
@@ -171,9 +165,6 @@ public class UserController {
        }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
-
-
-
 
 
 /*
@@ -214,25 +205,18 @@ public class UserController {
         User currentUser = service.findUserByeMail(currentEmail);
 
         if(currentUser.getImage() == null){
-            System.out.println("kein Bild");
-            final Optional<ImageModel> retrievedImage = imageRepository.findByName("StandardBild");
-            System.out.println("1");
-            ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType());
-            System.out.println("2");
-            System.out.println(img.getName() + " "+ img.getType());
-            return img;
+
+            return new ImageModel("StandardBild", "image/jpeg", null);
         }
         else{
             System.out.println("Bild");
-            final Optional<ImageModel> retrievedImage = imageRepository.findByName(currentUser.getImage().getName());
-            ImageModel img = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
+            final Optional<ImageModel> retrievedImage = imageRepository.findByuserMail(currentEmail);
+            ImageModel img = new ImageModel(currentEmail, retrievedImage.get().getType(),
                     decompressBytes(retrievedImage.get().getPicByte()));
             System.out.println(img.getName() + " "+ img.getType());
             return img;
         }
     }
-
-
 
 
     // compress the image bytes before storing it in the database

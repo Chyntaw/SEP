@@ -16,7 +16,10 @@ public class UserService {
     @Autowired
     public UserService(UserRepository repo) {this.repo = repo;}
 
-    public User addUser(User user) {return repo.save(user);}
+    public User addUser(User user) {
+        if(repo.findUserByeMail(user.geteMail()) != null) throw new IllegalArgumentException("User with this E-mail already exists");
+        return repo.save(user);
+    }
 
     public List<User> findAllUsers() {return repo.findAll();}
 

@@ -3,6 +3,7 @@ package com.gruppe_f.sep;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
 import com.gruppe_f.sep.date.DateRepository;
+import com.gruppe_f.sep.date.DateService;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
 import com.gruppe_f.sep.entities.BettingRound.BettingRoundRepository;
@@ -16,6 +17,7 @@ import com.gruppe_f.sep.entities.liga.LigaRepository;
 import com.gruppe_f.sep.entities.liga.LigaService;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
+import com.gruppe_f.sep.entities.user.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,19 +40,22 @@ public class SepGruppeFApplication {
 	}
 
 	@Bean
-	CommandLineRunner init(UserRepository repository, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo, FriendRepository friendRepository, ImageRepository imageRepository) {
+	CommandLineRunner init(DateService dateServce, UserService userService, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo, FriendRepository friendRepository, ImageRepository imageRepository) {
 		return args -> {
-			repository.save(new User("Matt","Murdock","02.02.2002", "lmao@gmx.ru", "passWORT!", "ADMIN"));
-			repository.save(new User("Test","Hodenburg","02.02.1000", "t@t.de", "test", "Basic"));
-			repository.save(new User("Test","Lmao>Burg","02.02.1000", "xD@xD.de", "xD", "Basic"));
-			repository.save(new User("Clark","Kent","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
-			repository.save(new User("Peter","Parker","02.02.2002", "rofl@yahoo.de", "mirdochwayne", "ADMIN"));
-			repository.save(new User("Matt","Huso","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
-			repository.save(new User("Can","Kalafat","24.04.1997", "can.kalafat@outlook.de", "1", "BASIC"));
+			dateServce.changeDate(new SystemDate("1000-05-14"));
+			try {
+			userService.addUser(new User("Anna","Bolika","02.02.2002", "lmao@gmx.ru", "passWORT!", "BASIC"));
+			userService.addUser(new User("Peter","Haremberg","02.02.1000", "t@t.de", "test", "BASIC"));
+			userService.addUser(new User("Martin","Huldensohn","02.02.1000", "xD@xD.de", "xD", "BASIC"));
+			userService.addUser(new User("Dick","Tator","02.02.0002", "xD@yahoo.org", "passsssWORT!", "BASIC"));
+			userService.addUser(new User("Georg","Asmus","02.02.2002", "rofl@yahoo.de", "mirdochwayne", "ADMIN"));
+			userService.addUser(new User("Gutfried","Wurst","02.12.2002", "lmao@yahoo.de", "passsssWORT!", "BASIC"));
+			userService.addUser(new User("Can","Kalifat","24.04.1997", "can.kalafat@outlook.de", "1", "BASIC"));
+			userService.addUser(new User("Hella","Kot","24.04.1997", "kot@kotMail.com", "1", "BASIC"));
+			userService.addUser(new User("Lars","Samenström","24.04.1997", "lars@lars.com", "1", "BASIC"));
+			} catch	(Exception e) {}
 
-			repo.save(new SystemDate("1000-05-14"));
-
-
+			/*
 			Liga testLiga = new Liga("Nationalistische Nationalliga", null);
 			ligarepo.save(testLiga);
 			List<LeagueData> dataList = new ArrayList<>();
@@ -73,10 +78,8 @@ public class SepGruppeFApplication {
 			}
 			ligarepo.save(testLiga);
 
+			*/
 
-			byte[] test = new byte[0];
-			ImageModel imageModel = new ImageModel("StandardBild", "image/jpeg", test);
-			imageRepository.save(imageModel);
 
 		};
 	}
