@@ -28,10 +28,10 @@ export class UserProfileComponent implements OnInit{
   getUser(): void{
     this.getUserService.getUser(this.user.eMail).subscribe(res=>{
       this.userToShow = res
+      if(this.userToShow.image != null){
+        this.getImage()
+      }
     })
-    if(this.userToShow.image != null){
-      this.getImage()
-    }
   }
 
   getImage(){
@@ -56,9 +56,11 @@ export class UserProfileComponent implements OnInit{
 
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params=>{
-      this.user.eMail = params["eMail"]
-      this.getUser()
-    })
+    if(this.route.queryParams){
+      this.route.queryParams.subscribe(params=>{
+        this.user.eMail = params["eMail"]
+        this.getUser()
+      })
+    }
   }
 }
