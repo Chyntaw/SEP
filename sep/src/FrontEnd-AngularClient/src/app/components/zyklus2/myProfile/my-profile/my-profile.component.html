@@ -1,20 +1,13 @@
-<p>my-profile works!</p>
+
 <body>
 
-<div class="header">
-  <h1>My Website</h1>
-  <p>Resize the browser window to see the effect.</p>
-</div>
-
 <div class="topnav">
-  <a href="#">Link</a>
-  <a href="#">Link</a>
-  <a href="#">Link</a>
+  <a routerLink="/dashboard">Dashboard</a>
   <a style="float:right">
     <input type="text" class="form-control" value="" placeholder="Email" id="email" name="email" [(ngModel)]="searchUserMail.eMail"/>
   </a>
   <a (click) = "showProfile()" style="float:right">
-    <button class="btnSubmit">Suchen</button>
+    <button class="btn btn-outline-light">Suchen</button>
   </a>
 </div>
 <div class="row">
@@ -64,10 +57,8 @@
 
     <div class="card">
       <h2>Balkendiagramm</h2>
-      <h5>Title description, Sep 2, 2017</h5>
+      <h5>Kommt bald</h5>
       <div class="fakeimg" style="height:200px;">COMING SOON</div>
-      <p>Some text..</p>
-      <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
     </div>
   </div>
   <div class="rightcolumn">
@@ -84,7 +75,7 @@
 
 
     <div class="card">
-      <h3>My Friends</h3>
+      <h3>Meine Freunde</h3>
       <table>
         <tbody>
           <tr *ngFor="let users of friends, let i = index">
@@ -104,7 +95,7 @@
             <td><button  (click) = "removeFriend(users.eMail)" class='btn btn-info'>Löschen</button></td>
           </tr>
           <div *ngIf="this.friends">
-            <div *ngIf="friends.length==0"><p>Du hast keine Freunde, du Otto</p></div>
+            <div *ngIf="friends.length==0"><p>Du hast noch keine Freunde</p></div>
           </div>
         </tbody>
       </table>
