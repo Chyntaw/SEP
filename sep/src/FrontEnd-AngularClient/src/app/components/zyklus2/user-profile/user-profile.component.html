@@ -6,7 +6,7 @@
     <input type="text" class="form-control" value="" placeholder="Email" id="email" name="email" [(ngModel)]="user.eMail"/>
   </a>
   <a (click) = "getUser()" style="float:right">
-    <button class="btnSubmit">Suchen</button>
+    <button class="newButton cuteButton">Suchen</button>
   </a>
 </div>
 <div class="row">
@@ -27,7 +27,7 @@
     <div class="card">
 
 
-      <button (click)="addUser()">Add Friend</button>
+      <button class="button cuteButton"(click)="addUser()">Add Friend</button>
 
 
     </div>
@@ -35,6 +35,6 @@
 </div>
 
 <div class="footer">
-  <button routerLink="/dashboard">Zurück</button>
+  <button class="button cuteButton" routerLink="/dashboard">Zurück</button>
 </div>
 
