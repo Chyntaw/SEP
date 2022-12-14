@@ -1,79 +1,96 @@
-
-<div class="login-container">
-  <div class="login-form">
-    <div class="form-group">
-      <div class="form-group">
+<body>
+<div class="topnav">
+  <a routerLink="/dashboard">Dashboard</a>
+  <a style="float: right" (click)="logout()">Ausloggen</a>
+</div>
+  <div class="row">
+    <div class="leftcolumn">
+      <div class="card">
         <h3>Meine Tipprunden</h3>
-      </div>
-      <div class="uebernehmen">
-        <div class="float-start">
-          <h4>Tipps übernehmen</h4>
-          <mat-form-field appearance="fill">
-            <mat-label>From</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let tipprunde of mytiprounds" [value]="tipprunde.name" (click)="getTippRundenByLigaID(tipprunde.id)"  >
-                {{tipprunde.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
 
-        <div>
-          <h4>Tipps einfügen</h4>
-          <mat-form-field appearance="fill">
-            <mat-label>To</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let tipprunde of myTippRundenByLigaID" [value]="tipprunde.name" (click) ="transferBets(tipprunde.id)">
-                {{tipprunde.name}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
-
-
-
-    <div class="card my-5">
-      <div class="card-body">
         <table class="table table-bordered table-striped">
           <thead class="thead-dark">
           <tr>
-            <th scope="col">Tipprunden Name</th>
-            <th scope="col">Aktion</th>
+            <th scope="col"style="text-align: center">Tipprunden Name</th>
+            <th scope="col" style="text-align: center">Aktion</th>
+            <th scope="col"style="text-align: center">Nutzer / Freunde auswählen</th>
           </tr>
           </thead>
           <!-- Liga Anzeigen Body -->
           <tbody>
-          <tr *ngFor="let mytippround of mytiprounds, let index = index">
+          <tr *ngFor="let mytippround of mytiprounds, let index = index" style="text-align: center">
             <td>{{ mytippround.name}}</td>
-            <td><button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getMatchDays(mytippround.ligaID); getTipprundeByID(mytippround.id)" >Tipps abgeben</button>
-              <button  class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id); getTipprundeByID(mytippround.id)">Ergebnisse</button>
+            <td><button  class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getMatchDays(mytippround.ligaID); getTipprundeByID(mytippround.id)" >Tipps abgeben</button>
+              <button  class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal2" (click)="SaveligaID(mytippround.ligaID, mytippround.id); getLeaderBoard(mytippround.id); getTipprundeByID(mytippround.id)">Ergebnisse</button>
               <!-- BUTTON EINTRAGEN WENN USER AUCH ERSTELLER IST SOLL ER LEUTE EINLADEN <button  class="btnLiga" (click)="tipprundeBeitreten(tippround.name)">Beitreten</button> -->
-              <button class="btnLiga" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID"(click)="tipprundeEinladen(mytippround.id)">Einladen</button>
-              <button class="btnLiga" data-bs-toggle="modal" data-bs-target="#myModal3" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Alias erstellen/ändern</button>
-              <button class="btnLiga" data-bs-toggle="modal" (click)="teileTipps(mytippround.id)">Teile Tipps</button>
+              <button class="btn btn-outline-dark" [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID"(click)="tipprundeEinladen(mytippround.id)">Einladen</button>
+              <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#myModal3" (click)="SaveligaID(mytippround.ligaID, mytippround.id)" >Alias erstellen/ändern</button>
+              <button class="btn btn-outline-dark" data-bs-toggle="modal" (click)="teileTipps(mytippround.id)">Tipps teilen</button>
             </td>
             <td [hidden]="this.ArrayWithTiproundsOwnerIDS[index]!=this.CurrentUserID">
-              <select #user (change)="onSelectedUser(user.value)">
-                <option disabled selected>Select a User to Invite</option>
-                <option *ngFor="let showAllUser of allUser" [value]="showAllUser.eMail">{{showAllUser.eMail}}</option>
+              <select class="form-select" #user (change)="onSelectedUser(user.value)">
+                <option   disabled selected>Nutzer zum Einladen auswählen</option>
+                <option  *ngFor="let showAllUser of allUser" [value]="showAllUser.eMail">{{showAllUser.eMail}}</option>
               </select>
-
-              <select #friend (change)="onSelectedFriend(friend.value)">
-                <option disabled selected>Select a Friend to Share Tipps</option>
+              <p></p>
+              <select class="form-select"#friend (change)="onSelectedFriend(friend.value)">
+                <option disabled selected>Freund zum Teilen der Tipps auswählen</option>
                 <option *ngFor="let showAllFriends of allFriends" [value]="showAllFriends.eMail">{{showAllFriends.eMail}}</option>
               </select>
             </td>
           </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-    <button routerLink="/dashboard" class="btnSubmit">Zurück</button>
+
+  </div>
   </div>
 
+
+<div class="rightcolumn">
+  <div class="card">
+    <div class="float-start">
+      <h4>Tipps übernehmen</h4>
+    </div>
+      <mat-form-field appearance="fill">
+        <mat-label>From</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let tipprunde of mytiprounds" [value]="tipprunde.name" (click)="getTippRundenByLigaID(tipprunde.id)"  >
+            {{tipprunde.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+
+    <div class="float-start">
+      <h4>Tipps einfügen</h4>
+    </div>
+      <mat-form-field appearance="fill">
+        <mat-label>To</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let tipprunde of myTippRundenByLigaID" [value]="tipprunde.name" (click) ="transferBets(tipprunde.id)">
+            {{tipprunde.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <div class="usercard">
+      <h2>Systemdatum</h2>
+      <div><p>{{this.aktuellesDatum.localDate}}</p>
+
+      </div>
+
+
+  </div>
+  </div>
+
+
+
 </div>
+
+
+</body>
+
 
 <!-- PopUp fürs Abgeben der Tipps -->
 <div class="modal" id="myModal">
@@ -87,7 +104,6 @@
 
         <!-- Body-->
         <div class="modal-body" >
-          <div class="card my-5">
             <div class="card-body">
               <select class="dropdown">
                 <option class="dropdown-item" *ngFor="let x of matchDayCount" (click)="MatchDayDaten(x); FormControlReset()">Spieltag:{{x}} </option>
@@ -127,7 +143,7 @@
                 </tbody>
               </table>
             </div>
-          </div>
+
 
         </div>
 
@@ -226,3 +242,4 @@
 
   </div>
 </div>
+

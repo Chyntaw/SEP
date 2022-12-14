@@ -10,6 +10,8 @@ import {FriendListService} from "../../../services/friend-list.service";
 import {User} from "../../../models/roles/user/user";
 import {ActivatedRoute, Router} from "@angular/router";
 import {UpdateleaguedataService} from "../../../services/updateleaguedata.service";
+import {SystemDatum} from "../../../models/SystemDatum";
+import {ChangeDateServiceService} from "../../../services/changeDateService.service";
 
 @Component({
   selector: 'app-meinetipprunden',
@@ -38,11 +40,12 @@ export class MeinetipprundenComponent implements OnInit {
   CurrentUserID!: number;
   allFriends:User[]|any;
   currTipprunde:BettingRound=new BettingRound();
+  aktuellesDatum: SystemDatum | any;
 
 
   constructor(private tipprundenservice: TipprundenserviceService, private showleaguedataservice: ShowleagueserviceService,
               private fb: FormBuilder, private friendListService: FriendListService, private router: Router,
-              private updateleaguedataservice:UpdateleaguedataService) {
+              private updateleaguedataservice:UpdateleaguedataService, private changeDateService: ChangeDateServiceService) {
   }
 
   ngOnInit(): void {
@@ -52,7 +55,7 @@ export class MeinetipprundenComponent implements OnInit {
     this.findAllFriends()
     this.CurrentUserID = Number(sessionStorage.getItem("id"))
     this.getOwnedTipprunden()
-
+    this.getDatum()
 
 
   }
@@ -188,14 +191,18 @@ export class MeinetipprundenComponent implements OnInit {
   tipprundeEinladen(bettingroundid: number) {
     const userEmail = sessionStorage.getItem("eMail")
     if (userEmail && this.selectedUser) {
-      this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedUser).subscribe()
+      this.friendListService.tipprundeEinladen(bettingroundid, userEmail, this.selectedUser).subscribe(res=>{
+        alert("Nutzer wurde eingeladen!")
+      }, error => alert("Einladung fehlgeschlagen"))
     }
   }
 
   teileTipps(bettingroundid: number){
     const userEmail = sessionStorage.getItem("eMail")
     if(userEmail && this.selectedFriend){
-      this.friendListService.teileTips(bettingroundid, userEmail, this.selectedFriend).subscribe()
+      this.friendListService.teileTips(bettingroundid, userEmail, this.selectedFriend).subscribe(res=>{
+        alert("Tipps wurden geteilt!")
+      }, error => alert("Tipp konnten nicht geteilt werden!"))
     }
   }
 
@@ -245,6 +252,15 @@ export class MeinetipprundenComponent implements OnInit {
   getTipprundeByID(currTipprundeID:number){
     this.tipprundenservice.getTipproundByID(currTipprundeID).subscribe(res=>{
        this.currTipprunde=res;
+    })
+  }
+  logout() {
+    sessionStorage.clear()
+    this.router.navigate(['/login'])
+  }
+  getDatum(): void {
+    this.changeDateService.getDate().subscribe(res => {
+      this.aktuellesDatum = res
     })
   }
 }
