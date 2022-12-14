@@ -27,10 +27,9 @@ public class TableEntryService {
             TableEntry player1Entry;
             TableEntry player2Entry;
 
-            //Check if elements of List are instances of "Bets"
-            if(element instanceof Bets) {
-                //Cast generic E to Bets
-                Bets currBet = (Bets)element;
+            //Check if elements of List are instances of "Bets" and
+            //cast element to Bets -> currBet
+            if(element instanceof Bets currBet) {
 
                 player1 = currBet.getLeagueData().getPlayer1();
                 player2 = currBet.getLeagueData().getPlayer2();
@@ -44,9 +43,7 @@ public class TableEntryService {
                 player2Entry = newEntries.get(1);
 
             //Check if elements of List are of Type LeagueData
-            } else if(element instanceof LeagueData) {
-
-                LeagueData currData = (LeagueData)element;
+            } else if(element instanceof LeagueData currData) {
 
                 player1 = currData.getPlayer1();
                 player2 = currData.getPlayer2();
@@ -56,6 +53,7 @@ public class TableEntryService {
 
                 player1Entry = newEntries.get(0);
                 player2Entry = newEntries.get(1);
+
             //If not of Type Bet or LeagueData, throw Exception
             } else {
                 throw new IllegalArgumentException("Type of List must be 'Bets' or 'LeagueData'");
