@@ -15,7 +15,7 @@
       <select class="dropdown">
         <option class="dropdown-item"
                 *ngFor="let league of leagues"
-                (click)="[getTopTeam(league.id), getTopUser(league.id)]">Liga: {{league.name}}</option>
+                (click)="showData(league.id)">Liga: {{league.name}}</option>
       </select>
       <br>
       <br>
@@ -30,8 +30,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let leagueData of leagueDatas">
-          <th style="color: #FFFFFF">{{leagueData.player1}}</th>
-          <th style="color: #FFFFFF">{{leagueData.result}}</th>
+          <th style="color: #FFFFFF" *ngIf="leagueData.result != '0'">{{leagueData.player1}}</th>
+          <th style="color: #FFFFFF" *ngIf="leagueData.result != '0'">{{leagueData.result}}</th>
         </tr>
         </tbody>
       </table>
@@ -46,8 +46,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let user of users">
-          <th style="color: #FFFFFF">{{user.firstName}}</th>
-          <th style="color: #FFFFFF">{{user.code}}</th>
+          <th style="color: #FFFFFF" *ngIf="user.code != '0'">{{user.firstName}}</th>
+          <th style="color: #FFFFFF" *ngIf="user.code != '0'">{{user.code}}</th>
         </tr>
         </tbody>
       </table>

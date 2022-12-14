@@ -13,9 +13,7 @@ import {Liga} from "../../../models/liga";
 
 export class ShowTopComponent implements OnInit {
 
-  kvUser: {[key: string]: Array<User>} = {}
-  kvTeam: {[key: string]: Array<Leaguedata>} = {}
-  league_user: string[] = []
+
   users: User[] = []
   leagues: Liga[] = []
   leagueDatas: Leaguedata[] = []
@@ -35,22 +33,57 @@ export class ShowTopComponent implements OnInit {
     })
   }
 
-  getTopUser(id: number) {
+  async getTopUser(id: number) {
     this.showTopService.getTopUser(id).subscribe(data => {
 
       this.users = <User[]>data
-
+      for(let user of this.users) {
+        let help = Number(user.code)
+        if(help < 0) {
+          user.code = "0"
+        }
+      }
     })
+    return this.users
   }
 
 
-  getTopTeam(id: number) {
+  async getTopTeam(id: number) {
     this.showTopService.getTopTeams(id).subscribe(data => {
       this.leagueDatas = <Leaguedata[]>data
-
+      for (let league_data of this.leagueDatas) {
+        let help = Number(league_data.result)
+        if (help < 0) {
+          league_data.result = "0"
+        }
+      }
     })
+    return this.leagueDatas
   }
 
+    //TODO: Erstelle nur eine Methode, die die ID entgegen nimmt und führe dort die beiden
+    //      top Methoden aus. Prüfe danach, ob Punkte (>0) ausgegeben werden können
+    //      Wenn ja: zeige diese an
+    //      Wenn nein: Sag dem User, dass es keine gewonnen Punkte bisher gibt
+    // ----> METHODE AUSFÜHREN
 
+  async showData(id: number) {
+    this.users = await this.getTopUser(id)
+    this.leagueDatas = await this.getTopTeam(id)
+    let pointsExist = true;
+    for(let user of this.users) {
+      if(user.code == "0") {
+        console.log(user.code)
+        pointsExist = false
+      }
+    }
+
+    for(let leagueData of this.leagueDatas) {
+      if(leagueData.result == "0") {
+        pointsExist = false
+      }
+    }
+  }
 
 }
+
