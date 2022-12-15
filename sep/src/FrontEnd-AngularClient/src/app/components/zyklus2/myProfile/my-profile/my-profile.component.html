@@ -1,13 +1,17 @@
 
 <body>
 
+<div class="header">
+  <h1>Mein Profil</h1>
+</div>
+
 <div class="topnav">
   <a routerLink="/dashboard">Dashboard</a>
   <a style="float:right">
     <input type="text" class="form-control" value="" placeholder="Email" id="email" name="email" [(ngModel)]="searchUserMail.eMail"/>
   </a>
   <a (click) = "showProfile()" style="float:right">
-    <button class="btn btn-outline-light">Suchen</button>
+    <button class="button cuteButton">Suchen</button>
   </a>
 </div>
 <div class="row">
@@ -75,7 +79,7 @@
 
 
     <div class="card">
-      <h3>Meine Freunde</h3>
+      <h3>My Friends</h3>
       <table>
         <tbody>
           <tr *ngFor="let users of friends, let i = index">
@@ -95,7 +99,7 @@
             <td><button  (click) = "removeFriend(users.eMail)" class='btn btn-info'>Löschen</button></td>
           </tr>
           <div *ngIf="this.friends">
-            <div *ngIf="friends.length==0"><p>Du hast noch keine Freunde</p></div>
+            <div *ngIf="friends.length==0"><p>Du hast keine Freunde, du Otto</p></div>
           </div>
         </tbody>
       </table>

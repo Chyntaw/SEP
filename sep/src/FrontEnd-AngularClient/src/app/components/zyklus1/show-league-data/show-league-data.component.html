@@ -29,12 +29,9 @@
           <tr *ngFor="let ligens of ligen, let i = index">
 
             <td>{{ ligens.name }}</td>
-            <td>{{ligens.leagueData[0].date.substring(0,4)}}</td>
+            <td>{{ligens.leagueData[0].date.substring(0,4) +"-"+ getNext(ligens.leagueData[0].date.substring(2,4))}}</td>
             <td class="form-group" align="center">
               <button class="button improvedButton" (click)="zeigeLigaDaten(ligens.id)">Spiele</button>
-            </td>
-            <td class="form-group" align="center">
-              <button  class="button improvedButton" [hidden]="!this.zeigeTippRundenErstellen" data-bs-toggle="modal" data-bs-target="#myModal2">Tabelle</button>
             </td>
           </tr>
           </tbody>

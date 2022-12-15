@@ -237,6 +237,10 @@ export class ShowLeagueDataComponent implements OnInit {
 
 
   }
+
+  getNext(curr:string) {
+    return String(Number(curr)+1)
+  }
 }
 
 //Links: ¹https://stackoverflow.com/questions/41465542/angular2-input-field-to-accept-only-numbers
