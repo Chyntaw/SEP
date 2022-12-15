@@ -68,8 +68,8 @@
   <div class="rightcolumn">
     <div class="usercard">
       <h2>About Me</h2>
-      <div *ngIf="this.retrievedImage" ><img [src]="this.retrievedImage"></div>
-      <div *ngIf="!this.retrievedImage" ><img src="../../../../../assets/blankProfilePic.png"></div>
+      <div *ngIf="this.retrievedImage" ><img class="geilo" [src]="this.retrievedImage"></div>
+      <div *ngIf="!this.retrievedImage" ><img class="geilo" src="../../../../../assets/blankProfilePic.png"></div>
       <div *ngIf="this.me">
         <p>{{this.me.firstName+" "+ this.me.lastName}}</p>
         <p>{{this.me.eMail}}</p>
@@ -85,18 +85,9 @@
           <tr *ngFor="let users of friends, let i = index">
             <td>{{ users.firstName }}</td>
             <td>{{ users.lastName }}</td>
-            <td>
-              <button class='btn btn-info' (click)="showImageFriends(users.eMail)" onclick="this.hidden=true">Show Image</button>
-              <div *ngIf="users.profilePictureName">
-                <div *ngIf="!equals(users.profilePictureName, this.keinBildVorhanden); else hasNoPicture">
-                  <img [src]="users.profilePictureName" width="100" height="100">
-                </div>
-              </div>
-              <ng-template #hasNoPicture>
-                <img src="../../../../../assets/blankProfilePic.png" width="100" height="100">
-              </ng-template>
-            </td>
-            <td><button  (click) = "removeFriend(users.eMail)" class='btn btn-info'>Löschen</button></td>
+            <td *ngIf="users.image.picByte!=null"><img class="friendImg" [src]="'data:image/jpeg;base64,'+users.image.picByte" width="100" height="100"></td>
+            <td *ngIf="users.image.picByte==null"><img class="friendImg" src="../../../../../assets/blankProfilePic.png" ></td>
+            <td><button  (click) = "removeFriend(users.eMail)" class='button btttn'>Löschen</button></td>
           </tr>
           <div *ngIf="this.friends">
             <div *ngIf="friends.length==0"><p>Du hast keine Freunde, du Otto</p></div>

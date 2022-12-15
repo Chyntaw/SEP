@@ -81,9 +81,11 @@ export class MyProfileComponent implements OnInit {
     if (email) {
       this.friendListService.showFriends(email).subscribe(data => {
         this.friends = data;
-        this.getPicsOfFriends()
+        console.log(this.friends);
+        //this.getPicsOfFriends()
       });
     }
+    console.log(this.friends);
   }
 
 

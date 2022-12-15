@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.friends;
 
+import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserService;
@@ -16,6 +17,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -63,6 +65,21 @@ public class FriendController {
 
         User currentUser = userService.findUserByeMail(email);
         List<User> myFriends = friendService.getFriends(currentUser);
+
+        for(User user : myFriends) {
+        if(user.getImage() == null){
+            user.setImage(new ImageModel("StandardBild", "image/jpeg", null));
+        }
+        else{
+
+            final Optional<ImageModel> retrievedImage = imageRepository.findByuserMail(user.geteMail());
+
+            ImageModel img = new ImageModel(user.geteMail(), retrievedImage.get().getType(),
+                    decompressBytes(retrievedImage.get().getPicByte()));
+
+            user.setImage(img);
+        }
+        }
 
         return new ResponseEntity<>(myFriends, HttpStatus.OK);
     }

@@ -127,12 +127,19 @@ td {
   }
 }
 
-img {
+.geilo {
   border-radius: 30%;
 
   width: 100%;
   max-width: 300px;
   padding: 20px;
+}
+
+.friendImg {
+  max-width:50px;
+  max-height:50px;
+  object-fit: cover;
+
 }
 
 p {
@@ -166,6 +173,14 @@ p {
 
 }
 
+.btttn{
+  background-color: transparent;
+  color: black;
+}
 
+.btttn:hover {
+  background-color: red;
+  color: white;
+}
 
 
