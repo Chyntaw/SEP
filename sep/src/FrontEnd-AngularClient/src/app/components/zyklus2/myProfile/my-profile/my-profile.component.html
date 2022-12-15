@@ -104,16 +104,9 @@
           <td>{{ pendingUsers.firstName }}</td>
           <td>{{ pendingUsers.lastName }}</td>
           <td>
-            <button class='btn btn-info' (click)="showImagePendingFriends(pendingUsers.eMail)" onclick="this.hidden=true">Show Image</button>
-            <div *ngIf="pendingUsers.profilePictureName">
-              <div *ngIf="!equals(pendingUsers.profilePictureName, this.keinBildVorhanden); else hasNoPicture">
-                <img [src]="pendingUsers.profilePictureName" width="100" height="100">
-              </div>
-            </div>
-            <ng-template #hasNoPicture>
-              <img src="../../../../../assets/blankProfilePic.png" width="100" height="100">
-            </ng-template>
-          </td>
+          <td *ngIf="pendingUsers.image.picByte!=null"><img class="friendImg" [src]="'data:image/jpeg;base64,'+pendingUsers.image.picByte" width="100" height="100"></td>
+          <td *ngIf="pendingUsers.image.picByte==null"><img class="friendImg" src="../../../../../assets/blankProfilePic.png" ></td>
+
           <td><button  (click) = "acceptFriend(pendingUsers.eMail)" class='btn btn-info'>Accept</button></td>
           <td><button  (click) = "declineFriend(pendingUsers.eMail)" class='btn btn-info'>Decline</button></td>
         </tbody>
@@ -127,17 +120,8 @@
         <tr *ngFor="let pendingRequestesUsers of pendingRequestedFriends, let i = index">
           <td>{{ pendingRequestesUsers.firstName }}</td>
           <td>{{ pendingRequestesUsers.lastName }}</td>
-          <td>
-            <button class='btn btn-info' (click)="showImageRequestedFriends(pendingRequestesUsers.eMail)" onclick="this.hidden=true">Show Image</button>
-            <div *ngIf="pendingRequestesUsers.profilePictureName">
-              <div *ngIf="!equals(pendingRequestesUsers.profilePictureName, this.keinBildVorhanden); else hasNoPicture">
-                <img [src]="pendingRequestesUsers.profilePictureName" width="100" height="100">
-              </div>
-            </div>
-            <ng-template #hasNoPicture>
-              <img src="../../../../../assets/blankProfilePic.png" width="100" height="100">
-            </ng-template>
-          </td>
+          <td *ngIf="pendingRequestesUsers.image.picByte!=null"><img class="friendImg" [src]="'data:image/jpeg;base64,'+pendingRequestesUsers.image.picByte" width="100" height="100"></td>
+          <td *ngIf="pendingRequestesUsers.image.picByte==null"><img class="friendImg" src="../../../../../assets/blankProfilePic.png" ></td>
           <td><button (click) = "declineFriend(pendingRequestesUsers.eMail)" class='btn btn-info'>Remove</button></td>
 
         </tbody>

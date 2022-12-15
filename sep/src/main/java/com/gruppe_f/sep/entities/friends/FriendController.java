@@ -67,18 +67,18 @@ public class FriendController {
         List<User> myFriends = friendService.getFriends(currentUser);
 
         for(User user : myFriends) {
-        if(user.getImage() == null){
-            user.setImage(new ImageModel("StandardBild", "image/jpeg", null));
-        }
-        else{
+            if(user.getImage() == null){
+                user.setImage(new ImageModel("StandardBild", "image/jpeg", null));
+            }
+            else{
 
-            final Optional<ImageModel> retrievedImage = imageRepository.findByuserMail(user.geteMail());
+                final Optional<ImageModel> retrievedImage = imageRepository.findByuserMail(user.geteMail());
 
-            ImageModel img = new ImageModel(user.geteMail(), retrievedImage.get().getType(),
-                    decompressBytes(retrievedImage.get().getPicByte()));
+                ImageModel img = new ImageModel(user.geteMail(), retrievedImage.get().getType(),
+                        decompressBytes(retrievedImage.get().getPicByte()));
 
-            user.setImage(img);
-        }
+                user.setImage(img);
+            }
         }
 
         return new ResponseEntity<>(myFriends, HttpStatus.OK);
@@ -91,6 +91,20 @@ public class FriendController {
         User currentUser = userService.findUserByeMail(email);
         List<User> myFriends = friendService.getPendingFriends(currentUser);
 
+        for(User user : myFriends) {
+            if(user.getImage() == null){
+                user.setImage(new ImageModel("StandardBild", "image/jpeg", null));
+            }
+            else{
+
+                final Optional<ImageModel> retrievedImage = imageRepository.findByuserMail(user.geteMail());
+
+                ImageModel img = new ImageModel(user.geteMail(), retrievedImage.get().getType(),
+                        decompressBytes(retrievedImage.get().getPicByte()));
+
+                user.setImage(img);
+            }
+        }
         return new ResponseEntity<>(myFriends, HttpStatus.OK);
     }
 
@@ -100,6 +114,21 @@ public class FriendController {
 
         User currentUser = userService.findUserByeMail(email);
         List<User> myFriends = friendService.getPendingRequestedFriends(currentUser);
+
+        for(User user : myFriends) {
+            if(user.getImage() == null){
+                user.setImage(new ImageModel("StandardBild", "image/jpeg", null));
+            }
+            else{
+
+                final Optional<ImageModel> retrievedImage = imageRepository.findByuserMail(user.geteMail());
+
+                ImageModel img = new ImageModel(user.geteMail(), retrievedImage.get().getType(),
+                        decompressBytes(retrievedImage.get().getPicByte()));
+
+                user.setImage(img);
+            }
+        }
 
         return new ResponseEntity<>(myFriends, HttpStatus.OK);
     }
