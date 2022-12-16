@@ -88,9 +88,16 @@ public class TipHelperTest {
         leagueDataList.add(leagueDatatoCalculate);
         ligaRepository.save(liga);
 
+        List<LeagueData> leagueDatas = leagueDataRepository.findAll();
+        int id = 0;
+        for(LeagueData  leagueData : leagueDatas) {
+            if(leagueData.getPlayer1().equals("x") && leagueData.getPlayer2().equals("y")) {
+                id = leagueData.getId();
+            }
+        }
 
         TipHelper tipHelper = new TipHelper(dateRepository, leagueDataRepository);
-        Assertions.assertEquals("0-0", tipHelper.tipHelp(14));
+        Assertions.assertEquals("0-0", tipHelper.tipHelp(id));
         // Warum 0-0?
         // x spielt 1-1 und 5-2                 -> 6 eigene Tore, 3 gegnerische Tore
         // y spielt 4-2, dies wird dupliziert   -> 8 eigene Tore, 4 gegnerische Tore
