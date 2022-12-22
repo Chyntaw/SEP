@@ -6,6 +6,7 @@ import {BettingRound} from "../../../../models/betting-round";
 import {TipprundenserviceService} from "../../../../services/tipprundenservice.service";
 import {Table} from "../../../../models/table";
 import {Router} from "@angular/router";
+import {Chart} from 'chart.js/auto';
 
 
 @Component({
@@ -35,6 +36,10 @@ export class MyProfileComponent implements OnInit {
   base64Data: any;
   keinBildVorhanden: string = "data:image/jpeg;base64,null";
 
+  //Charts
+  TippNumChart: any;
+  OwnTippsPerRound : any;
+
 
   constructor(private getUserService: GetUserServiceService,
               private friendListService: FriendListService,
@@ -42,6 +47,7 @@ export class MyProfileComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
+    this.getOwnedTipprunden()
     this.getUser()
     this.showFriendList()
     this.zeigeMeineTipprunden()
@@ -198,5 +204,44 @@ export class MyProfileComponent implements OnInit {
 
   equals(string1: any, string2: any) {
     return string1 == string2
+  }
+
+  createChart(){
+
+    var names:String[] = []
+    var tipAmmount:Number[] = []
+
+    for(let x of this.OwnTippsPerRound) {
+      names.push(x.name)
+      tipAmmount.push(x.betsList.length)
+    }
+
+    this.TippNumChart = new Chart("TippNumChart", {
+      type: 'bar', //this denotes tha type of chart
+
+      data: {// values on X-Axis
+        labels: names,
+        datasets: [
+          {
+            label: "Tips per round",
+            data: tipAmmount,
+            backgroundColor: 'blue'
+          },
+        ]
+      },
+      options: {
+        aspectRatio:2.5,
+        indexAxis: "y"
+      }
+    });
+  }
+
+  getOwnedTipprunden() {
+    let userid = Number(sessionStorage.getItem('id'))
+    this.tipprundenservice.getOwnTippsPerRound(userid).subscribe(res=>{
+      this.OwnTippsPerRound = res;
+      this.createChart()
+    })
+
   }
 }

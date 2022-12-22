@@ -132,6 +132,10 @@ export class TipprundenserviceService {
     return this.http.get(`${this.baseUrl}/getUserBettingTable/`+userID+'/'+bettingroundID);
   }
 
+  getOwnTippsPerRound(userID:number) {
+    return this.http.get(`${this.baseUrl}/getRoundsWithUserTipps/`+userID)
+  }
+
 
 }
 

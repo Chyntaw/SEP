@@ -87,7 +87,7 @@ public class BettingRoundController {
     }
 
     @GetMapping("getRoundsbyUserID/{id}")
-    public ResponseEntity<?> getRoundsbyUserid(@PathVariable("id")Long id) {
+    public ResponseEntity<List<BettingRound>> getRoundsbyUserid(@PathVariable("id")Long id) {
         //Get all Bettingrounds from Repo
         List<BettingRound> list = repo.findAll().stream()
                 //only return Bettingrounds in which User with id {id} participates
@@ -95,6 +95,18 @@ public class BettingRoundController {
                 .filter(bettingRound -> bettingRound.getParticipants().stream().anyMatch(user -> user.getId() == id)).collect(Collectors.toList());
 
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("getRoundsWithUserTipps/{id}")
+    public ResponseEntity<?> getUserTipps(@PathVariable("id") Long id) {
+        List<BettingRound> userRounds = getRoundsbyUserid(id).getBody();
+
+        for(BettingRound round : userRounds) {
+            List<Bets> allBets = round.getBetsList();
+            List<Bets> userBets = allBets.stream().filter(x -> x.getUserID() == id).collect(Collectors.toList());
+            round.setBetsList(userBets);
+        }
+        return new ResponseEntity<>(userRounds, HttpStatus.OK);
     }
 
     @GetMapping("getAllPublicRounds")
@@ -216,6 +228,7 @@ public class BettingRoundController {
                 }
             }
         }
+
 
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
@@ -406,6 +419,7 @@ public class BettingRoundController {
        Long ligaID = repo.findById(bettingroundID).get().getLigaID();
 
        List<LeagueData> leagueDataList = ligaRepo.findLigaByid(ligaID).getLeagueData();
+
 
         System.out.println(leagueDataList.size());
 
