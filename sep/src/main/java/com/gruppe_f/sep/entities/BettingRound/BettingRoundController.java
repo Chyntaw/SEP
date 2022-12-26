@@ -109,6 +109,65 @@ public class BettingRoundController {
         return new ResponseEntity<>(userRounds, HttpStatus.OK);
     }
 
+    @GetMapping("getPointsPerTeam/{userID}/{bettingroundID}")
+    public ResponseEntity<?> getPointsPerTeam(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID) {
+        BettingRound round = repo.findById(bettingroundID).get();
+        leaderboard(bettingroundID);
+        List<Bets> userBets = getBets(bettingroundID, userID).getBody();
+        Map<String, Integer> pointsPerTeam = new HashMap<>();
+
+        for(Bets currBet : userBets) {
+            int goalsTeam1 = Integer.parseInt(currBet.getBets().split("-")[0]);
+            int goalsTeam2 = Integer.parseInt(currBet.getBets().split("-")[1]);
+
+            int winner = FirstIsWinner(currBet.getLeagueData());
+
+            String team1 = currBet.getLeagueData().getPlayer1();
+            String team2 = currBet.getLeagueData().getPlayer2();
+
+            if(!pointsPerTeam.containsKey(team1)) {
+                pointsPerTeam.put(team1, 0);
+            }
+            if(!pointsPerTeam.containsKey(team2)) {
+                pointsPerTeam.put(team2, 0);
+            }
+
+            int currPoints;
+            if(winner == 1) {
+                if(currBet.getScore() == round.getCorrWinnerPoints()) {
+                    currPoints = pointsPerTeam.get(team1);
+                    pointsPerTeam.put(team1, currPoints + currBet.getScore());
+                } else if (currBet.getScore() == round.getCorrScorePoints()) {
+                    currPoints = pointsPerTeam.get(team1);
+                    pointsPerTeam.put(team1, currPoints + currBet.getScore());
+                } else if (currBet.getScore() == round.getCorrGoalPoints()) {
+                    currPoints = pointsPerTeam.get(team1);
+                    pointsPerTeam.put(team1, currPoints + currBet.getScore());
+                }
+            }
+            if(winner == -1) {
+                if(currBet.getScore() == round.getCorrWinnerPoints()) {
+                    currPoints = pointsPerTeam.get(team2);
+                    pointsPerTeam.put(team2, currPoints + currBet.getScore());
+                } else if (currBet.getScore() == round.getCorrScorePoints()) {
+                    currPoints = pointsPerTeam.get(team2);
+                    pointsPerTeam.put(team2, currPoints + currBet.getScore());
+                } else if (currBet.getScore() == round.getCorrGoalPoints()) {
+                    currPoints = pointsPerTeam.get(team2);
+                    pointsPerTeam.put(team2, currPoints + currBet.getScore());
+                }
+            }
+            if((winner == 0) && (currBet.getScore() == round.getCorrGoalPoints())) {
+                currPoints = pointsPerTeam.get(team1);
+                pointsPerTeam.put(team1, currPoints + currBet.getScore());
+
+                currPoints = pointsPerTeam.get(team2);
+                pointsPerTeam.put(team2, currPoints + currBet.getScore());
+            }
+        }
+        return new ResponseEntity<>(pointsPerTeam, HttpStatus.OK);
+    }
+
     @GetMapping("getAllPublicRounds")
     public ResponseEntity<?>getAllPublicRounds(){
         List<BettingRound> list = repo.findAll();
@@ -126,7 +185,7 @@ public class BettingRoundController {
 
 
     @GetMapping("getBets")
-    public ResponseEntity<?> getBets(@RequestParam("bettingRoundid")Long bettingRoundid, @RequestParam("userid")Long userid) {
+    public ResponseEntity<List<Bets>> getBets(@RequestParam("bettingRoundid")Long bettingRoundid, @RequestParam("userid")Long userid) {
 
         List<Bets> bets = repo.findById(bettingRoundid).get().getBetsList().stream()
                     .filter(x -> x.getUserID() == userid).collect(Collectors.toList());

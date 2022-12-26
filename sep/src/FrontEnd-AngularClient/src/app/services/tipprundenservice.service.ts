@@ -136,6 +136,10 @@ export class TipprundenserviceService {
     return this.http.get(`${this.baseUrl}/getRoundsWithUserTipps/`+userID)
   }
 
+  getPointsPerTeam(bettingroundID:number, userID:number) {
+    return this.http.get(`${this.baseUrl}/getPointsPerTeam/`+userID+'/'+bettingroundID);
+  }
+
 
 }
 

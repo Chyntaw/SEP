@@ -63,10 +63,31 @@
       <h2>Balkendiagramm</h2>
       <h5>Kommt bald</h5>
       <div style="width: 800px;"><canvas id="TippNumChart">{{TippNumChart}}</canvas></div>
-
-
     </div>
+
+    <div class="card">
+      <h2>KUchendiagramm</h2>
+      <h5>Kommt bald</h5>
+      <div class="float-start">
+      <mat-form-field appearance="fill">
+        <mat-label>Tipprunde wählen</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let tipprunde of mytiprounds" [value]="tipprunde.name" (click)="getPieData(tipprunde.id)">
+            {{tipprunde.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+        </div>
+      <div style="width: 800px;"><canvas id="PieChart">{{PieChart}}</canvas></div>
+    </div>
+
+
   </div>
+
+
+
+
+
   <div class="rightcolumn">
     <div class="usercard">
       <h2>About Me</h2>

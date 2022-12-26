@@ -7,7 +7,7 @@ import {TipprundenserviceService} from "../../../../services/tipprundenservice.s
 import {Table} from "../../../../models/table";
 import {Router} from "@angular/router";
 import {FreischaltungenService} from "../../../../services/freischaltungen.service";
-import {Chart} from "chart.js";
+import {Chart} from "chart.js/auto";
 
 
 @Component({
@@ -40,6 +40,8 @@ export class MyProfileComponent implements OnInit {
   //Charts
   TippNumChart: any;
   OwnTippsPerRound : any;
+  PieChart: any;
+  PieData: any;
 
   //Logik Beantragung
 
@@ -280,8 +282,37 @@ export class MyProfileComponent implements OnInit {
         ]
       },
       options: {
-        aspectRatio:2.5,
+        aspectRatio:3,
         indexAxis: "y"
+      }
+    });
+  }
+
+  createPieChart(){
+
+    var teams:String[] = []
+    var points:Number[] = []
+
+    Object.keys(this.PieData).forEach(key => {
+      if(this.PieData[key] != 0) {
+      teams.push(key)
+      points.push(this.PieData[key])
+      }})
+
+    this.PieChart = new Chart("PieChart", {
+      type: 'doughnut', //this denotes tha type of chart
+
+      data: {// values on X-Axis
+        labels: teams,
+        datasets: [
+          {
+            label: "Points per Team",
+            data: points,
+          },
+        ]
+      },
+      options: {
+        aspectRatio:2
       }
     });
   }
@@ -292,6 +323,15 @@ export class MyProfileComponent implements OnInit {
       this.OwnTippsPerRound = res;
       this.createChart()
     })
+  }
 
+  getPieData(bettingroundID:number) {
+    let userid = Number(sessionStorage.getItem('id'))
+    this.tipprundenservice.getPointsPerTeam(bettingroundID, userid).subscribe(res => {
+      this.PieData = res;
+      console.log(res)
+      console.log(typeof(res))
+      this.createPieChart();
+    })
   }
 }

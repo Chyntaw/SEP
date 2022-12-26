@@ -75,20 +75,55 @@ public class GenerellLogisch {
             //Get Goaldifference for calculation
             int goalDiff = goals[0]-goals[1];
             int betDiff = betGoals[0]-betGoals[1];
-            //Correct Goal Difference
-            if(Math.abs(goalDiff) == Math.abs(betDiff)) {
-                bet.setScore(round.getCorrGoalPoints());
-                continue;
-            }
+
+            boolean correctWinner = false;
             //Correct Winner
             if((goalDiff < 0 && betDiff < 0) || (goalDiff >0 && betDiff >0)) {
                 bet.setScore(round.getCorrWinnerPoints());
-                continue;
+                correctWinner = true;
+            }
+
+            //Correct Goal Difference -> only if Winner is also correct or Draw
+            if(Math.abs(goalDiff) == Math.abs(betDiff)) {
+                if(correctWinner || goalDiff == 0) {
+                    bet.setScore(round.getCorrGoalPoints());
+                }
             }
         }
         return round;
     }
+/*
+    public static int whichTeamScoredPoints(Bets bet) {
 
+        String currentBet = bet.getBets();
+        String actualResult = bet.getLeagueData().getResult();
+
+        int betGoalsTeam1 = Integer.parseInt(currentBet.split("-")[0]);
+        int betGoalsTeam2 = Integer.parseInt(currentBet.split("-")[1]);
+
+        //If Strings identical, Bet is perfect
+        if (currentBet.equals(actualResult)) {
+            if ()
+        }
+        //Get goals from LeagueData and from bet as Integer Array
+        int[] goals = Arrays.stream(bet.getLeagueData().getResult().split("-")).mapToInt(Integer::parseInt).toArray();
+        int[] betGoals = Arrays.stream(bet.getBets().split("-")).mapToInt(Integer::parseInt).toArray();
+
+        //Get Goaldifference for calculation
+        int goalDiff = goals[0] - goals[1];
+        int betDiff = betGoals[0] - betGoals[1];
+        //Correct Goal Difference
+        if (Math.abs(goalDiff) == Math.abs(betDiff)) {
+            bet.setScore(round.getCorrGoalPoints());
+            continue;
+        }
+        //Correct Winner
+        if ((goalDiff < 0 && betDiff < 0) || (goalDiff > 0 && betDiff > 0)) {
+            bet.setScore(round.getCorrWinnerPoints());
+            continue;
+        }
+    }
+ */
 
     // checks who is winner of match
     // return    1 for player1
