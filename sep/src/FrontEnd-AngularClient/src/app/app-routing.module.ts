@@ -20,6 +20,7 @@ import {MyProfileComponent} from "./components/zyklus2/myProfile/my-profile/my-p
 import {
   EinladungsUebersichtComponent
 } from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
+import {FreischaltungenComponent} from "./components/zyklus3/freischaltungen/freischaltungen.component";
 
 const MeineRouten : Routes = [
   {path:'login', component: LoginComponent},
@@ -38,6 +39,7 @@ const MeineRouten : Routes = [
   {path: 'showTop', component: ShowTopComponent},
   {path: 'my-Profile', component: MyProfileComponent},
   {path: 'einladungs-uebersicht/:id', component: EinladungsUebersichtComponent},
+  {path: 'freischaltungen', component: FreischaltungenComponent},
 
 
 

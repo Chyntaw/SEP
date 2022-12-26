@@ -3,6 +3,8 @@ package com.gruppe_f.sep.entities.user;
 
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageRepository;
+import com.gruppe_f.sep.date.DateService;
+import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.friends.FriendRepository;
 import com.gruppe_f.sep.entities.friends.FriendService;
 import com.gruppe_f.sep.mail.MailSenderService;
@@ -17,7 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.swing.text.html.Option;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.zip.DataFormatException;
@@ -32,16 +38,21 @@ public class UserController {
     private final ImageRepository imageRepository;
 
     private final FriendService friendService;
+    private final DateService dateService;
 
 
     @Autowired
     MailSenderService mailSenderService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserService service, ImageRepository imageRepository, FriendService friendService) {
+    public UserController(UserService service, ImageRepository imageRepository, FriendService friendService, DateService dateService,
+                          UserRepository userRepository) {
         this.service = service;
         this.imageRepository = imageRepository;
         this.friendService = friendService;
+        this.dateService = dateService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/user/findall")
@@ -167,38 +178,6 @@ public class UserController {
     }
 
 
-/*
-    @GetMapping("/user/{eMail}/imagesForPendingFriends")
-    public ArrayList<ImageModel> getImagesForPendingFriends(@PathVariable("eMail") String currentEmail){
-
-        User currentUser = service.findUserByeMail(currentEmail);
-
-        List<User> friends = friendService.getPendingFriends(currentUser);
-
-        ArrayList<ImageModel> retrievedImages = new ArrayList<ImageModel>();
-        ImageModel imageModel;
-
-
-        for(User userDatabase: friends){
-            if(userDatabase.getImage() == null){
-                Optional<ImageModel> retrievedImage= imageRepository.findByName("StandardBild");
-                imageModel = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
-                        decompressBytes(retrievedImage.get().getPicByte()));
-                retrievedImages.add(imageModel);
-            }
-            else{
-                Optional<ImageModel> retrievedImage= imageRepository.findByName(userDatabase.getImage().getName());
-                imageModel = new ImageModel(retrievedImage.get().getName(), retrievedImage.get().getType(),
-                        decompressBytes(retrievedImage.get().getPicByte()));
-                retrievedImages.add(imageModel);
-
-            }
-        }
-        return retrievedImages;
-    }
-
-
- */
     @GetMapping("/user/{eMail}/image")
     public ImageModel getImage(@PathVariable("eMail") String currentEmail){
 
@@ -217,6 +196,113 @@ public class UserController {
             return img;
         }
     }
+
+    @GetMapping("/user/isOldEnough/{eMail}")
+    public boolean isOldEnough(@PathVariable("eMail") String currentEmail){
+        User currentUser = service.findUserByeMail(currentEmail);
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate systemDate = LocalDate.parse(dateService.getAll().get(0).getLocalDate());
+        LocalDate geburtstag = LocalDate.parse(currentUser.getBirthDate(), df);
+
+        Period period = Period.between(geburtstag, systemDate);
+
+        if(period.getYears() >= 18){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @GetMapping("/user/isBeantragt/{eMail}")
+    public boolean isBeantragt(@PathVariable("eMail") String currentEmail){
+        User currentUser = service.findUserByeMail(currentEmail);
+        if(currentUser.isFreischaltungBeantragt()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    @GetMapping("/user/istFreigeschaltet/{eMail}")
+    public boolean istFreigeschaltet(@PathVariable("eMail") String currentEmail){
+        User currentUser = service.findUserByeMail(currentEmail);
+        if(currentUser.isFreigeschaltet()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    @GetMapping("/user/beantrageFreischaltung/{eMail}")
+    public ResponseEntity<?> beantrageFreischaltung(@PathVariable("eMail") String currentEmail){
+        User currentUser = service.findUserByeMail(currentEmail);
+        currentUser.setFreischaltungBeantragt(true);
+        userRepository.save(currentUser);
+
+        for(User userData: service.findAllUsers()){
+            if(userData.getRole().equals("ADMIN")){
+                mailSenderService.sendEmail(userData.geteMail(),
+                        "Freischaltung",
+                        "Merkel mach Tipico für: " + currentEmail + " auf!");
+
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/user/listAcceptedUsers")
+    public ResponseEntity<List<User>> listAcceptedUsers() {
+        List<User> pendingUsers = new ArrayList<>();
+
+        for (User userData : userRepository.findAll()) {
+            if (userData.isFreigeschaltet()) {
+                pendingUsers.add(userData);
+            }
+        }
+        return new ResponseEntity<>(pendingUsers, HttpStatus.OK);
+    }
+
+        @GetMapping("/user/listPendingUsers")
+    public ResponseEntity<List<User>> listPendingUsers(){
+        List<User> pendingUsers = new ArrayList<>();
+
+        for(User userData: userRepository.findAll()){
+            if(userData.isFreischaltungBeantragt() && !userData.isFreigeschaltet()){
+                pendingUsers.add(userData);
+            }
+        }
+        return new ResponseEntity<>(pendingUsers, HttpStatus.OK);
+    }
+
+    @GetMapping("/user/acceptUser/{eMail}")
+    public ResponseEntity<?> acceptUser(@PathVariable("eMail") String eMail){
+
+        for(User userData: userRepository.findAll()){
+            if(userData.geteMail().equals(eMail)){
+                userData.setFreigeschaltet(true);
+                userRepository.save(userData);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/user/declineUser/{eMail}")
+    public ResponseEntity<?> declineUser(@PathVariable("eMail") String eMail){
+
+        for(User userData: userRepository.findAll()){
+            if(userData.geteMail().equals(eMail)){
+                userData.setFreischaltungBeantragt(false);
+                userRepository.save(userData);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 
     // compress the image bytes before storing it in the database

@@ -29,6 +29,7 @@ import { ShowTopComponent } from './components/zyklus2/show-top/show-top.compone
 import { MyProfileComponent } from './components/zyklus2/myProfile/my-profile/my-profile.component';
 import {EinladungsUebersichtComponent} from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
 import {MatTableModule} from "@angular/material/table";
+import { FreischaltungenComponent } from './components/zyklus3/freischaltungen/freischaltungen.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import {MatTableModule} from "@angular/material/table";
     MeinetipprundenComponent,
     ShowTopComponent,
     MyProfileComponent,
-    EinladungsUebersichtComponent
+    EinladungsUebersichtComponent,
+    FreischaltungenComponent
 
   ],
   imports: [

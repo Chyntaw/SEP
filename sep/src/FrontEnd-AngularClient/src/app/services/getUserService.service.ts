@@ -38,4 +38,10 @@ export class GetUserServiceService{
     console.log(userid)
     return this.httpClient.get(`${this.databaseURL+"/user/getUserbyID/"+userid}`)
   }
+
+  isOldEnough(eMail: string) {
+    return this.httpClient.get(`${this.databaseURL+"/user/isOldEnough/"+eMail}`)
+  }
+
+
 }

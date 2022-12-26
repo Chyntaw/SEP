@@ -46,6 +46,10 @@ public class User implements Serializable {
 
     private String code;           //Eingegebene OTP
 
+    private boolean freischaltungBeantragt;
+
+    private boolean isFreigeschaltet;
+
     public User() {}
 
     public User(String firstName, String lastName, String birthDate, String eMail, String password, String role) {
@@ -88,6 +92,22 @@ public class User implements Serializable {
                 ", role='"+ role+ '\'' +
                 ", bild='" + image+
                 "'}";
+    }
+
+    public boolean isFreischaltungBeantragt() {
+        return freischaltungBeantragt;
+    }
+
+    public void setFreischaltungBeantragt(boolean freischaltungBeantragt) {
+        this.freischaltungBeantragt = freischaltungBeantragt;
+    }
+
+    public boolean isFreigeschaltet() {
+        return isFreigeschaltet;
+    }
+
+    public void setFreigeschaltet(boolean freigeschaltet) {
+        isFreigeschaltet = freigeschaltet;
     }
 
     public String getRole() {

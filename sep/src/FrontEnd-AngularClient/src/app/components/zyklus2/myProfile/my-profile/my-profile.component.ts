@@ -6,7 +6,8 @@ import {BettingRound} from "../../../../models/betting-round";
 import {TipprundenserviceService} from "../../../../services/tipprundenservice.service";
 import {Table} from "../../../../models/table";
 import {Router} from "@angular/router";
-import {Chart} from 'chart.js/auto';
+import {FreischaltungenService} from "../../../../services/freischaltungen.service";
+import {Chart} from "chart.js";
 
 
 @Component({
@@ -40,11 +41,18 @@ export class MyProfileComponent implements OnInit {
   TippNumChart: any;
   OwnTippsPerRound : any;
 
+  //Logik Beantragung
+
+  isFreigeschaltet: boolean|any
+  isBeantragt: boolean|any
+  buttonVisibleIfOldAndNotBeantragt: boolean|any
+
 
   constructor(private getUserService: GetUserServiceService,
               private friendListService: FriendListService,
               private tipprundenservice: TipprundenserviceService,
-              private router: Router) { }
+              private router: Router,
+              private freischaltungsService: FreischaltungenService) { }
 
   ngOnInit(): void {
     this.getOwnedTipprunden()
@@ -54,7 +62,8 @@ export class MyProfileComponent implements OnInit {
 
     this.showPendingFriendList(this.me.eMail);
     this.showSendedFriendRequest(this.me.eMail);
-
+    this.isOldEnough()
+    this.istFreigeschaltet()
   }
 
   getUser(): void{
@@ -204,6 +213,47 @@ export class MyProfileComponent implements OnInit {
 
   equals(string1: any, string2: any) {
     return string1 == string2
+  }
+
+  isOldEnough(){
+    this.getUserService.isOldEnough(this.me.eMail).subscribe(res => {
+      if(res.toString() == "true"){
+        this.istBeantragt()
+      }
+      else{
+        this.buttonVisibleIfOldAndNotBeantragt = false;
+      }
+    })
+  }
+
+  istBeantragt(){
+    this.freischaltungsService.isFreischaltungBeantragt(this.me.eMail).subscribe(res=>{
+      if(res.toString() == "true"){
+        this.isBeantragt = true
+        this.buttonVisibleIfOldAndNotBeantragt = false;
+      }
+      else{
+        this.isBeantragt = false;
+        this.buttonVisibleIfOldAndNotBeantragt = true;
+      }
+    })
+  }
+
+  beantrageFreischaltung(){
+    this.isBeantragt = true;
+    this.freischaltungsService.beantrageFreischaltung(this.me.eMail).subscribe(res=>{
+    })
+  }
+
+  istFreigeschaltet(){
+    this.freischaltungsService.isFreigeschaltet(this.me.eMail).subscribe(res=>{
+      if(res.toString() == "true"){
+        this.isFreigeschaltet = true;
+      }
+      else{
+        this.isFreigeschaltet = false;
+      }
+    })
   }
 
   createChart(){

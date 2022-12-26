@@ -1,0 +1,52 @@
+
+
+<div class="topnav">
+  <a style="float:right">
+  </a>
+</div>
+
+<div class="row">
+  <div class="usercard">
+    <div class="center">
+      <div class="card">
+
+        <table class="table table-bordered table-striped">
+          <p>Freigeschaltete User</p>
+          <tbody>
+          <tr *ngFor="let user of acceptUsers">
+            <td>{{user.firstName + " " + user.lastName}}</td>
+          </tr>
+          <div *ngIf="this.acceptUsers">
+            <div *ngIf="acceptUsers.length==0"><h1>Niemand ist freigeschaltet!</h1></div>
+          </div>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <table class="table table-bordered table-striped">
+          <p>Anfragen</p>
+          <tbody>
+          <tr *ngFor="let users of userList, let i = index">
+            <td>{{ users.firstName }}</td>
+            <td>{{ users.lastName }}</td>
+            <td><button  (click) = "accept(users.eMail)" class='btn btn-info'>Accept</button></td>
+            <td><button  (click) = "decline(users.eMail)" class='btn btn-info'>Decline</button></td>
+          </tr>
+          <div *ngIf="this.userList">
+            <div *ngIf="userList.length==0"><h1>Niemand will freigeschaltet werden!</h1></div>
+          </div>
+          </tbody>
+        </table>
+      </div>
+   </div>
+  </div>
+</div>
+
+<div class="footer">
+  <button class="button cuteButton" routerLink="/admin-dashboard">Zurück</button>
+</div>
+
+
+
+
