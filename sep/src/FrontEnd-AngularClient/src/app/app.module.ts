@@ -30,6 +30,7 @@ import { MyProfileComponent } from './components/zyklus2/myProfile/my-profile/my
 import {EinladungsUebersichtComponent} from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
 import {MatTableModule} from "@angular/material/table";
 import { FreischaltungenComponent } from './components/zyklus3/freischaltungen/freischaltungen.component';
+import { WettenComponent } from './components/zyklus3/wetten/wetten.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { FreischaltungenComponent } from './components/zyklus3/freischaltungen/f
     ShowTopComponent,
     MyProfileComponent,
     EinladungsUebersichtComponent,
-    FreischaltungenComponent
+    FreischaltungenComponent,
+    WettenComponent
 
   ],
   imports: [

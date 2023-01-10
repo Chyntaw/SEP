@@ -43,11 +43,6 @@ export class MyProfileComponent implements OnInit {
   PieChart: any;
   PieData: any;
 
-  //Logik Beantragung
-
-  isFreigeschaltet: boolean|any
-  isBeantragt: boolean|any
-  buttonVisibleIfOldAndNotBeantragt: boolean|any
 
 
   constructor(private getUserService: GetUserServiceService,
@@ -64,17 +59,13 @@ export class MyProfileComponent implements OnInit {
 
     this.showPendingFriendList(this.me.eMail);
     this.showSendedFriendRequest(this.me.eMail);
-    this.isOldEnough()
-    this.istFreigeschaltet()
   }
 
   getUser(): void{
-
     this.me.firstName = String(sessionStorage.getItem("firstName"))
     this.me.lastName = String(sessionStorage.getItem("lastName"))
     this.me.eMail = String(sessionStorage.getItem("eMail"))
     this.getImage()
-
     /*habs erstmal rausgenommen sonst klappt die freundesliste nicht wegen der tollen asynchronität :D
     this.getUserService.getUser(String(sessionStorage.getItem("eMail"))).subscribe(res=>{
       this.me = res
@@ -87,11 +78,12 @@ export class MyProfileComponent implements OnInit {
     this.getUserService.getImage(this.me.eMail).subscribe(res=>{
       this.retrieveResonse = res;
       if(this.retrieveResonse.picByte != null) {
-      this.base64Data = this.retrieveResonse.picByte;
-      this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+        this.base64Data = this.retrieveResonse.picByte;
+        this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
       }
       console.log(typeof(this.retrievedImage))
-  })}
+    })
+  }
 
   showFriendList() {
     const email = sessionStorage.getItem('eMail');
@@ -215,47 +207,6 @@ export class MyProfileComponent implements OnInit {
 
   equals(string1: any, string2: any) {
     return string1 == string2
-  }
-
-  isOldEnough(){
-    this.getUserService.isOldEnough(this.me.eMail).subscribe(res => {
-      if(res.toString() == "true"){
-        this.istBeantragt()
-      }
-      else{
-        this.buttonVisibleIfOldAndNotBeantragt = false;
-      }
-    })
-  }
-
-  istBeantragt(){
-    this.freischaltungsService.isFreischaltungBeantragt(this.me.eMail).subscribe(res=>{
-      if(res.toString() == "true"){
-        this.isBeantragt = true
-        this.buttonVisibleIfOldAndNotBeantragt = false;
-      }
-      else{
-        this.isBeantragt = false;
-        this.buttonVisibleIfOldAndNotBeantragt = true;
-      }
-    })
-  }
-
-  beantrageFreischaltung(){
-    this.isBeantragt = true;
-    this.freischaltungsService.beantrageFreischaltung(this.me.eMail).subscribe(res=>{
-    })
-  }
-
-  istFreigeschaltet(){
-    this.freischaltungsService.isFreigeschaltet(this.me.eMail).subscribe(res=>{
-      if(res.toString() == "true"){
-        this.isFreigeschaltet = true;
-      }
-      else{
-        this.isFreigeschaltet = false;
-      }
-    })
   }
 
   createChart(){

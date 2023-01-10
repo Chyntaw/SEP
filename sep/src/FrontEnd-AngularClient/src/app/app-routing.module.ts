@@ -21,6 +21,7 @@ import {
   EinladungsUebersichtComponent
 } from "./components/zyklus2/einladungs-uebersicht/einladungs-uebersicht.component";
 import {FreischaltungenComponent} from "./components/zyklus3/freischaltungen/freischaltungen.component";
+import {WettenComponent} from "./components/zyklus3/wetten/wetten.component";
 
 const MeineRouten : Routes = [
   {path:'login', component: LoginComponent},
@@ -40,6 +41,7 @@ const MeineRouten : Routes = [
   {path: 'my-Profile', component: MyProfileComponent},
   {path: 'einladungs-uebersicht/:id', component: EinladungsUebersichtComponent},
   {path: 'freischaltungen', component: FreischaltungenComponent},
+  {path: 'wetten', component: WettenComponent},
 
 
 

@@ -51,4 +51,9 @@ export class ShowleagueserviceService {
   set id(value: number) {
     this._id = value;
   }
+
+  getOddsForLiga(id:number){
+    return this.http.get(`${this.databaseURL+"leagueData/getOddsForLiga/"+id}`)
+  }
+
 }

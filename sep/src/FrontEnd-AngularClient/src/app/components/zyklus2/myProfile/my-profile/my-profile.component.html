@@ -91,15 +91,6 @@
   <div class="rightcolumn">
     <div class="usercard">
       <h2>About Me</h2>
-      <button class='btn btn-info' [hidden] = "!this.buttonVisibleIfOldAndNotBeantragt" (click) = beantrageFreischaltung() onclick="this.hidden=true">Freischaltung beantragen</button>
-      <div *ngIf="this.isFreigeschaltet; else nichtFreigeschaltet">
-        <h1>Du bist freigeschaltet</h1>
-      </div>
-      <ng-template #nichtFreigeschaltet>
-        <div [hidden] = "!this.isBeantragt">
-          <h1>Freischaltung Beantragt</h1>
-        </div>
-      </ng-template>
       <div *ngIf="this.retrievedImage" ><img class="geilo" [src]="this.retrievedImage"></div>
       <div *ngIf="!this.retrievedImage" ><img class="geilo" src="../../../../../assets/blankProfilePic.png"></div>
       <div *ngIf="this.me">

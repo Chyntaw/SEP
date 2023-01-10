@@ -47,8 +47,8 @@ public class User implements Serializable {
     private String code;           //Eingegebene OTP
 
     private boolean freischaltungBeantragt;
-
     private boolean isFreigeschaltet;
+    private double guthaben;
 
     public User() {}
 
@@ -92,6 +92,14 @@ public class User implements Serializable {
                 ", role='"+ role+ '\'' +
                 ", bild='" + image+
                 "'}";
+    }
+
+
+    public double getGuthaben() {
+        return guthaben;
+    }
+    public void setGuthaben(double guthaben) {
+        this.guthaben = guthaben;
     }
 
     public boolean isFreischaltungBeantragt() {

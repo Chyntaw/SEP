@@ -1,0 +1,129 @@
+<body>
+<div class="topnav">
+  <a routerLink="/dashboard">Dashboard</a>
+  <a style="float: right" (click)="logout()">Ausloggen</a>
+</div>
+
+
+<div class="row">
+    <div class="usercard">
+      <div class="center">
+        <div class="card">
+          <div *ngIf="this.isOld; else nichtAltGenug">
+            <button class='btn btn-info' [hidden] = "!this.buttonVisibleIfOldAndNotBeantragt" (click) = beantrageFreischaltung() onclick="this.hidden=true">Freischaltung beantragen</button>
+            <div *ngIf="this.isFreigeschaltet; else nichtFreigeschaltet">
+              <!--Inhalt vom Tippwetten-->
+
+              <div class="leftcolumn">
+                <div class="card">
+                  <h2>Ligen</h2>
+
+                  <div class="float-start">
+                    <table class="myTippTable">
+                      <thead class="thead-dark">
+                      <tr>
+                        <th scope="col">Liga Name</th>
+                        <th>Jahr</th>
+                      </tr>
+                      </thead>
+                      <!-- Liga Anzeigen Body -->
+                      <tbody>
+                      <tr *ngFor="let ligens of ligen, let i = index">
+
+                        <td>{{ ligens.name }}</td>
+                        <td>{{ligens.leagueData[0].date.substring(0,4) +"-"+ getNext(ligens.leagueData[0].date.substring(2,4))}}</td>
+                        <td class="form-group" align="center">
+                          <button class="button improvedButton" (click)="zeigeLigaDaten(ligens.id)">Spiele</button>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                </div>
+
+                <div class="card">
+                  <h2>Liga Daten</h2>
+                  <h5>Übersicht über Manschaften, Spiele und Ergebnisse</h5>
+                  <div class="">
+                    <div class="">
+                      <div class="card-body">
+                        <table *ngIf="data" class="myTippTable">
+                          <thead class="thead-dark">
+                          <tr>
+                            <th scope="col">Datum</th>
+                            <th scope="col">Spieltag</th>
+                            <th scope="col">Team 1</th>
+                            <th scope="col">Team 2</th>
+                            <th scope="col">Ergebnis</th>
+                            <!--
+                            <th scope="col">Qoute</th>
+                            <th scope="col">Einsatz</th>
+                            -->
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let leaguedata of data; let i = index">    <!--; let odds of oddsList-->
+                            <td>{{ leaguedata.date }}</td>
+                            <td>{{ leaguedata.matchDay }}</td>
+                            <td>{{ leaguedata.player1 }}</td>
+                            <td>{{ leaguedata.player2 }}</td>
+                            <td>{{leaguedata.result}}</td>
+                            <div *ngIf="oddsList[i] != null; else noOddsAvailable">
+                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][0], leaguedata.id)">{{oddsList[i][0]}}</button></td>
+                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][2], leaguedata.id)">{{oddsList[i][2]}}</button></td>
+                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][1], leaguedata.id)">{{oddsList[i][1]}}</button></td>
+                            </div>
+                            <ng-template #noOddsAvailable>
+                              <td>No odds Available</td>
+                            </ng-template>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="rightcolumn">
+                <div class="card">
+                  <h2>Guthaben: {{this.money}}€</h2>
+                  <input [(ngModel)] = wettEinsatz>
+                  <button class="button" (click) = "wetteSetzen()">Wetten</button>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <ng-template #nichtFreigeschaltet>
+              <div [hidden] = "!this.isBeantragt">
+                <h1>Freischaltung Beantragt</h1>
+              </div>
+            </ng-template>
+          </div>
+
+          <ng-template #nichtAltGenug>
+            <div>
+              <h2>Du bist nicht Alt genug!</h2>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+<div class="footer">
+  <h2>TippWorld</h2>
+</div>
+
+</body>
+
+
+
+

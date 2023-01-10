@@ -113,9 +113,11 @@ public class UserController {
 
         User user = service.findUserByeMail(userData.geteMail());
         if(user.getPassword().equals(userData.getPassword())) {
-            mailSenderService.sendEmail(userData.geteMail(),
+         /*   mailSenderService.sendEmail(userData.geteMail(),
                     "Verifikationscode",
                     "Ihr Verifikationsvode lautet: " + userData.getSecret());      //schick Email hoffentlich
+
+          */
             User userToUpdate = service.getReferenceById(user.getId());
             userToUpdate.setCode(userData.getSecret());
             service.save(userToUpdate);
@@ -285,6 +287,7 @@ public class UserController {
         for(User userData: userRepository.findAll()){
             if(userData.geteMail().equals(eMail)){
                 userData.setFreigeschaltet(true);
+                userData.setGuthaben(1000.00);
                 userRepository.save(userData);
             }
         }
@@ -304,6 +307,18 @@ public class UserController {
     }
 
 
+    //this.databaseURL+"/user/getMoney/"+eMail}
+
+    @GetMapping("/user/getMoney/{eMail}")
+    public ResponseEntity<Double> getMoney(@PathVariable("eMail") String eMail){
+
+        for(User userData: userRepository.findAll()){
+            if(userData.geteMail().equals(eMail)){
+                return new ResponseEntity<>(userData.getGuthaben(), HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
 
     // compress the image bytes before storing it in the database
     public static byte[] compressBytes(byte[] data) {

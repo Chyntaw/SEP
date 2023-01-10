@@ -35,9 +35,11 @@ export class FreischaltungenComponent implements OnInit {
 
   accept(eMail:string){
     this.freischaltungsService.accept(eMail).subscribe()
+    window.location.reload()
   }
   decline(eMail:string){
     this.freischaltungsService.decline(eMail).subscribe()
+    window.location.reload()
   }
 
 }

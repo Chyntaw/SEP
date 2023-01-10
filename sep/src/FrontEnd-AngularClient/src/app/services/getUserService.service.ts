@@ -44,4 +44,7 @@ export class GetUserServiceService{
   }
 
 
+  getMoney(eMail: string) {
+    return this.httpClient.get(`${this.databaseURL+"/user/getMoney/"+eMail}`)
+  }
 }

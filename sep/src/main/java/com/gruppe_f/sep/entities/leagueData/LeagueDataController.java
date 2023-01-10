@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.leagueData;
 
+import com.gruppe_f.sep.businesslogic.QouteRechner;
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.entities.liga.Liga;
 import com.gruppe_f.sep.entities.liga.LigaRepository;
@@ -19,9 +20,12 @@ import static com.gruppe_f.sep.businesslogic.GenerellLogisch.compareDates;
 @RequestMapping("/leagueData")
 public class LeagueDataController {
 
+
+
     private final LeagueDataRepository repo;
     private final DateRepository dateRepo;
     private final LigaRepository ligaRepo;
+
 
     @Autowired
     public LeagueDataController(LeagueDataRepository repo, DateRepository dateRepo, LigaRepository ligaRepo) {
@@ -98,4 +102,21 @@ public class LeagueDataController {
         Liga liga = ligaRepo.findLigaByid(ligaID);
         return new ResponseEntity<>(liga, HttpStatus.OK);
     }
+
+
+
+
+    @GetMapping("/getOddsForLiga/{id}")
+    public ResponseEntity<List<double[]>> getOddsForLiga(@PathVariable("id") Long ligaID){
+
+        QouteRechner qouteRechner = new QouteRechner(dateRepo, repo);
+
+        List<double[]> oddsList = new ArrayList<>();
+
+        for(LeagueData leagueData: ligaRepo.findLigaByid(ligaID).getLeagueData()){
+            oddsList.add(qouteRechner.qouteBerechnen(leagueData.getPlayer1(), leagueData.getPlayer2(), leagueData.getDate()));
+        }
+        return new ResponseEntity<>(oddsList, HttpStatus.OK);
+    }
+
 }
