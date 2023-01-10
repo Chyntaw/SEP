@@ -42,7 +42,7 @@ public class SepGruppeFApplication {
 	@Bean
 	CommandLineRunner init(DateService dateServce, UserService userService, DateRepository repo, LigaRepository ligarepo, LeagueDataRepository ldrepo, FriendRepository friendRepository, ImageRepository imageRepository) {
 		return args -> {
-			dateServce.changeDate(new SystemDate("2017-01-01"));
+			dateServce.changeDate(new SystemDate("1000-01-01"));
 			try {
 			userService.addUser(new User("Anna","Bolika","02.02.2002", "lmao@gmx.ru", "passWORT!", "BASIC"));
 			userService.addUser(new User("Peter","Haremberg","02.02.1000", "t@t.de", "test", "BASIC"));
@@ -53,6 +53,7 @@ public class SepGruppeFApplication {
 			userService.addUser(new User("Can","Kalifat","24.04.1997", "can.kalafat@outlook.de", "1", "BASIC"));
 			userService.addUser(new User("Hella","Kot","24.04.1997", "kot@kotMail.com", "1", "BASIC"));
 			userService.addUser(new User("Lars","Samenström","24.04.1997", "lars@lars.com", "1", "BASIC"));
+			userService.addUser(new User("1", "1", "01.01.0001", "1", "1", "BASIC"));
 			} catch	(Exception e) {}
 
 			/*

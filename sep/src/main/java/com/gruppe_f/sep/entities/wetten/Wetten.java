@@ -23,23 +23,32 @@ public class Wetten {
     @Column(name = "isResolved")
     private boolean isResolved;     //true = Wette in der Vergangeheit, false = Wette in der Zukunft
 
+    private double qoute;
+
+    private double einsatz;
+
+    private int tipp;
 
     public Wetten() {
 
     }
-    public Wetten(int leagueDataID, Long userID, double qoute, double einsatz, boolean isResolved) {
+    public Wetten(int leagueDataID, Long userID, double qoute, double einsatz, boolean isResolved, int tipp) {
         this.leagueDataID = leagueDataID;
         this.userID = userID;
         this.qoute = qoute;
         this.einsatz = einsatz;
         this.isResolved = isResolved;
+        this.tipp = tipp;                   //0 = Sieg 1, 1 = Unentschieden, 2 = Sieg 2
     }
 
-    private double qoute;
 
-    private double einsatz;
+    public int getTipp() {
+        return tipp;
+    }
 
-
+    public void setTipp(int tipp) {
+        this.tipp = tipp;
+    }
 
     public Long getId() {
         return id;

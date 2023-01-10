@@ -32,9 +32,9 @@ public class WettenService {
     }
 
 
-    public void setWette(LeagueData leagueData, User user, double qoute, double einsatz){
+    public void setWette(LeagueData leagueData, User user, double qoute, double einsatz, int tipp){
 
-        Wetten wetten = new Wetten(leagueData.getId(), user.getId(), qoute, einsatz, false);
+        Wetten wetten = new Wetten(leagueData.getId(), user.getId(), qoute, einsatz, false, tipp);
 
         User updateUser = user;
         updateUser.setGuthaben(updateUser.getGuthaben() - einsatz);
@@ -55,37 +55,114 @@ public class WettenService {
     }
 
 
-
-
-    public List<Wetten> getFutureWetten(User user){
-        List<Wetten> userWetten = new ArrayList<>();
+    public List<String[]> getFutureWetten(User user){
+        List<String[]> futureBets = new ArrayList<>();
 
         for(Wetten wetten: wettenRepository.findAll()){
-            if(wetten.getId().equals(user.getId())){
-                if(GenerellLogisch.compareDates(dateRepository.findAll().get(0).getLocalDate(),
-                        leagueDataRepository.findByid(wetten.getLeagueDataID()).getDate()) >0){
-                    userWetten.add(wetten);
+            if(!wetten.isResolved()){
+                if(wetten.getUserID().equals(user.getId())){
+                    if(GenerellLogisch.compareDates(dateRepository.findAll().get(0).getLocalDate(),
+                            leagueDataRepository.findByid(wetten.getLeagueDataID()).getDate()) < 0){
+
+                        String[] bet = {leagueDataRepository.findByid(wetten.getLeagueDataID()).getPlayer1(),
+                                leagueDataRepository.findByid(wetten.getLeagueDataID()).getPlayer2(),
+                                Integer.toString(wetten.getTipp()),
+                                Double.toString(wetten.getQoute()),
+                                Double.toString(wetten.getEinsatz())};
+
+                        futureBets.add(bet);
+
+                    }
                 }
             }
         }
-        return userWetten;
+        return futureBets;
     }
 
 
 
-    public List<Wetten> getPastWetten(User user){
-        List<Wetten> userWetten = new ArrayList<>();
+    public List<String[]> getPastWetten(User user){
+        List<String[]> pastBets = new ArrayList<>();
+        List<Wetten> wettenList = new ArrayList<>();
 
         for(Wetten wetten: wettenRepository.findAll()){
-            if(wetten.getId().equals(user.getId())){
-                if(GenerellLogisch.compareDates(dateRepository.findAll().get(0).getLocalDate(),
-                        leagueDataRepository.findByid(wetten.getLeagueDataID()).getDate()) < 0){
-                    userWetten.add(wetten);
+            if(wetten.getUserID().equals(user.getId())){
+                if((GenerellLogisch.compareDates(dateRepository.findAll().get(0).getLocalDate(),
+                        leagueDataRepository.findByid(wetten.getLeagueDataID()).getDate()) > 0) || wetten.isResolved()){
+                    String[] bet = {leagueDataRepository.findByid(wetten.getLeagueDataID()).getPlayer1(),
+                            leagueDataRepository.findByid(wetten.getLeagueDataID()).getPlayer2(),
+                            Integer.toString(wetten.getTipp()),
+                            Double.toString(wetten.getQoute()),
+                            Double.toString(wetten.getEinsatz())};
+
+                    wettenList.add(wetten);
+                    pastBets.add(bet);
                 }
             }
         }
-        return userWetten;
+
+        calculateOldBets(user, wettenList);
+
+        return pastBets;
     }
 
+    public void calculateOldBets(User user, List<Wetten> wettenList){
+
+        for(LeagueData leagueData: leagueDataRepository.findAll()){
+            for(Wetten wetten: wettenList){
+                if(!wetten.isResolved()){
+                    if(leagueData.getId() == wetten.getLeagueDataID()){
+
+                        if(Integer.parseInt(leagueData.getResult().split("-")[0]) > Integer.parseInt(leagueData.getResult().split("-")[1])){    //Mannschaft 1 hat gewonnen
+                            if(wetten.getTipp() == 0){
+
+                                user.setGuthaben(user.getGuthaben() + (wetten.getEinsatz() * wetten.getQoute()));
+
+                                wetten.setResolved(true);
+                                wettenRepository.save(wetten);
+                            }
+                            else{
+                                wetten.setResolved(true);
+                                wettenRepository.save(wetten);
+                            }
+                        }
+                        else if(Integer.parseInt(leagueData.getResult().split("-")[0]) < Integer.parseInt(leagueData.getResult().split("-")[1])){   //Mannschaft 2 hat gewonnen
+                            if(wetten.getTipp() == 2){
+
+                                user.setGuthaben(user.getGuthaben() + (wetten.getEinsatz() * wetten.getQoute()));
+
+                                wetten.setResolved(true);
+                                wettenRepository.save(wetten);
+                            }
+                            else{
+                                wetten.setResolved(true);
+                                wettenRepository.save(wetten);
+                            }
+                        }
+                        else{           //Unentschieden
+                            if(wetten.getTipp() == 1){
+
+                                user.setGuthaben(user.getGuthaben() + (wetten.getEinsatz() * wetten.getQoute()));
+
+                                wetten.setResolved(true);
+                                wettenRepository.save(wetten);
+                            }
+                            else{
+                                wetten.setResolved(true);
+                                wettenRepository.save(wetten);
+                            }
+                        }
+
+
+
+                    }
+                }
+            }
+
+        }
+
+
+
+    }
 
 }

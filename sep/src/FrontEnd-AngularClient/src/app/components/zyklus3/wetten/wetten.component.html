@@ -70,9 +70,9 @@
                             <td>{{ leaguedata.player2 }}</td>
                             <td>{{leaguedata.result}}</td>
                             <div *ngIf="oddsList[i] != null; else noOddsAvailable">
-                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][0], leaguedata.id)">{{oddsList[i][0]}}</button></td>
-                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][2], leaguedata.id)">{{oddsList[i][2]}}</button></td>
-                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][1], leaguedata.id)">{{oddsList[i][1]}}</button></td>
+                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][0], leaguedata.id, 0)">{{oddsList[i][0]}}</button></td>
+                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][2], leaguedata.id, 1)">{{oddsList[i][2]}}</button></td>
+                              <td><button class="button highlightable" (click)="qouteWaehlen(oddsList[i][1], leaguedata.id, 2)">{{oddsList[i][1]}}</button></td>
                             </div>
                             <ng-template #noOddsAvailable>
                               <td>No odds Available</td>
@@ -92,12 +92,72 @@
                   <input [(ngModel)] = wettEinsatz>
                   <button class="button" (click) = "wetteSetzen()">Wetten</button>
                 </div>
+
+                <div class="card">
+                  <h2>Meine Platzierten Wetten</h2>
+                  <table class="myTippTableSmall">
+                    <thead>
+                    <tr>
+                      <th>Teams</th>
+                      <th>Qoute</th>
+                      <th>Einsatz</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let placedBets of futureWetten">
+
+                      <td *ngIf="placedBets[2] == 0" class="colorWin">{{placedBets[0]}}</td>
+                      <td *ngIf="placedBets[2] == 0" class="colorLoose">{{placedBets[1]}}</td>
+
+                      <td *ngIf="placedBets[2] == 1" class="colorDraw">{{placedBets[0]}}</td>
+                      <td *ngIf="placedBets[2] == 1" class="colorDraw">{{placedBets[1]}}</td>
+
+                      <td *ngIf="placedBets[2] == 2" class="colorLoose">{{placedBets[0]}}</td>
+                      <td *ngIf="placedBets[2] == 2" class="colorWin">{{placedBets[1]}}</td>
+
+                      <td>{{placedBets[3]}}</td>
+                      <td>{{placedBets[4]}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+
+                <div class="card">
+                  <h2>Meine Vergangenen Wetten</h2>
+                  <table class="myTippTableSmall">
+                    <thead>
+                    <tr>
+                      <th>Team 1</th>
+                      <th>Team 2</th>
+                      <th>Qoute</th>
+                      <th>Einsatz</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let placedBets of pastWetten">
+
+                      <td *ngIf="placedBets[2] == 0" class="colorWin">{{placedBets[0]}}</td>
+                      <td *ngIf="placedBets[2] == 0" class="colorLoose">{{placedBets[1]}}</td>
+
+                      <td *ngIf="placedBets[2] == 1" class="colorDraw">{{placedBets[0]}}</td>
+                      <td *ngIf="placedBets[2] == 1" class="colorDraw">{{placedBets[1]}}</td>
+
+                      <td *ngIf="placedBets[2] == 2" class="colorLoose">{{placedBets[0]}}</td>
+                      <td *ngIf="placedBets[2] == 2" class="colorWin">{{placedBets[1]}}</td>
+
+                      <td>{{placedBets[3]}}</td>
+                      <td>{{placedBets[4]}}</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
 
 
 
-
+            <!--NICHT FREIGESCHALTET-->
 
             <ng-template #nichtFreigeschaltet>
               <div [hidden] = "!this.isBeantragt">

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
 
 
 @Injectable({
@@ -10,9 +11,15 @@ export class WettenService {
 
   constructor(private httpClient: HttpClient) { }
 
-  setzeWette(eMail:string, wettEinsatz: number, qoute: number, leagueDataIDzumWetten: number) {
-    console.log(eMail)
-    return this.httpClient.get(`${this.databaseURL+"setzeWette/"+leagueDataIDzumWetten+"/"+eMail+"/"+qoute+"/"+wettEinsatz}`);
+  setzeWette(eMail:string, wettEinsatz: number, qoute: number, leagueDataIDzumWetten: number, tipp:number) {
+    return this.httpClient.get(`${this.databaseURL+"setzeWette/"+leagueDataIDzumWetten+"/"+eMail+"/"+qoute+"/"+wettEinsatz+"/"+tipp}`);
   }
 
+
+  getFutureWetten(eMail: string) {
+    return this.httpClient.get(`${this.databaseURL+"platzierteWetten/"+eMail}`);
+  }
+  getPastWetten(eMail: string) {
+    return this.httpClient.get(`${this.databaseURL+"vergangeneWetten/"+eMail}`);
+  }
 }
