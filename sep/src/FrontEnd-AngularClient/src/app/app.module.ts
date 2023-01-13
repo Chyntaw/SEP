@@ -31,6 +31,8 @@ import {EinladungsUebersichtComponent} from "./components/zyklus2/einladungs-ueb
 import {MatTableModule} from "@angular/material/table";
 import { FreischaltungenComponent } from './components/zyklus3/freischaltungen/freischaltungen.component';
 import { WettenComponent } from './components/zyklus3/wetten/wetten.component';
+import { MinigameComponent } from './components/zyklus3/minigame/minigame.component';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +57,9 @@ import { WettenComponent } from './components/zyklus3/wetten/wetten.component';
     MyProfileComponent,
     EinladungsUebersichtComponent,
     FreischaltungenComponent,
-    WettenComponent
+    WettenComponent,
+    MinigameComponent,
+
 
   ],
   imports: [

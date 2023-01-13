@@ -319,6 +319,25 @@ public class UserController {
         }
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
+    @PostMapping("/user/increaseMoney/{eMail}")
+    public ResponseEntity<?> increaseMoney(@PathVariable("eMail") String eMail){
+
+        for(User userData: userRepository.findAll()){
+            if(userData.geteMail().equals(eMail)){
+                double newGuthaben = userData.getGuthaben()+20;
+                userData.setGuthaben(newGuthaben);
+                userRepository.save(userData);
+
+                System.out.println(userData.getGuthaben());
+                return new ResponseEntity<>(newGuthaben,HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+
+    }
+
+
 
     // compress the image bytes before storing it in the database
     public static byte[] compressBytes(byte[] data) {

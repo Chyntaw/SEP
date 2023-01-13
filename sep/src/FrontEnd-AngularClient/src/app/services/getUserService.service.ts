@@ -47,4 +47,9 @@ export class GetUserServiceService{
   getMoney(eMail: string) {
     return this.httpClient.get(`${this.databaseURL+"/user/getMoney/"+eMail}`)
   }
+
+  increaseMoney(eMail:string) {
+    console.log(eMail)
+    return this.httpClient.post(`${this.databaseURL+"/user/increaseMoney/"+eMail}`,eMail)
+  }
 }
