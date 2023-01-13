@@ -107,14 +107,14 @@ public class LeagueDataController {
 
 
     @GetMapping("/getOddsForLiga/{id}")
-    public ResponseEntity<List<double[]>> getOddsForLiga(@PathVariable("id") Long ligaID){
+    public ResponseEntity<List<double[]>> getOddsForLiga(@PathVariable("id") int ligaID){
 
         QouteRechner qouteRechner = new QouteRechner(dateRepo, repo);
 
         List<double[]> oddsList = new ArrayList<>();
 
         for(LeagueData leagueData: ligaRepo.findLigaByid(ligaID).getLeagueData()){
-            oddsList.add(qouteRechner.qouteBerechnen(leagueData.getPlayer1(), leagueData.getPlayer2(), leagueData.getDate()));
+            oddsList.add(qouteRechner.qouteBerechnen(leagueData.getPlayer1(), leagueData.getPlayer2(), leagueData.getDate(), ligaID));
         }
         return new ResponseEntity<>(oddsList, HttpStatus.OK);
     }
