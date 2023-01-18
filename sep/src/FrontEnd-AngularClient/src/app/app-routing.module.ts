@@ -23,6 +23,7 @@ import {
 import {FreischaltungenComponent} from "./components/zyklus3/freischaltungen/freischaltungen.component";
 import {WettenComponent} from "./components/zyklus3/wetten/wetten.component";
 import {MinigameComponent} from "./components/zyklus3/minigame/minigame.component";
+import {AdminStatsComponent} from "./components/zyklus3/admin-stats/admin-stats.component";
 
 const MeineRouten : Routes = [
   {path:'login', component: LoginComponent},
@@ -44,6 +45,7 @@ const MeineRouten : Routes = [
   {path: 'freischaltungen', component: FreischaltungenComponent},
   {path: 'wetten', component: WettenComponent},
   {path: 'minigame', component: MinigameComponent},
+  {path: 'admin-stats', component: AdminStatsComponent},
 
 
 

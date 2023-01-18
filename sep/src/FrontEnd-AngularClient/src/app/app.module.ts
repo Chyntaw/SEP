@@ -32,6 +32,7 @@ import {MatTableModule} from "@angular/material/table";
 import { FreischaltungenComponent } from './components/zyklus3/freischaltungen/freischaltungen.component';
 import { WettenComponent } from './components/zyklus3/wetten/wetten.component';
 import { MinigameComponent } from './components/zyklus3/minigame/minigame.component';
+import { AdminStatsComponent } from './components/zyklus3/admin-stats/admin-stats.component';
 
 
 @NgModule({
@@ -59,6 +60,8 @@ import { MinigameComponent } from './components/zyklus3/minigame/minigame.compon
     FreischaltungenComponent,
     WettenComponent,
     MinigameComponent,
+    AdminStatsComponent,
+
 
 
   ],

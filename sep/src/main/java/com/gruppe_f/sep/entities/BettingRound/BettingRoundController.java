@@ -57,7 +57,7 @@ public class BettingRoundController {
                                                 @RequestParam("corrWinnerPoints")int corrWinnerPoints,
                                                 @RequestParam(value = "password", required = false)String password) {
 
-        BettingRound bettingRound = new BettingRound(name, ownerID, ligaID, isPrivate, corrScorePoints, corrGoalPoints, corrWinnerPoints, password);
+        BettingRound bettingRound = new BettingRound(name, ownerID, ligaID, isPrivate, corrScorePoints, corrGoalPoints, corrWinnerPoints, password, false);
         repo.save(bettingRound);
         addParticipant(ownerID, bettingRound.getId(), "");
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
@@ -230,7 +230,7 @@ public class BettingRoundController {
         }
         if(newBet != null && !newBet.equals("undefined")) {
             LeagueData data = leagueDataRepo.findByid(leagueDataid);
-            betsList.add(new Bets(newBet, userid, data));
+            betsList.add(new Bets(newBet, userid, data, false));
         }
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
 
@@ -396,7 +396,7 @@ public class BettingRoundController {
             }
             //If nothing was changed before add a new Bet to Bettinground
             if(!changed) {
-                Bets newBet = new Bets(oldBet.getBets(), oldBet.getUserID(), oldBet.getLeagueData());
+                Bets newBet = new Bets(oldBet.getBets(), oldBet.getUserID(), oldBet.getLeagueData(), false);
                 toRound.getBetsList().add(newBet);
 
             }

@@ -1,0 +1,65 @@
+
+
+<div class="topnav">
+  <a style="float:right">
+  </a>
+</div>
+
+
+
+<div class="row">
+  <div class="usercard">
+    <div class="center">
+      <div class="card">
+
+        <p>Beliebtheit nach Tipprunden</p>
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">Liganame</th>
+            <th scope="col">Anzahl Tipprunden</th>
+            <th scope="col"><button (click)="resetAllBR()">Alle Counter zurücksetzen</button></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let leagueBettingRound of leagueBettingRounds">
+            <td>{{leagueBettingRound.name}}</td>
+            <td>{{leagueBettingRound.score}}</td>
+            <td><button (click)="resetCounterBR(leagueBettingRound.id)"><!-- Delete bettingRound -->Reset Liga</button></td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <p>Beliebtheit nach unterschiedlichen Nutzern</p>
+        <table class="table table-bordered table-striped">
+          <thead class="thead-dark">
+          <tr>
+            <th scope="col">Liganame</th>
+            <th scope="col">Anzahl Nutzer</th>
+            <th scope="col"><button (click)="resetAllB()">Alle Counter zurücksetzen</button></th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let leagueUser of leagueUsers">
+            <td>{{leagueUser.name}}</td>
+            <td>{{leagueUser.score}}</td>
+            <td><button (click)="resetCounterB(leagueUser.score)"><!-- Delete bets -->Reset Liga</button></td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <button class="button cuteButton" routerLink="/admin-dashboard">Zurück</button>
+</div>
+
+
+
+

@@ -21,8 +21,6 @@ export class AdminDashboardComponent implements OnInit {
       this.liga = params["id"]
     })
 
-    console.log(this.liga[0].name)
-
     if(!sessionStorage.getItem("eMail")) {
       this.router.navigate(['login'])
       alert("Bitte melden Sie sich zunächst an.")

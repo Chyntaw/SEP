@@ -25,6 +25,8 @@ public class BettingRound {
 
     private boolean isPrivate;
 
+    private boolean isResetted=false;
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "bettingroundid")
     private List<Score> scoresList = new LinkedList<>();
@@ -56,7 +58,8 @@ public class BettingRound {
     public BettingRound() {}
 
     public BettingRound(String name, Long ownerID, Long ligaID, boolean isprivate,
-                        int corrScorePoints, int corrGoalPoints, int corrWinnerPoints, String password) {
+                        int corrScorePoints, int corrGoalPoints, int corrWinnerPoints, String password,
+                        boolean isResetted) {
         this.name = name;
         this.ownerID = ownerID;
         this.ligaID = ligaID;
@@ -65,6 +68,7 @@ public class BettingRound {
         this.corrGoalPoints = corrGoalPoints;
         this.corrWinnerPoints = corrWinnerPoints;
         this.password = password;
+        this.isResetted = isResetted;
     }
 
 
@@ -174,4 +178,8 @@ public class BettingRound {
     public void setAliasList(List<Alias> aliasList) {
         this.aliasList = aliasList;
     }
+
+    public boolean getIsResetted() { return isResetted; }
+
+    public void setIsResetted(boolean isResetted) { this.isResetted = isResetted; }
 }

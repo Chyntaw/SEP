@@ -23,13 +23,16 @@ public class Bets {
 
     private int score;
 
+    private boolean isResetted=false;
+
 
     public Bets(){}
 
-    public Bets(String bet, Long userID, LeagueData data){
+    public Bets(String bet, Long userID, LeagueData data, boolean isResetted){
         this.bet = bet;
         this.userID = userID;
         this.leagueData = data;
+        this.isResetted = isResetted;
     }
     public Long getId() {
         return id;
@@ -70,5 +73,13 @@ public class Bets {
 
     public void setLeagueData(LeagueData leagueData) {
         this.leagueData = leagueData;
+    }
+
+    public boolean getIsResetted() {
+        return isResetted;
+    }
+
+    public void setIsResetted(boolean isResetted) {
+        this.isResetted = isResetted;
     }
 }

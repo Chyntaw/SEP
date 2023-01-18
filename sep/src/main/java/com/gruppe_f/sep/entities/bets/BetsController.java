@@ -81,6 +81,140 @@ public class BetsController {
         return new ResponseEntity<>(topTeams, HttpStatus.OK);
     }
 
+    @GetMapping("LeaguesBettingRound")
+    public ResponseEntity<?> getLeaguesByBettingRound() {
+
+        // get data
+        List<BettingRound> bettingRounds = bettingRoundRepository.findAll();
+        List<Liga> ligas = ligaRepository.findAll();
+
+        // delete counted data in past
+        List<BettingRound> tempBR = new ArrayList<>();
+        for(BettingRound bettingRound : bettingRounds) {
+            if(!bettingRound.getIsResetted()) {
+                tempBR.add(bettingRound);
+            }
+        }
+        bettingRounds = tempBR;
+
+        // work with data
+        // create HashMap of leagues
+        HashMap<Long, Integer> leagueCounter = new HashMap<>();
+        for(Liga liga : ligas) {
+            leagueCounter.put(liga.getId(), 0);
+        }
+
+        // count Occurrences
+        for(BettingRound bettingRound : bettingRounds) {
+            Integer currentValue = leagueCounter.get(bettingRound.getLigaID());
+            leagueCounter.replace(
+                    bettingRound.getLigaID(),
+                    currentValue + 1 // get old value and add 1
+                    );
+        }
+
+        // create final list with complete liga object
+        HashMap<List<String>, Integer> finalMap = new HashMap<>();
+
+        for(Long key : leagueCounter.keySet()) {
+            List<String> newEntry = new ArrayList<>();
+            newEntry.add(key.toString());
+            newEntry.add(ligaRepository.findLigaByid(key).getName());
+
+            finalMap.put(newEntry, leagueCounter.get(key));
+        }
+
+        return new ResponseEntity<>(finalMap, HttpStatus.OK);
+    }
+
+    @GetMapping("LeaguesUsers")
+    public ResponseEntity<?> getLeaguesByUsers() {
+
+        // get data
+        List<Bets> bets = betsrepo.findAll();
+        List<Liga> ligas = ligaRepository.findAll();
+
+        List<Bets> tempB = new ArrayList<>();
+        for(Bets bet : bets) {
+            if(!bet.getIsResetted()) {
+                tempB.add(bet);
+            }
+        }
+        bets = tempB;
+
+        HashMap<Long, Integer> leagueCounter = new HashMap<>();
+
+        // work with data
+        for(Liga liga : ligas) {
+
+            Integer count = 0;
+            List<Long> userIDs = new ArrayList<>();
+            for(Bets bet : bets) {
+                // just skip if liga ids not equal
+                if(bet.getLeagueData().getLigaID() != liga.getId()) continue;
+
+                // add userID to list and increase counter by 1
+                if(!userIDs.contains(bet.getUserID())) {
+                    userIDs.add(bet.getUserID());
+                    count++;
+                }
+            }
+
+            leagueCounter.put(liga.getId(), count);
+
+        }
+
+        // create final list with complete liga object
+        HashMap<List<String>, Integer> finalMap = new HashMap<>();
+
+        for(Long key : leagueCounter.keySet()) {
+
+            List<String> newEntry = new ArrayList<>();
+            newEntry.add(key.toString());
+            newEntry.add(ligaRepository.findLigaByid(key).getName());
+
+            finalMap.put(newEntry, leagueCounter.get(key));
+
+        }
+
+        return new ResponseEntity<>(finalMap, HttpStatus.OK);
+    }
+
+
+    @GetMapping("PutByTippingRound/{id}")
+    public ResponseEntity<?> putByBettingRound(@PathVariable("id") Long ligaID) {
+
+        List<BettingRound> allBettingRounds = bettingRoundRepository.findAll();
+
+        // set flag
+        for(BettingRound bettingRound : allBettingRounds) {
+            if(bettingRound.getLigaID() == ligaID) {
+                bettingRound.setIsResetted(true);
+                bettingRoundRepository.save(bettingRound);
+            }
+        }
+
+
+
+        return new ResponseEntity<>("BR-Flags gesetzt", HttpStatus.OK);
+    }
+
+    @GetMapping("PutByBet/{id}")
+    public ResponseEntity<?> putByBet(@PathVariable("id") Long ligaID) {
+
+        List<Bets> allBets = betsrepo.findAll();
+
+        // set flag
+        for(Bets bet : allBets) {
+            if(bet.getLeagueData().getLigaID() == ligaID) {
+                bet.setIsResetted(true);
+                betsrepo.save(bet);
+            }
+        }
+
+
+        return new ResponseEntity<>("B-Flags gesetzt", HttpStatus.OK);
+    }
 
     // input is list of all existent bets
     // output is calculated result

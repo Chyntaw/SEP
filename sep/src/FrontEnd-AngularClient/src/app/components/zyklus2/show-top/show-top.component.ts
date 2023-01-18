@@ -61,12 +61,6 @@ export class ShowTopComponent implements OnInit {
     return this.leagueDatas
   }
 
-    //TODO: Erstelle nur eine Methode, die die ID entgegen nimmt und führe dort die beiden
-    //      top Methoden aus. Prüfe danach, ob Punkte (>0) ausgegeben werden können
-    //      Wenn ja: zeige diese an
-    //      Wenn nein: Sag dem User, dass es keine gewonnen Punkte bisher gibt
-    // ----> METHODE AUSFÜHREN
-
   async showData(id: number) {
     this.users = await this.getTopUser(id)
     this.leagueDatas = await this.getTopTeam(id)
