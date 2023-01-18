@@ -40,10 +40,11 @@
   background-color: lightgray;
   border: black;
   border-radius: 2rem;
-  padding:4%;
+  padding:2%;
   font-size: 30px;
   margin-inline:auto;
   align-items: center;
+
 
 }
 .btnSubmit:focus{
