@@ -2,6 +2,7 @@ package com.gruppe_f.sep.entities.user;
 
 import com.gruppe_f.sep.businesslogic.ImageLogic.ImageModel;
 import com.gruppe_f.sep.entities.BettingRound.BettingRound;
+import com.gruppe_f.sep.entities.chat.Chat;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 
 import javax.persistence.*;
@@ -41,6 +42,11 @@ public class User implements Serializable {
 
     @ManyToMany(mappedBy = "participants")
     private List<BettingRound> bettingRounds;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "myChats")
+    private List<Chat> myChats = new LinkedList<>();
+
 
     private String secret;          //Generierte OTP
 
@@ -95,6 +101,14 @@ public class User implements Serializable {
     }
 
 
+    public List<Chat> getMyChats() {
+        return myChats;
+    }
+
+    public void setMyChats(List<Chat> myChats) {
+        this.myChats = myChats;
+    }
+
     public double getGuthaben() {
         return guthaben;
     }
@@ -118,9 +132,7 @@ public class User implements Serializable {
         isFreigeschaltet = freigeschaltet;
     }
 
-    public String getRole() {
-        return role;
-    }
+
 
     public void setRole(String role) {
         this.role = role;
