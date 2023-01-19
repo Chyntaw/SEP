@@ -3,6 +3,7 @@ package com.gruppe_f.sep.entities.chat;
 import com.gruppe_f.sep.entities.BettingRound.BettingRoundRepository;
 import com.gruppe_f.sep.entities.Message.Message;
 import com.gruppe_f.sep.entities.Message.MessageRepository;
+import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,28 +35,49 @@ public class ChatService {
 
     public void saveMessage(Long userID, Long friendID, String message){
 
+        User firstUser = userRepository.findUserById(userID);
+        User secondUser = userRepository.findUserById(friendID);
 
-        Chat chat = chatRepository.findByFirstUserAndSecondUser(userRepository.findUserById(userID), userRepository.findUserById(friendID));
+        Chat chat;
 
-        List<Message> oldMessages = chat.getMessages();
+        for(Chat chatDatabase: firstUser.getMyChats()){
+            for(Chat chatDatabase2: secondUser.getMyChats()){
+                if(chatDatabase.getId() == chatDatabase2.getId()){
+                    chat = chatRepository.findById(chatDatabase.getId()).get();
+                    List<Message> oldMessages = chat.getMessages();
 
-        Message newMessage = new Message(message, userID);
-        messageRepository.save(newMessage);
+                    Message newMessage = new Message(message, userID);
+                    messageRepository.save(newMessage);
 
-        oldMessages.add(newMessage);
-        chat.setMessages(oldMessages);
-        chatRepository.save(chat);
-
+                    oldMessages.add(newMessage);
+                    chat.setMessages(oldMessages);
+                    chatRepository.save(chat);
+                }
+            }
+        }
     }
 
     public List<Message> getMeessages(Long userID, Long friendID){
-        Chat chat = chatRepository.findByFirstUserAndSecondUser(userRepository.findUserById(userID), userRepository.findUserById(friendID));
 
-        return chat.getMessages();
+        User firstUser = userRepository.findUserById(userID);
+        User secondUser = userRepository.findUserById(friendID);
+
+        Chat chat;
+
+        for(Chat chatDatabase: firstUser.getMyChats()){
+            for(Chat chatDatabase2: secondUser.getMyChats()){
+                if(chatDatabase.getId() == chatDatabase2.getId()){
+                    chat = chatRepository.findById(chatDatabase.getId()).get();
+                    return chat.getMessages();
+                }
+            }
+        }
+
+        return null;
     }
 
 
-
+/*
     public void saveGroupMessage(Long userID, Long tipprundenID, String message){
 
         Chat chat = chatRepository.findByUserAndTipprunde(userRepository.findUserById(userID), bettingRoundRepository.findById(tipprundenID).get());
@@ -75,6 +97,10 @@ public class ChatService {
 
         return chat.getMessages();
     }
+
+
+
+ */
 
 
 

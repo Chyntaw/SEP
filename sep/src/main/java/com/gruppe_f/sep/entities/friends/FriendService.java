@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.friends;
 
+import com.gruppe_f.sep.entities.chat.Chat;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,18 @@ public class FriendService {
                 if(friend.getSendedFrom() != currentUser){
                     friend.setPending(false);
                     friendRepository.save(friend);
+
+                    Chat chat = new Chat(false, null);
+
+                    List<Chat> chatsFirstUser = firstUser.getMyChats();
+                    chatsFirstUser.add(chat);
+                    firstUser.setMyChats(chatsFirstUser);
+                    userRepository.save(firstUser);
+
+                    List<Chat> chatsSecondtUser = secondUser.getMyChats();
+                    chatsSecondtUser.add(chat);
+                    secondUser.setMyChats(chatsSecondtUser);
+                    userRepository.save(secondUser);
                 }
             }
         }

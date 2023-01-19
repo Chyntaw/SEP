@@ -1,9 +1,16 @@
 package com.gruppe_f.sep.entities.chat;
 
+import com.gruppe_f.sep.entities.Message.Message;
 import com.gruppe_f.sep.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -18,5 +25,47 @@ public class ChatController {
         this.userRepository = userRepository;
         this.chatService = chatService;
     }
+
+
+    @GetMapping("/chat/postMessage/{userID}/{friendID}/{message}")
+    public ResponseEntity<?> saveMessage(@PathVariable("userID") Long userID,
+                                         @PathVariable("friendID") Long friendID,
+                                         @PathVariable("message") String message){
+
+        chatService.saveMessage(userID, friendID, message);
+
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/chat/getMessage/{userID}/{friendID}")
+    public ResponseEntity<List<Message>> getMessages(@PathVariable("userID") Long userID,
+                                                     @PathVariable("friendID") Long friendID){
+
+        return new ResponseEntity<>(chatService.getMeessages(userID, friendID), HttpStatus.OK);
+    }
+
+/*
+    @GetMapping("/chat/postGroupMessage/{userID}/{tipprundenID}/{message}")
+    public ResponseEntity<?> saveGroupMessage(@PathVariable("userID") Long userID,
+                                              @PathVariable("tipprundenID") Long tipprundenID,
+                                              @PathVariable("message") String message){
+
+        chatService.saveGroupMessage(userID, tipprundenID, message);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/chat/getGroupMessage/{userID}/{friendID}")
+    public ResponseEntity<List<Message>> getGroupMessages(@PathVariable("userID") Long userID,
+                                                          @PathVariable("tipprundenID") Long tipprundenID){
+
+        return new ResponseEntity<>(chatService.getGroupMessage(userID, tipprundenID), HttpStatus.OK);
+    }
+
+
+ */
+
+
 
 }

@@ -1,7 +1,6 @@
 package com.gruppe_f.sep.entities.chat;
 
 import com.gruppe_f.sep.entities.Message.Message;
-import com.gruppe_f.sep.entities.user.User;
 
 import javax.persistence.*;
 import java.util.LinkedList;

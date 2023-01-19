@@ -138,6 +138,10 @@ public class User implements Serializable {
         this.role = role;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -203,4 +207,5 @@ public class User implements Serializable {
     public void setImage(ImageModel image) {
         this.image = image;
     }
+
 }
