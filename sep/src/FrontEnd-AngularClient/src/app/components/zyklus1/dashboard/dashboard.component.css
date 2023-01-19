@@ -98,6 +98,7 @@ body {
 .topnav {
   overflow: hidden;
   background-color: #333;
+  font-size: 18px;
 }
 
 /* Style the topnav links */
@@ -212,4 +213,9 @@ p {
   font-weight: bold;
 }
 
+.mat-icon {
+  vertical-align: middle;
+  horiz-align: center;
 
+
+}

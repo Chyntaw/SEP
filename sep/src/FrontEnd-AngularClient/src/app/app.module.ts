@@ -32,8 +32,9 @@ import {MatTableModule} from "@angular/material/table";
 import { FreischaltungenComponent } from './components/zyklus3/freischaltungen/freischaltungen.component';
 import { WettenComponent } from './components/zyklus3/wetten/wetten.component';
 import { MinigameComponent } from './components/zyklus3/minigame/minigame.component';
+import {ChatComponent} from "./components/zyklus3/chat/chat.component";
 import { AdminStatsComponent } from './components/zyklus3/admin-stats/admin-stats.component';
-
+import { GroupchatComponent } from './components/zyklus3/groupchat/groupchat.component';
 
 @NgModule({
   declarations: [
@@ -60,8 +61,9 @@ import { AdminStatsComponent } from './components/zyklus3/admin-stats/admin-stat
     FreischaltungenComponent,
     WettenComponent,
     MinigameComponent,
+    ChatComponent,
     AdminStatsComponent,
-
+    GroupchatComponent
 
 
   ],

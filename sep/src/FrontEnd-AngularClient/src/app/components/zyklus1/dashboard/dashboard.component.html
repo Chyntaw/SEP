@@ -1,14 +1,18 @@
+
 <body>
 <div class="topnav">
-  <a routerLink="/dashboard">Dashboard</a>
-  <a style="float: right" (click)="logout()">Ausloggen</a>
+  <a routerLink="/dashboard">Dashboard<mat-icon style="margin-left: 7px">dashboard</mat-icon></a>
+  <a style="float: right" (click)="logout()" >Ausloggen<mat-icon style="margin-left: 7px">logout</mat-icon></a>
+  <a  (click)="Chat()">Chat<mat-icon style="margin-left: 7px">chat</mat-icon></a>
+  <a  (click)="GroupChat()">Gruppenchat<mat-icon style="margin-left: 7px">diversity_3</mat-icon></a>
+
 </div>
-
-
+<app-chat (newChatEvent)="closeChat($event)" [hidden]="!showChat"></app-chat>
+<app-groupchat (newGroupChatEvent)="closeGroupChat($event)" [hidden]="!showGroupChat"></app-groupchat>
 <div class="row">
   <div class="leftcolumn">
     <div class="usercard">
-      <h2>Tipprunden & Ligen</h2>
+      <h2>Tipprunden & Ligen<mat-icon style="margin-left: 7px;">view_list</mat-icon></h2>
       <div class="form-group">
         <button routerLink="/show_league" class="btnSubmit" >Ligen einsehen & Tipprunden erstellen</button>
       </div>
@@ -22,7 +26,7 @@
 
 
     <div class="usercard">
-      <h2>Vergleiche</h2>
+      <h2>Vergleiche<mat-icon style="margin-left: 7px;margin-bottom:7px;">leaderboard</mat-icon></h2>
       <div class="form-group">
         <button routerLink="/showTop" class="btnSubmit">Die Besten der Besten</button>
       </div>
@@ -33,12 +37,13 @@
 
   <div class="rightcolumn">
     <div class="usercard">
-      <h2>Soziales</h2>
+      <h2>Soziales <mat-icon style="margin-left: 7px;">groups</mat-icon></h2>
+
       <div class="form-group">
         <button routerLink="/my-Profile" class="btnSubmit">Mein Profil</button>
       </div>
       <div class="form-group">
-        <button routerLink="/friend-list" class="btnSubmit">Freundesliste</button>
+        <button routerLink="/getUser" class="btnSubmit">Profilsuche</button>
       </div>
       <div class="form-group">
         <button routerLink="/getUser" class="btnSubmit">Freunde hinzufügen</button>
@@ -46,7 +51,7 @@
     </div>
 
     <div class="usercard">
-      <h2>Wetten</h2>
+      <h2>Wetten<mat-icon style="margin-left: 7px;">trending_up</mat-icon></h2>
       <div class="form-group">
         <button routerLink="/wetten" class="btnSubmit">Zum Wetten</button>
       </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 
 @Component({
@@ -7,6 +7,11 @@ import {Router} from "@angular/router";
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+    showChat=false;
+    showGroupChat=false;
+
+
 
   constructor(private router:Router) { }
 
@@ -21,5 +26,16 @@ export class DashboardComponent implements OnInit {
     sessionStorage.clear()
     this.router.navigate(['/login'])
   }
-
+  Chat(){
+    this.showChat=true;
+  }
+  closeChat(val:boolean){
+    this.showChat=val;
+}
+  closeGroupChat(val:boolean){
+    this.showGroupChat=val;
+  }
+  GroupChat(){
+    this.showGroupChat=true;
+  }
 }
