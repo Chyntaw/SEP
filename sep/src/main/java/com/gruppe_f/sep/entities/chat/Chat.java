@@ -23,9 +23,8 @@ public class Chat {
     public Chat() {
     }
 
-    public Chat(boolean isGroupChat, List<Message> messages) {
+    public Chat(boolean isGroupChat) {
         this.isGroupChat = isGroupChat;
-        this.messages = messages;
     }
 
 

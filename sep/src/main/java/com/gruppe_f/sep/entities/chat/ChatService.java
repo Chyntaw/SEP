@@ -40,10 +40,13 @@ public class ChatService {
 
         Chat chat;
 
-        for(Chat chatDatabase: firstUser.getMyChats()){
-            for(Chat chatDatabase2: secondUser.getMyChats()){
-                if(chatDatabase.getId() == chatDatabase2.getId()){
-                    chat = chatRepository.findById(chatDatabase.getId()).get();
+        String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
+        String[] secondUserChatIDs = firstUser.getMyChatIDs().split("-");
+
+        for(String firstUserChatIDS : firstUserChatIDs){
+            for(String secondUserChatIDS: secondUserChatIDs){
+                if(firstUserChatIDS.equals(secondUserChatIDS)){
+                    chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
                     List<Message> oldMessages = chat.getMessages();
 
                     Message newMessage = new Message(message, userID);
@@ -57,24 +60,31 @@ public class ChatService {
         }
     }
 
-    public List<Message> getMeessages(Long userID, Long friendID){
+
+    public Chat getMeessages(Long userID, Long friendID){
 
         User firstUser = userRepository.findUserById(userID);
         User secondUser = userRepository.findUserById(friendID);
 
         Chat chat;
 
-        for(Chat chatDatabase: firstUser.getMyChats()){
-            for(Chat chatDatabase2: secondUser.getMyChats()){
-                if(chatDatabase.getId() == chatDatabase2.getId()){
-                    chat = chatRepository.findById(chatDatabase.getId()).get();
-                    return chat.getMessages();
+        String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
+        String[] secondUserChatIDs = firstUser.getMyChatIDs().split("-");
+
+        for(String firstUserChatIDS : firstUserChatIDs){
+            for(String secondUserChatIDS: secondUserChatIDs){
+                if(firstUserChatIDS.equals(secondUserChatIDS)){
+                    chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
+
+                    return chat;
                 }
             }
         }
 
         return null;
     }
+
+
 
 
 /*

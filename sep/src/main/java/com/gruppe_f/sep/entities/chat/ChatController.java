@@ -35,15 +35,18 @@ public class ChatController {
         chatService.saveMessage(userID, friendID, message);
 
 
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/chat/getMessage/{userID}/{friendID}")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable("userID") Long userID,
+    public ResponseEntity<Chat> getMessages(@PathVariable("userID") Long userID,
                                                      @PathVariable("friendID") Long friendID){
 
         return new ResponseEntity<>(chatService.getMeessages(userID, friendID), HttpStatus.OK);
     }
+
+
 
 /*
     @GetMapping("/chat/postGroupMessage/{userID}/{tipprundenID}/{message}")

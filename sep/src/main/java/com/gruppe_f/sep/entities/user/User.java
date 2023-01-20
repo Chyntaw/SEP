@@ -7,6 +7,7 @@ import com.gruppe_f.sep.entities.leagueData.LeagueData;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,9 +44,8 @@ public class User implements Serializable {
     @ManyToMany(mappedBy = "participants")
     private List<BettingRound> bettingRounds;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "myChats")
-    private List<Chat> myChats = new LinkedList<>();
+
+    private String myChatIDs ="";
 
 
     private String secret;          //Generierte OTP
@@ -101,13 +101,6 @@ public class User implements Serializable {
     }
 
 
-    public List<Chat> getMyChats() {
-        return myChats;
-    }
-
-    public void setMyChats(List<Chat> myChats) {
-        this.myChats = myChats;
-    }
 
     public double getGuthaben() {
         return guthaben;
@@ -208,4 +201,11 @@ public class User implements Serializable {
         this.image = image;
     }
 
+    public String getMyChatIDs() {
+        return myChatIDs;
+    }
+
+    public void setMyChatIDs(String myChatIDs) {
+        this.myChatIDs = myChatIDs;
+    }
 }

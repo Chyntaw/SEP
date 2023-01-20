@@ -1,6 +1,7 @@
 package com.gruppe_f.sep.entities.friends;
 
 import com.gruppe_f.sep.entities.chat.Chat;
+import com.gruppe_f.sep.entities.chat.ChatRepository;
 import com.gruppe_f.sep.entities.user.User;
 import com.gruppe_f.sep.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,13 @@ public class FriendService {
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final ChatRepository chatRepo;
 
     @Autowired
-    public FriendService(FriendRepository friendRepository, UserRepository userRepository) {
+    public FriendService(FriendRepository friendRepository, UserRepository userRepository, ChatRepository chatRepo) {
         this.friendRepository = friendRepository;
         this.userRepository = userRepository;
+        this.chatRepo = chatRepo;
     }
 
     public void sendFriendRequest(String currentUserEmail, String friendUserEmail, boolean pending){             //user = eingeloggter User -- id = freund zum adden
@@ -93,16 +96,13 @@ public class FriendService {
                     friend.setPending(false);
                     friendRepository.save(friend);
 
-                    Chat chat = new Chat(false, null);
+                    Chat chat = new Chat(false);
+                    this.chatRepo.save(chat);
 
-                    List<Chat> chatsFirstUser = firstUser.getMyChats();
-                    chatsFirstUser.add(chat);
-                    firstUser.setMyChats(chatsFirstUser);
+                    firstUser.setMyChatIDs(firstUser.getMyChatIDs()+chat.getId()+"-");
                     userRepository.save(firstUser);
 
-                    List<Chat> chatsSecondtUser = secondUser.getMyChats();
-                    chatsSecondtUser.add(chat);
-                    secondUser.setMyChats(chatsSecondtUser);
+                    secondUser.setMyChatIDs(secondUser.getMyChatIDs()+chat.getId()+"-");
                     userRepository.save(secondUser);
                 }
             }

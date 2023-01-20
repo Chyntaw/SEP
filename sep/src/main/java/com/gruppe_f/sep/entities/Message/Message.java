@@ -30,4 +30,20 @@ public class Message {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public Long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
