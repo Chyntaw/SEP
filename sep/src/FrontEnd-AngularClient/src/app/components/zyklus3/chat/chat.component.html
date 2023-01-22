@@ -1,67 +1,56 @@
-
 <header class="kopf">
-  </header>
-  <body>
-  <div class="container">
-    <div class="messaging">
-      <button class="btn-close" (click)="closeChat(false)"></button>
-      <div class="inbox_msg">
-        <div class="inbox_people">
-          <div class="headind_srch">
-            <div class="recent_heading">
-              <h4>Chat</h4>
-            </div>
-            <div class="srch_bar">
-              <div class="stylish-input-group">
-                <mat-icon style="color: grey">search</mat-icon>
-                <input type="search" class="search-bar" [(ngModel)]="searchInput" id="searchInput"  placeholder="Suche">
-                <span class="input-group-addon">
+</header>
+<body>
+<div class="container">
+  <div class="messaging">
+    <button class="btn-close" (click)="closeChat(false)"></button>
+    <div class="inbox_msg">
+      <div class="inbox_people">
+        <div class="headind_srch">
+          <div class="recent_heading">
+            <h4>Chat</h4>
+          </div>
+          <div class="srch_bar">
+            <div class="stylish-input-group">
+              <mat-icon style="color: grey">search</mat-icon>
+              <input type="search" class="search-bar" [(ngModel)]="searchInput" id="searchInput"  placeholder="Suche">
+              <span class="input-group-addon">
                 <button type="button"> <i class="fa fa-search" aria-hidden="true"></i> </button>
                 </span> </div>
-            </div>
-          </div>
-          <div  class="inbox_chat">
-            <div class="chat_list active_chat" *ngFor="let user of friends| filter:searchInput, let i = index">
-              <div class="chat_people" (click)="saveSelectedFriend(user);getMessages()" style="font-size: 20px"> <a>{{ user.firstName }},  {{ user.lastName }}</a>
-                <div class="chat_ib">
-                  <div class="chat_img" *ngIf="user.image.picByte!=null"> <img class="friendImg" [src]="'data:image/jpeg;base64,'+user.image.picByte" width="50" height="50"></div>
-                    <div class="chat_img" *ngIf="user.image.picByte==null"><img class="friendImg" src="../../../../../assets/blankProfilePic.png"></div>
-
-
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <div class="mesgs">
-          <div class="msg_history">
-            <div class="incoming_msg">
-              <div class="incoming_msg_img"> <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil"> </div>
-              <div class="received_msg">
-                <div class="received_withd_msg">
+        <div  class="inbox_chat">
+          <div class="chat_list active_chat" *ngFor="let user of friends| filter:searchInput, let i = index">
+            <div class="chat_people" (click)="saveSelectedFriend(user);getMessages()" style="font-size: 20px"> <a>{{ user.firstName }},  {{ user.lastName }}</a>
+              <div class="chat_ib">
+                <div class="chat_img" *ngIf="user.image.picByte!=null"> <img class="friendImg" [src]="'data:image/jpeg;base64,'+user.image.picByte" width="50" height="50"></div>
+                <div class="chat_img" *ngIf="user.image.picByte==null"><img class="friendImg" src="../../../../../assets/blankProfilePic.png"></div>
+
 
               </div>
-            </div>
-            <div class="outgoing_msg">
-              <div class="sent_msg">
-
-            </div>
-            </div>
-            </div>
-          </div>
-          <div class="type_msg">
-            <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Schreibe eine Nachricht.." [(ngModel)]="sendmessage"/>
-              <button [disabled]="sendmessage==null" (click)="sendMessage()" class="msg_send_btn"><mat-icon>send</mat-icon></button>
             </div>
           </div>
         </div>
       </div>
+      <div class="mesgs">
+        <div class="msg_history">
+          <div class="incoming_msg" *ngFor="let x of messages" [class.received_msg]="x.userID==currUser"  [class.received_withd_msg]="x.userID==currUser"
+               [class.sent_msg]="x.userID!=currUser"   [class.outgoing_msg]="x.userID!=currUser">
+            <p>{{x.message}}</p>
+            <span class="time_date" *ngIf="currUser==x.userID else friendtemplate">Du</span>
+            <ng-template #friendtemplate><span class="time_date">{{selectedFriend.lastName}}, {{selectedFriend.firstName}}</span></ng-template>
+
+          </div>
+        </div>
+        <div class="type_msg">
+          <div class="input_msg_write">
+            <input type="text" class="write_msg" placeholder="Schreibe eine Nachricht.." [(ngModel)]="sendmessage"/>
+            <button [disabled]="sendmessage==null" (click)="sendMessage()" class="msg_send_btn"><mat-icon>send</mat-icon></button>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
-    </div></div>
-  </body>
-
-
-
-
+  </div></div>
+</body>

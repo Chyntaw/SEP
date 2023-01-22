@@ -1,14 +1,9 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {User} from "../../../models/roles/user/user";
-import {BettingRound} from "../../../models/betting-round";
-import {Table} from "../../../models/table";
 import {GetUserServiceService} from "../../../services/getUserService.service";
 import {FriendListService} from "../../../services/friend-list.service";
-import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
-import {Router} from "@angular/router";
-import {FreischaltungenService} from "../../../services/freischaltungen.service";
 import {ChatserviceService} from "../../../services/chatservice.service";
+import {Messages} from "../../../models/messages";
 
 @Component({
   selector: 'app-chat',
@@ -28,18 +23,15 @@ export class ChatComponent implements OnInit {
   me: User = new User();
   retrievedImage: string | any;
   searchInput!:any
-  logo: any
-  existsImage:boolean = false;
   friends: User [] | any;
   selectedFriend:User = new User();
-  userToShow!: User | any
-  searchUserMail: User = new User();
   retrieveResonse: any;
-  friendsPictures: string[] = [];
   base64Data: any;
   keinBildVorhanden: string = "data:image/jpeg;base64,null";
   sendmessage:any;
-
+  messages: Messages[] = new Array();
+  currUser:any;
+  intervalltimer:any;
 
 
   constructor(private getUserService: GetUserServiceService,
@@ -55,6 +47,7 @@ export class ChatComponent implements OnInit {
     this.me.lastName = String(sessionStorage.getItem("lastName"))
     this.me.eMail = String(sessionStorage.getItem("eMail"))
     this.me.id = String(sessionStorage.getItem("id"))
+    this.currUser= Number(sessionStorage.getItem("id"))
     this.getImage()
 
   }
@@ -82,17 +75,25 @@ export class ChatComponent implements OnInit {
   closeChat(value:boolean){
     console.log(value)
     this.newChatEvent.emit(value)
+    this.ngOnDestroy()
+
   }
-    saveSelectedFriend(friend:User){
-      this.selectedFriend=friend;
-      console.log(this.selectedFriend)
-    }
-    getMessages(){
-      this.chatservice.getMessage(Number(this.me.id),Number(this.selectedFriend.id)).subscribe(res=>{
-          console.log(res)
-      })
-    }
-    sendMessage(){
+  saveSelectedFriend(friend:User){
+    this.selectedFriend=friend;
+    console.log(this.selectedFriend)
+    this.intervalltimer=setInterval(() => {
+      this.getMessages();
+    }, 5 * 1000);
+
+
+  }
+  getMessages(){
+    this.chatservice.getMessage(Number(this.me.id),Number(this.selectedFriend.id)).subscribe(res=>{
+      console.log(res)
+      this.messages=res.messages;
+    })
+  }
+  sendMessage(){
     this.getUser()
       if(this.selectedFriend.id){
         this.chatservice.sendMessages(Number(this.me.id),Number(this.selectedFriend.id), this.sendmessage).subscribe(res=>{
@@ -104,4 +105,10 @@ export class ChatComponent implements OnInit {
       }
     }
 
+  ngOnDestroy() {
+    clearInterval(this.intervalltimer);
+
+  }
 }
+
+

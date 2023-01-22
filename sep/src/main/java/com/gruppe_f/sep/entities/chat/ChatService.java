@@ -105,7 +105,7 @@ public class ChatService {
         LocalTime time = LocalTime.now();
 
         for(String firstUserChatIDS : firstUserChatIDs){
-            if(firstUserChatIDS.equals(bettingRound.getMyChatID())){
+            if(firstUserChatIDS.equals(bettingRound.getMyChatID().toString())){
                 chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
                 List<Message> oldMessages = chat.getMessages();
 
@@ -115,6 +115,7 @@ public class ChatService {
                 oldMessages.add(newMessage);
                 chat.setMessages(oldMessages);
                 chatRepository.save(chat);
+
             }
         }
     }
@@ -128,7 +129,7 @@ public class ChatService {
         String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
 
         for(String firstUserChatIDS : firstUserChatIDs){
-            if(firstUserChatIDS.equals(bettingRound.getMyChatID())){
+            if(firstUserChatIDS.equals(bettingRound.getMyChatID().toString())){
                 chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
                 return chat;
             }

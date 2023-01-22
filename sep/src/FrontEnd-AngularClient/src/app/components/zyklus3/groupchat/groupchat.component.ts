@@ -5,6 +5,9 @@ import {FriendListService} from "../../../services/friend-list.service";
 import {Router} from "@angular/router";
 import {TipprundenserviceService} from "../../../services/tipprundenservice.service";
 import {BettingRound} from "../../../models/betting-round";
+import {Messages} from "../../../models/messages";
+import {ChatserviceService} from "../../../services/chatservice.service";
+import {any} from "pusher-js/types/src/core/utils/collections";
 
 @Component({
   selector: 'app-groupchat',
@@ -26,23 +29,30 @@ export class GroupchatComponent implements OnInit {
   searchInput!: any
   friends: User [] | any;
   mytiprounds: BettingRound[] | any;
-
+  sendmessage:any;
+  messages: Messages[] = new Array();
+  currUser:any;
+  intervalltimer:any;
+  selectedTipround: BettingRound = new BettingRound();
+  TiproundParticipant:User = new User();
 
 
   constructor(private getUserService: GetUserServiceService,
               private friendListService: FriendListService,
-              private router: Router, private tipprundenservice: TipprundenserviceService) {
+              private router: Router, private tipprundenservice: TipprundenserviceService, private chatservice:ChatserviceService) {
   }
 
   ngOnInit(): void {
     this.getUser()
     this.zeigeMeineTipprunden()
+    this.intervalltimer=0
   }
 
   getUser(): void {
     this.me.firstName = String(sessionStorage.getItem("firstName"))
     this.me.lastName = String(sessionStorage.getItem("lastName"))
     this.me.eMail = String(sessionStorage.getItem("eMail"))
+    this.currUser= Number(sessionStorage.getItem("id"))
 
 
 
@@ -53,6 +63,7 @@ export class GroupchatComponent implements OnInit {
   closeGroupChat(value: boolean) {
     console.log(value)
     this.newGroupChatEvent.emit(value)
+    this.ngOnDestroy()
   }
 
   zeigeMeineTipprunden() {
@@ -62,5 +73,50 @@ export class GroupchatComponent implements OnInit {
     })
 
   }
+  saveSelectedTipround(tipround:BettingRound){
+    this.selectedTipround=tipround;
+    console.log(this.selectedTipround)
+    this.intervalltimer=setInterval(() => {
+      this.getMessages();
+    }, 5 * 1000);
 
+
+
+  }
+  getMessages(){
+    this.chatservice.getGroupChatMessage(this.currUser,Number(this.selectedTipround.id)).subscribe(res=>{
+      console.log(res)
+      this.messages=res.messages;
+    })
+  }
+  sendMessage(){
+    this.getUser()
+    if(this.selectedTipround){
+      this.chatservice.sendGroupChatMessages(this.currUser,Number(this.selectedTipround.id), this.sendmessage).subscribe(res=>{
+        console.log(res)
+      })
+    }
+    else{
+      alert("Wähle zuerst eine Tipprunde aus!")
+    }
+  }
+  checkMyID(userID:number){
+    if(this.currUser==userID) return true;
+    else {
+      this.checkIDs(userID)
+      return false;
+    }
+
+  }
+  checkIDs(userID:number){
+
+    for(let x of this.selectedTipround.participants){
+      if(Number(x.id)==userID){
+        this.TiproundParticipant=x;
+      }
+    }
+  }
+  ngOnDestroy() {
+    clearInterval(this.intervalltimer);
+  }
 }

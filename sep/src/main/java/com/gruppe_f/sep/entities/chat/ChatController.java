@@ -56,7 +56,7 @@ public class ChatController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/chat/getGroupMessage/{userID}/{friendID}")
+    @GetMapping("/chat/getGroupMessage/{userID}/{tipprundenID}")
     public ResponseEntity<Chat> getGroupMessages(@PathVariable("userID") Long userID,
                                                           @PathVariable("tipprundenID") Long tipprundenID){
 
