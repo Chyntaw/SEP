@@ -1,5 +1,6 @@
 package com.gruppe_f.sep.entities.chat;
 
+import com.gruppe_f.sep.entities.BettingRound.BettingRound;
 import com.gruppe_f.sep.entities.BettingRound.BettingRoundRepository;
 import com.gruppe_f.sep.entities.Message.Message;
 import com.gruppe_f.sep.entities.Message.MessageRepository;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -43,13 +46,15 @@ public class ChatService {
         String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
         String[] secondUserChatIDs = secondUser.getMyChatIDs().split("-");
 
+        LocalTime time = LocalTime.now();
+
         for(String firstUserChatIDS : firstUserChatIDs){
             for(String secondUserChatIDS: secondUserChatIDs){
                 if(firstUserChatIDS.equals(secondUserChatIDS)){
                     chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
                     List<Message> oldMessages = chat.getMessages();
 
-                    Message newMessage = new Message(message, userID);
+                    Message newMessage = new Message(message, userID, time);
                     messageRepository.save(newMessage);
 
                     oldMessages.add(newMessage);
@@ -74,7 +79,6 @@ public class ChatService {
         for(String firstUserChatID : firstUserChatIDs){
             for(String secondUserChatID: secondUserChatIDs){
                 if(firstUserChatID.equals(secondUserChatID)){
-                    System.out.println(firstUserChatID + " " + secondUserChatID);
                     chat = chatRepository.findById(Long.parseLong(firstUserChatID)).get();
 
                     return chat;
@@ -88,30 +92,53 @@ public class ChatService {
 
 
 
-/*
+
     public void saveGroupMessage(Long userID, Long tipprundenID, String message){
 
-        Chat chat = chatRepository.findByUserAndTipprunde(userRepository.findUserById(userID), bettingRoundRepository.findById(tipprundenID).get());
+        User firstUser = userRepository.findUserById(userID);
+        BettingRound bettingRound = bettingRoundRepository.getById(tipprundenID);
 
-        List<Message> oldMessages = chat.getMessages();
+        Chat chat;
 
-        Message newMessage = new Message(message, userID);
-        messageRepository.save(newMessage);
+        String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
 
-        oldMessages.add(newMessage);
-        chat.setMessages(oldMessages);
-        chatRepository.save(chat);
+        LocalTime time = LocalTime.now();
+
+        for(String firstUserChatIDS : firstUserChatIDs){
+            if(firstUserChatIDS.equals(bettingRound.getMyChatID())){
+                chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
+                List<Message> oldMessages = chat.getMessages();
+
+                Message newMessage = new Message(message, userID, time);
+                messageRepository.save(newMessage);
+
+                oldMessages.add(newMessage);
+                chat.setMessages(oldMessages);
+                chatRepository.save(chat);
+            }
+        }
     }
 
-    public List<Message> getGroupMessage(Long userID, Long tipprundenID){
-        Chat chat = chatRepository.findByUserAndTipprunde(userRepository.findUserById(userID), bettingRoundRepository.findById(tipprundenID).get());
+    public Chat getGroupMessage(Long userID, Long tipprundenID){
+        User firstUser = userRepository.findUserById(userID);
+        BettingRound bettingRound = bettingRoundRepository.getById(tipprundenID);
 
-        return chat.getMessages();
+        Chat chat;
+
+        String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
+
+        for(String firstUserChatIDS : firstUserChatIDs){
+            if(firstUserChatIDS.equals(bettingRound.getMyChatID())){
+                chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
+                return chat;
+            }
+        }
+        return null;
     }
 
 
 
- */
+
 
 
 

@@ -94,9 +94,14 @@ export class ChatComponent implements OnInit {
     }
     sendMessage(){
     this.getUser()
-      this.chatservice.sendMessages(Number(this.me.id),Number(this.selectedFriend.id), this.sendmessage).subscribe(res=>{
-        console.log(res)
-      })
+      if(this.selectedFriend.id){
+        this.chatservice.sendMessages(Number(this.me.id),Number(this.selectedFriend.id), this.sendmessage).subscribe(res=>{
+          console.log(res)
+        })
+      }
+      else{
+        alert("Wähle zuerst einen Freund aus!")
+      }
     }
 
 }

@@ -4,6 +4,8 @@ import com.gruppe_f.sep.businesslogic.TipHelper;
 import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.entities.alias.Alias;
 import com.gruppe_f.sep.entities.bets.Bets;
+import com.gruppe_f.sep.entities.chat.Chat;
+import com.gruppe_f.sep.entities.chat.ChatRepository;
 import com.gruppe_f.sep.entities.friends.FriendService;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
@@ -35,8 +37,11 @@ public class BettingRoundController {
     private LigaRepository ligaRepo;
     private MailSenderService mailService;
     private FriendService friendService;
+    private final ChatRepository chatRepository;
+
     @Autowired
-    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo, MailSenderService mailService, FriendService friendService) {
+    public BettingRoundController (BettingRoundRepository repo, UserRepository userRepo, LigaRepository ligaRepo, DateRepository dateRepo, LeagueDataRepository leagueDataRepo, MailSenderService mailService, FriendService friendService,
+                                   ChatRepository chatRepository) {
         this.repo = repo;
         this.userRepo = userRepo;
         this.leagueDataRepo = leagueDataRepo;
@@ -44,6 +49,7 @@ public class BettingRoundController {
         this.ligaRepo = ligaRepo;
         this.mailService = mailService;
         this.friendService= friendService;
+        this.chatRepository = chatRepository;
     }
 
 
@@ -57,8 +63,15 @@ public class BettingRoundController {
                                                 @RequestParam("corrWinnerPoints")int corrWinnerPoints,
                                                 @RequestParam(value = "password", required = false)String password) {
 
-        BettingRound bettingRound = new BettingRound(name, ownerID, ligaID, isPrivate, corrScorePoints, corrGoalPoints, corrWinnerPoints, password, false);
+
+
+        Chat chat = new Chat(true);
+        chatRepository.save(chat);
+
+        BettingRound bettingRound = new BettingRound(name, ownerID, ligaID, isPrivate, corrScorePoints, corrGoalPoints, corrWinnerPoints, password, false, chat.getId());
         repo.save(bettingRound);
+
+
         addParticipant(ownerID, bettingRound.getId(), "");
         return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.CREATED);
     }
@@ -75,6 +88,12 @@ public class BettingRoundController {
         if(bettingRound.getPassword().equals("undefined")  || bettingRound.getOwnerID() == userid) {
             participants.add(newParticipant);
             bettingRound.getScoresList().add(new Score(0, newParticipant));
+
+
+            newParticipant.setMyChatIDs(newParticipant.getMyChatIDs() + bettingRound.getMyChatID() + "-");
+            userRepo.save(newParticipant);
+
+
             return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
         } else {
             //If User submits either no or a wrong Password, HttpStatus Forbidden
@@ -82,6 +101,14 @@ public class BettingRoundController {
             //Otherwise add User to Participants and save to Repo.
             participants.add(newParticipant);
             bettingRound.getScoresList().add(new Score(0, newParticipant));
+
+            Chat chat = new Chat(true);
+            chatRepository.save(chat);
+
+            newParticipant.setMyChatIDs(newParticipant.getMyChatIDs() + chat.getId() + "-");
+            userRepo.save(newParticipant);
+
+
             return new ResponseEntity<>(repo.save(bettingRound), HttpStatus.OK);
         }
     }

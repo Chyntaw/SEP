@@ -45,11 +45,11 @@ public class ChatController {
 
 
 
-/*
-    @GetMapping("/chat/postGroupMessage/{userID}/{tipprundenID}/{message}")
+
+    @PostMapping("/chat/postGroupMessage/{userID}/{tipprundenID}")
     public ResponseEntity<?> saveGroupMessage(@PathVariable("userID") Long userID,
                                               @PathVariable("tipprundenID") Long tipprundenID,
-                                              @PathVariable("message") String message){
+                                              @RequestParam("message") String message){
 
         chatService.saveGroupMessage(userID, tipprundenID, message);
 
@@ -57,14 +57,14 @@ public class ChatController {
     }
 
     @GetMapping("/chat/getGroupMessage/{userID}/{friendID}")
-    public ResponseEntity<List<Message>> getGroupMessages(@PathVariable("userID") Long userID,
+    public ResponseEntity<Chat> getGroupMessages(@PathVariable("userID") Long userID,
                                                           @PathVariable("tipprundenID") Long tipprundenID){
 
         return new ResponseEntity<>(chatService.getGroupMessage(userID, tipprundenID), HttpStatus.OK);
     }
 
 
- */
+
 
 
 

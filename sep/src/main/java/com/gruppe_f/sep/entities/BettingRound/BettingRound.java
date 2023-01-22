@@ -55,11 +55,13 @@ public class BettingRound {
     private Long ligaID;
     private String password;
 
+
+    private Long myChatID;
     public BettingRound() {}
 
     public BettingRound(String name, Long ownerID, Long ligaID, boolean isprivate,
                         int corrScorePoints, int corrGoalPoints, int corrWinnerPoints, String password,
-                        boolean isResetted) {
+                        boolean isResetted, Long myChatID) {
         this.name = name;
         this.ownerID = ownerID;
         this.ligaID = ligaID;
@@ -69,11 +71,17 @@ public class BettingRound {
         this.corrWinnerPoints = corrWinnerPoints;
         this.password = password;
         this.isResetted = isResetted;
+        this.myChatID = myChatID;
     }
 
 
+    public Long getMyChatID() {
+        return myChatID;
+    }
 
-
+    public void setMyChatID(Long myChatID) {
+        this.myChatID = myChatID;
+    }
 
     public Long getId() {
         return id;
