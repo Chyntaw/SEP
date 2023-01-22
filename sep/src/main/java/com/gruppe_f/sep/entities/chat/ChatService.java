@@ -41,7 +41,7 @@ public class ChatService {
         Chat chat;
 
         String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
-        String[] secondUserChatIDs = firstUser.getMyChatIDs().split("-");
+        String[] secondUserChatIDs = secondUser.getMyChatIDs().split("-");
 
         for(String firstUserChatIDS : firstUserChatIDs){
             for(String secondUserChatIDS: secondUserChatIDs){
@@ -69,12 +69,13 @@ public class ChatService {
         Chat chat;
 
         String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
-        String[] secondUserChatIDs = firstUser.getMyChatIDs().split("-");
+        String[] secondUserChatIDs = secondUser.getMyChatIDs().split("-");
 
-        for(String firstUserChatIDS : firstUserChatIDs){
-            for(String secondUserChatIDS: secondUserChatIDs){
-                if(firstUserChatIDS.equals(secondUserChatIDS)){
-                    chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
+        for(String firstUserChatID : firstUserChatIDs){
+            for(String secondUserChatID: secondUserChatIDs){
+                if(firstUserChatID.equals(secondUserChatID)){
+                    System.out.println(firstUserChatID + " " + secondUserChatID);
+                    chat = chatRepository.findById(Long.parseLong(firstUserChatID)).get();
 
                     return chat;
                 }

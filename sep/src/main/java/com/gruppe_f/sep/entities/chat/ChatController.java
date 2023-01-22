@@ -5,10 +5,7 @@ import com.gruppe_f.sep.entities.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,10 +24,10 @@ public class ChatController {
     }
 
 
-    @GetMapping("/chat/postMessage/{userID}/{friendID}/{message}")
+    @PostMapping("/chat/postMessage/{userID}/{friendID}")
     public ResponseEntity<?> saveMessage(@PathVariable("userID") Long userID,
                                          @PathVariable("friendID") Long friendID,
-                                         @PathVariable("message") String message){
+                                         @RequestParam("message") String message){
 
         chatService.saveMessage(userID, friendID, message);
 

@@ -12,9 +12,12 @@ export class ChatserviceService {
   constructor(private httpClient: HttpClient) { }
 
 
-  sendMessages(userID:number, friendID:number,message:string) {
-    console.log(userID,friendID,message)
-    return this.httpClient.get(`${this.databaseURL+'/chat/postMessage/'+userID+'/'+friendID+'/'+message}`)
+  sendMessages(userID:number, friendID:number, message:string) {
+
+    const formData =new FormData();
+    formData.append('message', message)
+
+    return this.httpClient.post(`${this.databaseURL+'/chat/postMessage/'+userID+'/'+friendID}`, formData)
   }
   getMessage(userID:number, friendID:number):Observable<any>{
     return this.httpClient.get(`${this.databaseURL+'/chat/getMessage/'+userID+'/'+friendID}`)

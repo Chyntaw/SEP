@@ -1,6 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import Pusher from 'pusher-js';
 import {User} from "../../../models/roles/user/user";
 import {BettingRound} from "../../../models/betting-round";
 import {Table} from "../../../models/table";
