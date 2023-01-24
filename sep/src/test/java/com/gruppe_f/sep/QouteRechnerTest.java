@@ -39,6 +39,8 @@ public class QouteRechnerTest {
         Liga liga = new Liga("TestLiga", null);
         ligaRepository.save(liga);
 
+        System.out.println(ligaRepository.findLigaByid(1L).getName());
+
         SystemDate systemDate = new SystemDate("4000-01-01");
         dateRepository.save(systemDate);
 
@@ -53,13 +55,14 @@ public class QouteRechnerTest {
         leagueData1.setLigaID(1L);
         leagueDataRepository.save(leagueData1);
 
+
         // 2
         LeagueData leagueData2 = new LeagueData();
         leagueData2.setPlayer1("x");
         leagueData2.setPlayer2("b");
         leagueData2.setResult("5-2");
         leagueData2.setDate("1000-01-07");
-        leagueData2.setLigaID(2L);
+        leagueData2.setLigaID(1L);
         leagueDataRepository.save(leagueData2);
 
         // 3
@@ -68,7 +71,7 @@ public class QouteRechnerTest {
         leagueData3.setPlayer2("c");
         leagueData3.setResult("3-2");
         leagueData3.setDate("1000-01-11");
-        leagueData3.setLigaID(3L);
+        leagueData3.setLigaID(1L);
         leagueDataRepository.save(leagueData3);
 
         //4
@@ -77,7 +80,7 @@ public class QouteRechnerTest {
         leagueData4.setPlayer2("y");
         leagueData4.setResult("3-2");
         leagueData4.setDate("1000-01-11");
-        leagueData4.setLigaID(4L);
+        leagueData4.setLigaID(1L);
         leagueDataRepository.save(leagueData4);
 
         //5
@@ -85,8 +88,8 @@ public class QouteRechnerTest {
         leagueData5.setPlayer1("y");
         leagueData5.setPlayer2("x");
         leagueData5.setResult("0-0");
-        leagueData5.setDate("2000-01-11");
-        leagueData5.setLigaID(5L);
+        leagueData5.setDate("1000-01-11");
+        leagueData5.setLigaID(1L);
         leagueDataRepository.save(leagueData5);
 
         // 6
@@ -94,8 +97,8 @@ public class QouteRechnerTest {
         leagueData6.setPlayer1("y");
         leagueData6.setPlayer2("c");
         leagueData6.setResult("3-2");
-        leagueData6.setDate("2000-01-11");
-        leagueData6.setLigaID(6L);
+        leagueData6.setDate("1000-01-11");
+        leagueData6.setLigaID(1L);
         leagueDataRepository.save(leagueData6);
 
         //7
@@ -103,8 +106,8 @@ public class QouteRechnerTest {
         leagueData7.setPlayer1("r");
         leagueData7.setPlayer2("c");
         leagueData7.setResult("2-5");
-        leagueData7.setDate("2000-01-11");
-        leagueData7.setLigaID(7L);
+        leagueData7.setDate("1000-01-11");
+        leagueData7.setLigaID(1L);
         leagueDataRepository.save(leagueData7);
 
         //8
@@ -112,14 +115,11 @@ public class QouteRechnerTest {
         leagueData8.setPlayer1("c");
         leagueData8.setPlayer2("y");
         leagueData8.setResult("0-0");
-        leagueData8.setDate("2000-01-11");
-        leagueData8.setLigaID(8L);
+        leagueData8.setDate("1000-01-11");
+        leagueData8.setLigaID(1L);
         leagueDataRepository.save(leagueData8);
 
 
-        QouteRechner qouteRechner = new QouteRechner(dateRepository, leagueDataRepository);
-
-        double[] ergebnis = {2.0, 4.0, 3.0};
 
         //test wenn spiel zwischen anderen Spielen stattfindet
 
@@ -127,16 +127,13 @@ public class QouteRechnerTest {
         leagueData9.setPlayer1("x");
         leagueData9.setPlayer2("c");
         leagueData9.setResult("0-0");
-        leagueData9.setDate("300-01-11");
-        leagueData9.setLigaID(9L);
+        leagueData9.setDate("2000-01-11");
+        leagueData9.setLigaID(1L);
         leagueDataRepository.save(leagueData9);
 
+        QouteRechner qouteRechner = new QouteRechner(dateRepository, leagueDataRepository);
 
-        double [] test = qouteRechner.qouteBerechnen(leagueData9.getPlayer1(), leagueData9.getPlayer2(), leagueData9.getDate(), leagueData9.getId());
-
-        System.out.println(test[0]);            //1.2
-        System.out.println(test[1]);            //3.0
-        System.out.println(test[2]);            //2.1
+        double[] ergebnis = {2.0, 4.0, 3.0};
 
 
 
