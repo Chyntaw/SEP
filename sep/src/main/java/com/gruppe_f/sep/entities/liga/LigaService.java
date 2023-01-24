@@ -1,8 +1,10 @@
 package com.gruppe_f.sep.entities.liga;
 
 import com.gruppe_f.sep.date.DateRepository;
+import com.gruppe_f.sep.entities.bets.Bets;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.businesslogic.FileUploadUtil;
+import com.gruppe_f.sep.entities.table.TableEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 import static com.gruppe_f.sep.businesslogic.CSV_Reader.csv_read;
 import static com.gruppe_f.sep.businesslogic.FileUploadUtil.convertMultiPartToFile;
 import static com.gruppe_f.sep.businesslogic.GenerellLogisch.compareDates;
+import static com.gruppe_f.sep.entities.table.TableEntryService.calculateTable;
 import static java.util.Map.entry;
 
 @RestController
@@ -127,4 +130,18 @@ public class LigaService {
         Liga liga = ligaRepo.findLigaByid(id);
         return new ResponseEntity<>(liga, HttpStatus.OK);
     }
+
+    @GetMapping("/LigaTabelle/{id}")
+    public ResponseEntity<?> getLigaTabelle(@PathVariable("id")Long ligaID) {
+
+        String currDate = dateRepo.findAll().get(0).getLocalDate();
+
+        List<LeagueData> leagueDataList = ligaRepo.findLigaByid(ligaID).getLeagueData().stream()
+                .filter(x -> compareDates(x.getDate(), currDate) <= 0).collect(Collectors.toList());
+
+        List<TableEntry> table = calculateTable(leagueDataList);
+
+        return new ResponseEntity<>(table, HttpStatus.OK);
+    }
+
 }

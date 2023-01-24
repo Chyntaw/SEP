@@ -81,7 +81,6 @@ export class MyProfileComponent implements OnInit {
         this.base64Data = this.retrieveResonse.picByte;
         this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
       }
-      console.log(typeof(this.retrievedImage))
     })
   }
 
@@ -94,7 +93,6 @@ export class MyProfileComponent implements OnInit {
         //this.getPicsOfFriends()
       });
     }
-    console.log(this.friends);
   }
 
 
@@ -117,7 +115,6 @@ export class MyProfileComponent implements OnInit {
         if(this.retrieveResonse.picByte != null) {
         this.base64Data = this.retrieveResonse.picByte;
         this.friendsPictures.push('data:image/jpeg;base64,' + this.base64Data);
-        console.log(this.friendsPictures)
         } else {
           this.friendsPictures.push("null");
         }
@@ -226,20 +223,21 @@ export class MyProfileComponent implements OnInit {
         labels: names,
         datasets: [
           {
-            label: "Tips per round",
+            label: "Tipps pro Runde",
             data: tipAmmount,
-            backgroundColor: 'blue'
           },
         ]
       },
       options: {
-        aspectRatio:3,
         indexAxis: "y"
       }
     });
   }
 
   createPieChart(){
+
+    if(this.PieChart)
+      this.PieChart.destroy()
 
     var teams:String[] = []
     var points:Number[] = []
@@ -280,8 +278,6 @@ export class MyProfileComponent implements OnInit {
     let userid = Number(sessionStorage.getItem('id'))
     this.tipprundenservice.getPointsPerTeam(bettingroundID, userid).subscribe(res => {
       this.PieData = res;
-      console.log(res)
-      console.log(typeof(res))
       this.createPieChart();
     })
   }

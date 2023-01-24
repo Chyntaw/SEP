@@ -74,6 +74,50 @@
         </div>
       </div>
       </div>
+
+    <div class="card">
+      <h2>Tabelle</h2>
+      <div class="float-start">
+        <h4>Aktuelle Tabelle der Liga</h4>
+        <mat-form-field appearance="fill">
+          <mat-label>Liga wählen</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let x of ligen" [value]="x.name" (click)="getTableByLigaID(x.id)">
+              {{x.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div> <table *ngIf="LigaTable" class="myTippTable">
+        <thead>
+        <th>Pl.</th>
+        <th>Team</th>
+        <th>Spiele</th>
+        <th>S</th>
+        <th>U</th>
+        <th>N</th>
+        <th>+/-</th>
+        <th>Diff</th>
+        <th>Punkte</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let entry of LigaTable, let i = index">
+          <td *ngIf="i+1 ==1" bgcolor="#6b8e23">{{i+1}}</td>
+          <td *ngIf="i+1 > LigaTable.length-3" bgcolor="#dc143c" >{{i+1}}</td>
+          <td *ngIf="(i+1 != 1) &&!(i+1 > LigaTable.length-3)">{{i+1}}</td>
+          <td>{{entry.team}}</td>
+          <td>{{entry.anzahlSpiele}}</td>
+          <td>{{entry.siege}}</td>
+          <td>{{entry.unentschieden}}</td>
+          <td>{{entry.verloren}}</td>
+          <td>{{entry.toreGeschossen+":"+entry.toreKassiert}}</td>
+          <td>{{entry.toreGeschossen-entry.toreKassiert}}</td>
+          <td>{{entry.punkte}}</td>
+        </tr>
+        </tbody>
+      </table></div>
+    </div>
+
   </div>
   <div class="rightcolumn">
     <div class="usercard">

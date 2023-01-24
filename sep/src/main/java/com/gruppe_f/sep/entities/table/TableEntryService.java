@@ -3,10 +3,7 @@ package com.gruppe_f.sep.entities.table;
 import com.gruppe_f.sep.entities.bets.Bets;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class TableEntryService {
 
@@ -56,7 +53,7 @@ public class TableEntryService {
 
             //If not of Type Bet or LeagueData, throw Exception
             } else {
-                throw new IllegalArgumentException("Type of List must be 'Bets' or 'LeagueData'");
+                throw new IllegalArgumentException("List must contain instances of 'Bets' or 'LeagueData'");
             }
 
             //Update Table with new Entries

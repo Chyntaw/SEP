@@ -11,6 +11,7 @@ import {BettingRound} from "../../../models/betting-round";
 import {error} from "@angular/compiler-cli/src/transformers/util";
 import {SystemDatum} from "../../../models/SystemDatum";
 import {ChangeDateServiceService} from "../../../services/changeDateService.service";
+import {Table} from "../../../models/table";
 
 @Component({
   selector: 'app-show-league-data',
@@ -33,6 +34,8 @@ export class ShowLeagueDataComponent implements OnInit {
   mytiprounds: BettingRound[] | any;
   ligaNamen: string[] = [];
   tempLiga: Liga[] | any;
+
+  LigaTable: Table[] | any
 
 
 
@@ -241,6 +244,15 @@ export class ShowLeagueDataComponent implements OnInit {
   getNext(curr:string) {
     return String(Number(curr)+1)
   }
+
+  getTableByLigaID(id:number) {
+    this.showleagueservice.getTableByLigaID(id).subscribe(res => {
+      this.LigaTable = res;
+    })
+  }
+
 }
+
+
 
 //Links: ¹https://stackoverflow.com/questions/41465542/angular2-input-field-to-accept-only-numbers

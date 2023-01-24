@@ -184,7 +184,7 @@ public class BettingRoundController {
                     pointsPerTeam.put(team2, currPoints + currBet.getScore());
                 }
             }
-            if((winner == 0) && (currBet.getScore() == round.getCorrGoalPoints())) {
+            if((winner == 0) && (currBet.getScore() == round.getCorrScorePoints())) {
                 currPoints = pointsPerTeam.get(team1);
                 pointsPerTeam.put(team1, currPoints + currBet.getScore());
 
@@ -502,17 +502,17 @@ public class BettingRoundController {
     @GetMapping("/getUserBettingTable/{userID}/{bettingroundID}")
     public ResponseEntity<?> getUserBettingTable(@PathVariable("userID")Long userID, @PathVariable("bettingroundID")Long bettingroundID) {
 
-       Long ligaID = repo.findById(bettingroundID).get().getLigaID();
+       //Long ligaID = repo.findById(bettingroundID).get().getLigaID();
 
-       List<LeagueData> leagueDataList = ligaRepo.findLigaByid(ligaID).getLeagueData();
+       //List<LeagueData> leagueDataList = ligaRepo.findLigaByid(ligaID).getLeagueData();
 
+       //System.out.println(leagueDataList.size());
 
-        System.out.println(leagueDataList.size());
 
        List<Bets> betsList = repo.findById(bettingroundID).get().getBetsList().stream()
                .filter(x -> x.getUserID() == userID).collect(Collectors.toList());
 
-       List<TableEntry> table = calculateTable(leagueDataList);
+       List<TableEntry> table = calculateTable(betsList);
 
        return new ResponseEntity<>(table, HttpStatus.OK);
     }

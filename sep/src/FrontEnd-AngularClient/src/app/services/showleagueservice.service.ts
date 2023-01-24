@@ -56,4 +56,10 @@ export class ShowleagueserviceService {
     return this.http.get(`${this.databaseURL+"leagueData/getOddsForLiga/"+id}`)
   }
 
+  getTableByLigaID(id:number) {
+    return this.http.get(`${this.databaseURL+"LigaTabelle/"+id}`)
+  }
+
+
+
 }
