@@ -4,6 +4,7 @@ import com.gruppe_f.sep.date.DateRepository;
 import com.gruppe_f.sep.date.SystemDate;
 import com.gruppe_f.sep.entities.leagueData.LeagueData;
 import com.gruppe_f.sep.entities.leagueData.LeagueDataRepository;
+import com.gruppe_f.sep.entities.liga.Liga;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ public class TipHelper {
 
     private  DateRepository dateRepository;
     private LeagueDataRepository leagueDataRepository;
+
+
 
     @Autowired
     public TipHelper(DateRepository dateRepository, LeagueDataRepository leagueDataRepository) {
@@ -33,6 +36,7 @@ public class TipHelper {
         // create lists for calculation
         List<LeagueData> toCalculateList1 = new ArrayList<>();
         List<LeagueData> toCalculateList2 = new ArrayList<>();
+
 
         // get players
         String player1 = leagueDataRepository.findByid(id).getPlayer1();
@@ -166,7 +170,7 @@ public class TipHelper {
     }
 
     // inputs are result array
-    public int[] differenceDeleter(int[] result) {
+    private int[] differenceDeleter(int[] result) {
 
         // just double values if only one match exists since other player has 2 matches
         if(result[2] == 1) {
