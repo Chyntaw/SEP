@@ -34,8 +34,8 @@
           <div class="incoming_msg" *ngFor="let x of messages" [class.received_msg]="x.userID==currUser"  [class.received_withd_msg]="x.userID==currUser"
                [class.sent_msg]="x.userID!=currUser"   [class.outgoing_msg]="x.userID!=currUser">
             <p>{{x.message}}</p>
-            <span class="time_date" *ngIf="checkMyID(x.userID)==true else friendtemplate">Du</span>
-            <ng-template #friendtemplate><span class="time_date">{{TiproundParticipant.lastName}}, {{TiproundParticipant.firstName }}</span></ng-template>
+            <span class="time_date">{{x.name}}</span>
+
 
           </div>
         </div>

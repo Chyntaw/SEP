@@ -16,11 +16,12 @@ public class Message {
 
     private LocalTime localTime;
 
-
-    public Message(String message, Long userID, LocalTime localTime) {
+    private String name;
+    public Message(String message, Long userID, LocalTime localTime, String name) {
         this.message = message;
         this.userID = userID;
         this.localTime = localTime;
+        this.name = name;
     }
 
     public Message() {
@@ -57,5 +58,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -54,7 +54,8 @@ public class ChatService {
                     chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
                     List<Message> oldMessages = chat.getMessages();
 
-                    Message newMessage = new Message(message, userID, time);
+                    String name = firstUser.getLastName() + ", " + firstUser.getFirstName();
+                    Message newMessage = new Message(message, userID, time, name);
                     messageRepository.save(newMessage);
 
                     oldMessages.add(newMessage);
@@ -109,7 +110,8 @@ public class ChatService {
                 chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
                 List<Message> oldMessages = chat.getMessages();
 
-                Message newMessage = new Message(message, userID, time);
+                String name = firstUser.getLastName() + ", " + firstUser.getFirstName();
+                Message newMessage = new Message(message, userID, time, name);
                 messageRepository.save(newMessage);
 
                 oldMessages.add(newMessage);

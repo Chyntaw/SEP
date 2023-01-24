@@ -7,7 +7,6 @@ import {TipprundenserviceService} from "../../../services/tipprundenservice.serv
 import {BettingRound} from "../../../models/betting-round";
 import {Messages} from "../../../models/messages";
 import {ChatserviceService} from "../../../services/chatservice.service";
-import {any} from "pusher-js/types/src/core/utils/collections";
 
 @Component({
   selector: 'app-groupchat',
@@ -87,6 +86,7 @@ export class GroupchatComponent implements OnInit {
     this.chatservice.getGroupChatMessage(this.currUser,Number(this.selectedTipround.id)).subscribe(res=>{
       console.log(res)
       this.messages=res.messages;
+      this.checkMyID(this.currUser)
     })
   }
   sendMessage(){
