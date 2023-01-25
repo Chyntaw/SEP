@@ -50,7 +50,7 @@ public class TipHelperTest {
         leagueData1.setPlayer1("x");
         leagueData1.setPlayer2("a");
         leagueData1.setResult("1-1");
-        leagueData1.setDate("1000-01-01");
+        leagueData1.setDate("0001-01-01");
         leagueData1.setLigaID(1L);
         leagueDataRepository.save(leagueData1);
 
@@ -59,7 +59,7 @@ public class TipHelperTest {
         leagueData2.setPlayer1("x");
         leagueData2.setPlayer2("b");
         leagueData2.setResult("5-2");
-        leagueData2.setDate("1000-01-07");
+        leagueData2.setDate("0001-01-07");
         leagueData2.setLigaID(1L);
         leagueDataRepository.save(leagueData2);
 
@@ -68,7 +68,7 @@ public class TipHelperTest {
         leagueData3.setPlayer1("y");
         leagueData3.setPlayer2("c");
         leagueData3.setResult("3-2");
-        leagueData3.setDate("1000-01-11");
+        leagueData3.setDate("0001-01-11");
         leagueData3.setLigaID(1L);
         leagueDataRepository.save(leagueData3);
 
