@@ -223,6 +223,7 @@ export class MyProfileComponent implements OnInit {
         labels: names,
         datasets: [
           {
+            maxBarThickness: 50,
             label: "Tipps pro Runde",
             data: tipAmmount,
           },
