@@ -14,10 +14,10 @@ export class MinigameComponent implements OnInit {
   AbstandOben="auto";
   AbstandUnten="auto";
   Anzeigen="block";
-  BildAnzeigen="none";
+  disableStartButton:boolean=false;
+
   money:any;
   me: User = new User();
-
 
   constructor(private router:Router,private getUserService: GetUserServiceService) { }
 
@@ -26,12 +26,12 @@ export class MinigameComponent implements OnInit {
     this.getMoney()
   }
   getUser(): void {
-
     this.me.firstName = String(sessionStorage.getItem("firstName"))
     this.me.lastName = String(sessionStorage.getItem("lastName"))
     this.me.eMail = String(sessionStorage.getItem("eMail"))
   }
   miniGameStarten(){
+    this.disableStartButton=true;
     this.changePosition()
     setInterval(() => {
       this.changePosition();
@@ -39,7 +39,7 @@ export class MinigameComponent implements OnInit {
   }
 
   changePosition(){
-    this.BildAnzeigen="block"
+
     this.Anzeigen="block";
     this.AbstandLinks= Math.floor((Math.random() * 1000) + 1)+"px"
     this.AbstandRechts=Math.floor((Math.random() * 1000) + 1)+"px"
@@ -52,13 +52,14 @@ export class MinigameComponent implements OnInit {
 
   hideButton(){
     this.Anzeigen="none";
-
   }
+
   logout() {
     sessionStorage.clear()
     this.router.navigate(['/login'])
   }
   miniGameStoppen(){
+    this.disableStartButton=false;
     window.location.reload()
   }
   getMoney(){
@@ -69,9 +70,9 @@ export class MinigameComponent implements OnInit {
   }
   increaseMoney(){
     this.money=this.money+20
+    this.Anzeigen="none";
     this.getUserService.increaseMoney(this.me.eMail).subscribe(res=>{
       console.log(res)
-
     })
 }
 }

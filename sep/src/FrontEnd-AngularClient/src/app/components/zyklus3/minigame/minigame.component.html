@@ -10,21 +10,18 @@
     <div class="card">
       <h2>MiniGame</h2>
       <button id="start" class="btn1"
-              (click)="miniGameStarten()">Minigame starten</button>
+              (click)="miniGameStarten()" [disabled]="disableStartButton">Minigame starten</button>
       <button id="end" class="btn2"
               (click)="miniGameStoppen()">Minigame stoppen</button>
 
       <button  class="ball" id="spiel" [ngStyle]="{
-'margin-left':AbstandLinks,'margin-right':AbstandRechts,
- 'margin-bottom':AbstandUnten, 'margin-top':AbstandOben,
-  'display':Anzeigen}"
-       (click)="increaseMoney()"><img class="bild" src="assets/img_1.png" [ngStyle]="{'display':BildAnzeigen}"></button>
-
-
-
+               'margin-left':AbstandLinks,'margin-right':AbstandRechts,
+               'margin-bottom':AbstandUnten, 'margin-top':AbstandOben,
+               'display':Anzeigen}"
+               (click)="increaseMoney()">
+        <img class="bild" src="assets/img_1.png"></button>
     </div>
   </div>
-
 
   <div class="rightcolumn">
     <div class="usercard">
@@ -33,7 +30,4 @@
     </div>
   </div>
 </div>
-
-
-
 </body>
