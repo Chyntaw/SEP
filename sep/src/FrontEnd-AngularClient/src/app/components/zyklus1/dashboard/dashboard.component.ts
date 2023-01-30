@@ -38,4 +38,5 @@ export class DashboardComponent implements OnInit {
   GroupChat(){
     this.showGroupChat=true;
   }
+
 }

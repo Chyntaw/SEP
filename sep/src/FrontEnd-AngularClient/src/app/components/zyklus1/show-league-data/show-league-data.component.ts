@@ -44,7 +44,7 @@ export class ShowLeagueDataComponent implements OnInit {
   constructor(private showleagueservice: ShowleagueserviceService,
               private http: HttpClient,
               private updateleaguedataservice: UpdateleaguedataService,
-              private dashboardRouter: Router,
+              private dashboardRouter: Router, private router: Router,
               private tipprundenService: TipprundenserviceService,
               private changeDateService: ChangeDateServiceService,
               private tipprundenservice: TipprundenserviceService) {
@@ -90,7 +90,10 @@ export class ShowLeagueDataComponent implements OnInit {
       console.log(this.ligenFuerTipprunde)
     })
   }
-
+  logout() {
+    sessionStorage.clear()
+    this.router.navigate(['/login'])
+  }
   zeigeLigaDaten(id: number) {
     this.showleagueservice.getAll(id).subscribe(res => {
       this.data = res

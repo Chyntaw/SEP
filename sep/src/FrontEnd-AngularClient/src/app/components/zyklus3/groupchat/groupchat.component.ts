@@ -60,9 +60,9 @@ export class GroupchatComponent implements OnInit {
 
   @Output() newGroupChatEvent = new EventEmitter<boolean>();
   closeGroupChat(value: boolean) {
+    this.ngOnDestroy()
     console.log(value)
     this.newGroupChatEvent.emit(value)
-    this.ngOnDestroy()
   }
 
   zeigeMeineTipprunden() {
@@ -73,20 +73,19 @@ export class GroupchatComponent implements OnInit {
 
   }
   saveSelectedTipround(tipround:BettingRound){
+    clearInterval(this.intervalltimer);
     this.selectedTipround=tipround;
     console.log(this.selectedTipround)
     this.intervalltimer=setInterval(() => {
       this.getMessages();
     }, 5 * 1000);
 
-
-
   }
   getMessages(){
     this.chatservice.getGroupChatMessage(this.currUser,Number(this.selectedTipround.id)).subscribe(res=>{
       console.log(res)
       this.messages=res.messages;
-      this.checkMyID(this.currUser)
+
     })
   }
   sendMessage(){
@@ -94,28 +93,14 @@ export class GroupchatComponent implements OnInit {
     if(this.selectedTipround){
       this.chatservice.sendGroupChatMessages(this.currUser,Number(this.selectedTipround.id), this.sendmessage).subscribe(res=>{
         console.log(res)
+        this.sendmessage=null;
       })
     }
     else{
       alert("Wähle zuerst eine Tipprunde aus!")
     }
   }
-  checkMyID(userID:number){
-    if(this.currUser==userID) return true;
-    else {
-      this.checkIDs(userID)
-      return false;
-    }
 
-  }
-  checkIDs(userID:number){
-
-    for(let x of this.selectedTipround.participants){
-      if(Number(x.id)==userID){
-        this.TiproundParticipant=x;
-      }
-    }
-  }
   ngOnDestroy() {
     clearInterval(this.intervalltimer);
   }

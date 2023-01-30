@@ -7,7 +7,11 @@
 
 
 }
+.mat-icon {
+  vertical-align: middle;
+  horiz-align: center;
 
+}
 .login-container{
   margin-left: 23%;
 
@@ -248,3 +252,15 @@ p {
   border-radius: 5%;
 }
 
+.cuteButton {
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  width:fit-content;
+}
+
+.cuteButton:hover {
+  background-color: #333;
+  color: white;
+
+}

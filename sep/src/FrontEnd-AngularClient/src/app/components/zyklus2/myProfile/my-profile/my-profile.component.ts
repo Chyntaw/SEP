@@ -282,4 +282,8 @@ export class MyProfileComponent implements OnInit {
       this.createPieChart();
     })
   }
+  logout() {
+    sessionStorage.clear()
+    this.router.navigate(['/login'])
+  }
 }

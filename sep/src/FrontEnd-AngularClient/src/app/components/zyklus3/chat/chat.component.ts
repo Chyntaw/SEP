@@ -66,7 +66,6 @@ export class ChatComponent implements OnInit {
     if (email) {
       this.friendListService.showFriends(email).subscribe(data => {
         this.friends = data;
-        //this.getPicsOfFriends()
       });
     }
   }
@@ -76,9 +75,12 @@ export class ChatComponent implements OnInit {
     console.log(value)
     this.newChatEvent.emit(value)
     this.ngOnDestroy()
-
   }
+
+
+
   saveSelectedFriend(friend:User){
+    clearInterval(this.intervalltimer);
     this.selectedFriend=friend;
     console.log(this.selectedFriend)
     this.intervalltimer=setInterval(() => {
@@ -98,6 +100,7 @@ export class ChatComponent implements OnInit {
       if(this.selectedFriend.id){
         this.chatservice.sendMessages(Number(this.me.id),Number(this.selectedFriend.id), this.sendmessage).subscribe(res=>{
           console.log(res)
+          this.sendmessage=null;
         })
       }
       else{
@@ -107,7 +110,6 @@ export class ChatComponent implements OnInit {
 
   ngOnDestroy() {
     clearInterval(this.intervalltimer);
-
   }
 }
 

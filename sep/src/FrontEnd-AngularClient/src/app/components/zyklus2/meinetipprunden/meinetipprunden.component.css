@@ -5,7 +5,11 @@
 * {
   box-sizing: border-box;
 }
+.mat-icon {
+  vertical-align: middle;
+  horiz-align: center;
 
+}
 body {
   font-family: Arial;
   padding: 10px;
