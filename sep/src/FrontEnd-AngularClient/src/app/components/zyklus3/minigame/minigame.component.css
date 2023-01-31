@@ -64,7 +64,7 @@ body {
 .leftcolumn {
   float: left;
   width: 75%;
-
+  min-width: 75% ;
 
 }
 
@@ -92,11 +92,15 @@ body {
 
 /* Add a card effect for articles */
 .card {
-  height: 400%;
+
   background-color: white;
   padding: 20px;
   margin-top: 20px;
   height: 700px;
+  min-height: 700px;
+  width: 1200px;
+  min-width: 1200px;
+
 }
 
 .usercard {
@@ -194,5 +198,11 @@ p {
   text-align: center;
   border: 4px double #cccccc; /* add this line */
   border-radius: 10px; /* add this line */
+
+}
+.mat-icon {
+  vertical-align: middle;
+  horiz-align: center;
+
 
 }

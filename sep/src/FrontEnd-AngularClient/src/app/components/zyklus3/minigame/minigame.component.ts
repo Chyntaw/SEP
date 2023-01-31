@@ -13,7 +13,7 @@ export class MinigameComponent implements OnInit {
   AbstandRechts="auto";
   AbstandOben="auto";
   AbstandUnten="auto";
-  Anzeigen="block";
+  Anzeigen="none";
   disableStartButton:boolean=false;
 
   money:any;
@@ -35,11 +35,10 @@ export class MinigameComponent implements OnInit {
     this.changePosition()
     setInterval(() => {
       this.changePosition();
-    }, 10 * 1000);
+    }, 10* 1000);
   }
 
   changePosition(){
-
     this.Anzeigen="block";
     this.AbstandLinks= Math.floor((Math.random() * 1000) + 1)+"px"
     this.AbstandRechts=Math.floor((Math.random() * 1000) + 1)+"px"
