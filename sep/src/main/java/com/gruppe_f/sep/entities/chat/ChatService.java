@@ -48,19 +48,22 @@ public class ChatService {
 
         LocalTime time = LocalTime.now();
 
+
         for(String firstUserChatIDS : firstUserChatIDs){
             for(String secondUserChatIDS: secondUserChatIDs){
                 if(firstUserChatIDS.equals(secondUserChatIDS)){
                     chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
-                    List<Message> oldMessages = chat.getMessages();
+                    if(!chat.isGroupChat()){
+                        List<Message> oldMessages = chat.getMessages();
 
-                    String name = firstUser.getLastName() + ", " + firstUser.getFirstName();
-                    Message newMessage = new Message(message, userID, time, name);
-                    messageRepository.save(newMessage);
+                        String name = firstUser.getLastName() + ", " + firstUser.getFirstName();
+                        Message newMessage = new Message(message, userID, time, name);
+                        messageRepository.save(newMessage);
 
-                    oldMessages.add(newMessage);
-                    chat.setMessages(oldMessages);
-                    chatRepository.save(chat);
+                        oldMessages.add(newMessage);
+                        chat.setMessages(oldMessages);
+                        chatRepository.save(chat);
+                    }
                 }
             }
         }
@@ -80,9 +83,11 @@ public class ChatService {
         for(String firstUserChatID : firstUserChatIDs){
             for(String secondUserChatID: secondUserChatIDs){
                 if(firstUserChatID.equals(secondUserChatID)){
-                    chat = chatRepository.findById(Long.parseLong(firstUserChatID)).get();
+                    if(!chatRepository.findById(Long.parseLong(firstUserChatID)).get().isGroupChat()){
+                        chat = chatRepository.findById(Long.parseLong(firstUserChatID)).get();
 
-                    return chat;
+                        return chat;
+                    }
                 }
             }
         }
@@ -108,15 +113,17 @@ public class ChatService {
         for(String firstUserChatIDS : firstUserChatIDs){
             if(firstUserChatIDS.equals(bettingRound.getMyChatID().toString())){
                 chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
-                List<Message> oldMessages = chat.getMessages();
+                if(chat.isGroupChat()){
+                    List<Message> oldMessages = chat.getMessages();
 
-                String name = firstUser.getLastName() + ", " + firstUser.getFirstName();
-                Message newMessage = new Message(message, userID, time, name);
-                messageRepository.save(newMessage);
+                    String name = firstUser.getLastName() + ", " + firstUser.getFirstName();
+                    Message newMessage = new Message(message, userID, time, name);
+                    messageRepository.save(newMessage);
 
-                oldMessages.add(newMessage);
-                chat.setMessages(oldMessages);
-                chatRepository.save(chat);
+                    oldMessages.add(newMessage);
+                    chat.setMessages(oldMessages);
+                    chatRepository.save(chat);
+                }
 
             }
         }
@@ -130,13 +137,21 @@ public class ChatService {
 
         String[] firstUserChatIDs = firstUser.getMyChatIDs().split("-");
 
+        return chatRepository.findById(bettingRound.getMyChatID()).get();
+
+        /*
         for(String firstUserChatIDS : firstUserChatIDs){
             if(firstUserChatIDS.equals(bettingRound.getMyChatID().toString())){
-                chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
-                return chat;
+                if(chatRepository.findById(Long.parseLong(firstUserChatIDS)).get().isGroupChat()){
+                    chat = chatRepository.findById(Long.parseLong(firstUserChatIDS)).get();
+
+                    return chat;
+                }
             }
         }
         return null;
+         */
+
     }
 
 
